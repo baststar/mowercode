@@ -15,6 +15,8 @@ Install Extensions
 	
 and open the workspace-file
 
+Build each module with platformio-Buttons in the lower left corner from platformio within vscode (open wanted main.cpp of mudule file first)
+
 Build on Linux and Windows 10
 
 No need for copy/paste libraries - all included via platformio.ini's
