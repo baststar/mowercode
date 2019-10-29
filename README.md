@@ -13,7 +13,8 @@ Install Extensions
 	
     PlatformIO IDE
 	
-	
+and open the workspace-file
+
 Build on Linux and Windows 10
 
 No need for copy/paste libraries - all included via platformio.ini's
