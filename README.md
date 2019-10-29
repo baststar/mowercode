@@ -10,6 +10,7 @@ Install Extensions
     PlatformIO IDE
 	
 Build on Linux and Windows 10
+No need for copy/paste libraries - all included via platformio.ini's
 
 Windows 10 extras to do:
 ; activate long 32-bit paths in windows 
