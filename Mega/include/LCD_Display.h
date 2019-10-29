@@ -1,0 +1,22 @@
+#pragma once
+
+void Setup_Run_LCD_Intro();
+void Print_Mower_Error();
+void Print_LCD_Volt_Info();
+void Print_Charging_LCD();
+void Print_Raining_LCD();
+void Print_Recharge_LCD();
+void Print_LCD_Wire();
+void Print_LCD_Mowing();
+void Print_LCD_Spiral();
+void Print_LCD_Parallel();
+void Print_LCD_Compass_Mowing();
+void Print_LCD_Parallel_Mowing();
+void Print_LCD_Info_Parked();
+void Print_LCD_Info_Manuel();
+void Print_LCD_Info_Docked();
+void Print_LCD_NO_Wire();
+void Print_LCD_Wire_ON();
+void Print_Sonar_Hit();
+void Print_LCD_Compass_Home();
+void Print_Time_On_LCD();

@@ -1,0 +1,20 @@
+{
+	"folders": [
+        {
+            "path": "Mega"
+        },
+        {
+            "path": "Nano"
+        },
+        {
+            "path": "NodeMCU"
+        },
+        {
+            "name": "Uno",
+            "path": "Uno"
+        }
+    ],
+    "settings": {
+        "editor.defaultFormatter": "xaver.clang-format"
+    }
+}
