@@ -5,7 +5,7 @@ GNU Public License
 
 Install VSCode
 
-Install Extensions 
+Install Extensions: 
 
     C/C++
 	
@@ -15,7 +15,7 @@ Install Extensions
 	
 and open the workspace-file
 
-Build each module with platformio-Buttons in the lower left corner from platformio within vscode (open wanted main.cpp of mudule first)
+Build each module with platformio-buttons in the lower left corner from platformio within vscode (open wanted main.cpp of module first)
 
 Build on Linux and Windows 10
 
