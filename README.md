@@ -1,11 +1,12 @@
 
 Fork of https://github.com/REPALphilread/ReP_AL-3D-Lawn-Mower
+restructured for PlatformIO
 
 GNU Public License
 
 Install VSCode
 
-Install Extensions 
+Install Extensions: 
 
     C/C++
 	
@@ -13,7 +14,10 @@ Install Extensions
 	
     PlatformIO IDE
 	
-	
+and open the workspace-file
+
+Build each module with platformio-buttons in the lower left corner from platformio within vscode (open wanted main.cpp of module first)
+
 Build on Linux and Windows 10
 
 No need for copy/paste libraries - all included via platformio.ini's
