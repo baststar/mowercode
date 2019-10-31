@@ -33,4 +33,4 @@ Windows 10 extras to do:
 
 Mega and NodeMCU:
 
-rename config.example.h to config.h and change the values if necessary
+copy config.example.h to config.h and change the values if necessary
