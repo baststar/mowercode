@@ -1,10 +1,11 @@
 #include <Arduino.h>
+#include <config.h>
 #include <declarations.h>
 
 void Motor_Action_Go_Full_Speed()
 {
-    analogWrite(ENAPin, PWM_MaxSpeed_RH); // Speed = 0-255  (255 is max speed). Speed is set in the settings
-    analogWrite(ENBPin, PWM_MaxSpeed_LH); // Anaolgwirte sends PWM signals Speed = 0-255  (255 is max speed)
+    analogWrite(PIN_ENA, PWM_MaxSpeed_RH); // Speed = 0-255  (255 is max speed). Speed is set in the settings
+    analogWrite(PIN_ENB, PWM_MaxSpeed_LH); // Anaolgwirte sends PWM signals Speed = 0-255  (255 is max speed)
     Serial.print(F("Wheel:FULL|"));
 }
 
@@ -18,66 +19,66 @@ void Motor_Action_GoFullSpeed_Out_Garage()
     if (PWM_MaxSpeed_RH > 255)
         PWM_MaxSpeed_RH = 255;
 
-    analogWrite(ENAPin, PWM_MaxSpeed_RH); // Speed = 0-255  (255 is max speed). Speed is set in the settings
-    analogWrite(ENBPin, PWM_MaxSpeed_LH);
+    analogWrite(PIN_ENA, PWM_MaxSpeed_RH); // Speed = 0-255  (255 is max speed). Speed is set in the settings
+    analogWrite(PIN_ENB, PWM_MaxSpeed_LH);
     Serial.print(F("Wheel:FULL|"));
 }
 
 void SetPins_ToGoForwards()
-{                              // Motor Bridge pins are set for both motors to move forwards.
-    digitalWrite(IN1Pin, LOW); // Motor Birdge pins are set to high or low to set the direction of movement
-    digitalWrite(IN2Pin, HIGH);
-    digitalWrite(IN3Pin, LOW);
-    digitalWrite(IN4Pin, HIGH);
+{                                // Motor Bridge pins are set for both motors to move forwards.
+    digitalWrite(PIN_IN_1, LOW); // Motor Birdge pins are set to high or low to set the direction of movement
+    digitalWrite(PIN_IN_2, HIGH);
+    digitalWrite(PIN_IN_3, LOW);
+    digitalWrite(PIN_IN_4, HIGH);
     Serial.print(F("Wheel:For|"));
 }
 
 void SetPins_ToGoBackwards()
-{                               // Motor Bridge pins are set for both motors to move Backwards
-    digitalWrite(IN1Pin, HIGH); // Motor 1
-    digitalWrite(IN2Pin, LOW);
-    digitalWrite(IN3Pin, HIGH); // Motor 2
-    digitalWrite(IN4Pin, LOW);
+{                                 // Motor Bridge pins are set for both motors to move Backwards
+    digitalWrite(PIN_IN_1, HIGH); // Motor 1
+    digitalWrite(PIN_IN_2, LOW);
+    digitalWrite(PIN_IN_3, HIGH); // Motor 2
+    digitalWrite(PIN_IN_4, LOW);
     Serial.print(F("Wheel:Rev|"));
     delay(20);
 }
 
 void Motor_Action_Stop_Motors()
 { // Motor Bridge pins are set for both motors to stop
-    digitalWrite(ENAPin, 0);
-    digitalWrite(IN1Pin, LOW); // Motor 1
-    digitalWrite(IN2Pin, LOW);
+    digitalWrite(PIN_ENA, 0);
+    digitalWrite(PIN_IN_1, LOW); // Motor 1
+    digitalWrite(PIN_IN_2, LOW);
 
-    digitalWrite(ENBPin, 0); // Motor 2
-    digitalWrite(IN3Pin, LOW);
-    digitalWrite(IN4Pin, LOW);
+    digitalWrite(PIN_ENB, 0); // Motor 2
+    digitalWrite(PIN_IN_3, LOW);
+    digitalWrite(PIN_IN_4, LOW);
 
     Serial.print(F("Wheel:0FF|"));
 }
 
 void SetPins_ToTurnLeft()
-{                              // Pins are set so that Motors drive in opposite directions
-    digitalWrite(IN1Pin, LOW); // Motor 1
-    digitalWrite(IN2Pin, HIGH);
-    digitalWrite(IN3Pin, HIGH); // Motor 2
-    digitalWrite(IN4Pin, LOW);
+{                                // Pins are set so that Motors drive in opposite directions
+    digitalWrite(PIN_IN_1, LOW); // Motor 1
+    digitalWrite(PIN_IN_2, HIGH);
+    digitalWrite(PIN_IN_3, HIGH); // Motor 2
+    digitalWrite(PIN_IN_4, LOW);
     Serial.print(F("Wheel:TL_|"));
 }
 
 void SetPins_ToTurnRight()
-{                               // Pins are set so that Motors drive in opposite directions
-    digitalWrite(IN1Pin, HIGH); // Motor 1
-    digitalWrite(IN2Pin, LOW);
-    digitalWrite(IN3Pin, LOW); // Motor 2
-    digitalWrite(IN4Pin, HIGH);
+{                                 // Pins are set so that Motors drive in opposite directions
+    digitalWrite(PIN_IN_1, HIGH); // Motor 1
+    digitalWrite(PIN_IN_2, LOW);
+    digitalWrite(PIN_IN_3, LOW); // Motor 2
+    digitalWrite(PIN_IN_4, HIGH);
     Serial.print(F("Wheel:R|"));
 }
 
 // USed to turn the mower at a set speed.
 void Motor_Action_Turn_Speed()
 {
-    analogWrite(ENAPin, (PWM_MaxSpeed_RH - Turn_Adjust)); // Change the 0 value to 10 or 20 to recuce the speed
-    analogWrite(ENBPin, (PWM_MaxSpeed_LH - Turn_Adjust)); // Change the 0 value to 10 or 20 to recuce the speed
+    analogWrite(PIN_ENA, (PWM_MaxSpeed_RH - Turn_Adjust)); // Change the 0 value to 10 or 20 to recuce the speed
+    analogWrite(PIN_ENB, (PWM_MaxSpeed_LH - Turn_Adjust)); // Change the 0 value to 10 or 20 to recuce the speed
 }
 
 // Turns the mowing blades on
@@ -85,10 +86,10 @@ void Motor_Action_Spin_Blades()
 {
     if (Cutting_Blades_Activate == 1) { // Blades are turn ON in settings and will spin!
         delay(20);
-        digitalWrite(R_EN, HIGH);
-        digitalWrite(L_EN, HIGH);
+        digitalWrite(PIN_R_EN, HIGH);
+        digitalWrite(PIN_L_EN, HIGH);
         delay(20);
-        analogWrite(RPWM, PWM_Blade_Speed);
+        analogWrite(PIN_RPWM, PWM_Blade_Speed);
         delay(20);
         Serial.print(F("Blades:ON_|"));
     }
@@ -101,8 +102,8 @@ void Motor_Action_Spin_Blades()
 void Motor_Action_Stop_Spin_Blades()
 {
     delay(20);
-    digitalWrite(R_EN, LOW);
-    digitalWrite(L_EN, LOW);
+    digitalWrite(PIN_R_EN, LOW);
+    digitalWrite(PIN_L_EN, LOW);
     delay(20);
     Serial.print(F("Blades:0FF|"));
 }
@@ -110,8 +111,8 @@ void Motor_Action_Stop_Spin_Blades()
 // Steers the Mower depending on the PID input from the Algorythm
 void Motor_Action_Dynamic_PWM_Steering()
 {
-    analogWrite(ENAPin, PWM_Right); // ENA low = Right Swerve   ENB low = Left Swerve
-    analogWrite(ENBPin, PWM_Left);
+    analogWrite(PIN_ENA, PWM_Right); // ENA low = Right Swerve   ENB low = Left Swerve
+    analogWrite(PIN_ENB, PWM_Left);
     Serial.print(F("PWM_R:"));
     Serial.print(PWM_Right);
     Serial.print(F("|"));

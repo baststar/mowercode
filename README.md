@@ -27,6 +27,6 @@ Windows 10 extras to do:
      #git config --system core.longpaths true
 
 
-NodeMCU:
+Mega and NodeMCU:
 
-rename config.example.h to config.h and change values
+rename config.example.h to config.h and change the values if necessary

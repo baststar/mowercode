@@ -6,6 +6,7 @@
 #include <Buttons_Timing.h>
 #include <Manouvers.h>
 #include <Special.h>
+#include <config.h>
 #include <declarations.h>
 
 // BUTTONS DOCKED MENU
@@ -13,10 +14,10 @@
 // Reads each of the membrane keys and detects if a key is pressed.
 void Read_Membrane_Keys()
 {
-    Start_Key_X = digitalRead(Start_Key);
-    Plus_Key_X = digitalRead(Plus_Key);
-    Minus_Key_X = digitalRead(Minus_Key);
-    Stop_Key_X = digitalRead(Stop_Key);
+    Start_Key_X = digitalRead(PIN_START_KEY);
+    Plus_Key_X = digitalRead(PIN_PLUS_KEY);
+    Minus_Key_X = digitalRead(PIN_MINUS_KEY);
+    Stop_Key_X = digitalRead(PIN_STOP_KEY);
 }
 
 // Test to displyed on the LCD screen when using the membrane key menus

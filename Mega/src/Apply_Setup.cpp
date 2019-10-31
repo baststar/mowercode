@@ -3,6 +3,7 @@
 #include <Arduino.h>
 #include <Compass.h>
 #include <DFRobot_QMC5883.h>
+#include <config.h>
 #include <declarations.h>
 
 void Print_Mower_Status()
@@ -109,7 +110,7 @@ void Setup_Compass()
 void Setup_Relays()
 {
     Serial.println(F("Setup Relays"));
-    pinMode(Relay_Motors, OUTPUT);
+    pinMode(PIN_RELAY_MOTORS, OUTPUT);
     delay(5);
     Turn_Off_Relay();
     delay(5);
@@ -118,37 +119,37 @@ void Setup_Relays()
 void Setup_Motor_Pins()
 {
     Serial.println(F("Setup Motor Pins"));
-    pinMode(L_EN, OUTPUT);
-    pinMode(R_EN, OUTPUT);
-    pinMode(RPWM, OUTPUT);
+    pinMode(PIN_L_EN, OUTPUT);
+    pinMode(PIN_R_EN, OUTPUT);
+    pinMode(PIN_RPWM, OUTPUT);
 }
 
 void Turn_On_Relay()
 {
     Serial.print(F("Relay:ON|"));
-    digitalWrite(Relay_Motors, LOW); // Turn of the relay for the main battery power
+    digitalWrite(PIN_RELAY_MOTORS, LOW); // Turn of the relay for the main battery power
 }
 
 void Turn_Off_Relay()
 {
     Serial.print(F("Relay:Off|"));
-    digitalWrite(Relay_Motors, HIGH); // Turn of the relay for the main battery power
+    digitalWrite(PIN_RELAY_MOTORS, HIGH); // Turn of the relay for the main battery power
 }
 
 void Setup_Membrane_Buttons()
 {
     Serial.println(F("Setup Membrane Keys"));
-    pinMode(Start_Key, INPUT_PULLUP); // set pin as input
-    pinMode(Plus_Key, INPUT_PULLUP);  // set pin as input
-    pinMode(Minus_Key, INPUT_PULLUP); // set pin as input
-    pinMode(Stop_Key, INPUT_PULLUP);  // set pin as input
+    pinMode(PIN_START_KEY, INPUT_PULLUP); // set pin as input
+    pinMode(PIN_PLUS_KEY, INPUT_PULLUP);  // set pin as input
+    pinMode(PIN_MINUS_KEY, INPUT_PULLUP); // set pin as input
+    pinMode(PIN_STOP_KEY, INPUT_PULLUP);  // set pin as input
 }
 
 void Setup_ADCMan()
 {
     Serial.println(F("ADCMAN"));
     ADCMan.init();
-    perimeter.setPins(pinPerimeterLeft, pinPerimeterRight);
+    perimeter.setPins(PIN_PERIMETER_LEFT, PIN_PERIMETER_RIGHT);
     perimeter.useDifferentialPerimeterSignal = true;
     perimeter.speedTest();
     ADCMan.run();

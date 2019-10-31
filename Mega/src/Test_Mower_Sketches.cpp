@@ -4,6 +4,7 @@
 #include <Manouvers.h>
 #include <Motor_Action.h>
 #include <Test_Mower_Sketches.h>
+#include <config.h>
 #include <declarations.h>
 
 /* Perimieter Wire Collision Motion
@@ -11,7 +12,7 @@
 void Test_Mower_Check_Wire()
 {
     ADCMan.run();
-    // ADCMan.setCapture(pinPerimeterLeft, 1, 0);
+    // ADCMan.setCapture(PIN_PERIMETER_LEFT, 1, 0);
 
     if (millis() >= nextTime) {
         nextTime = millis() + 50;
@@ -43,12 +44,12 @@ void Test_Mower_Check_Wire()
 
 void Test_Relay()
 {
-    digitalWrite(Relay_Motors, HIGH);
+    digitalWrite(PIN_RELAY_MOTORS, HIGH);
     Serial.println("Relay OFF");
     lcd.print("Relay OFF");
     delay(1000);
     lcd.clear();
-    digitalWrite(Relay_Motors, LOW);
+    digitalWrite(PIN_RELAY_MOTORS, LOW);
     Serial.println("Relay ON");
     lcd.print("Relay ON");
     delay(1000);
@@ -57,7 +58,7 @@ void Test_Relay()
 
 void Test_Wheel_Motors()
 {
-    digitalWrite(Relay_Motors, LOW);
+    digitalWrite(PIN_RELAY_MOTORS, LOW);
     delay(200);
     if (I == 1) {
         lcd.clear();
@@ -228,14 +229,14 @@ void Test_Wheel_Motors()
 
         I = 2;
     }
-    digitalWrite(Relay_Motors, HIGH);
+    digitalWrite(PIN_RELAY_MOTORS, HIGH);
     delay(200);
 }
 
 void Test_Mower_Blade_Motor()
 {
     // Spin the blade motor for 7 seconds
-    digitalWrite(Relay_Motors, LOW);
+    digitalWrite(PIN_RELAY_MOTORS, LOW);
     delay(200);
     lcd.print("Blade Motor");
     lcd.setCursor(0, 1);
@@ -270,31 +271,31 @@ void Test_Mower_Blade_Motor()
     lcd.clear();
     delay(500);
 
-    digitalWrite(Relay_Motors, HIGH);
+    digitalWrite(PIN_RELAY_MOTORS, HIGH);
     delay(200);
 }
 
 void Test_Sonar_Array()
 {
     // Clears the Trig Pin
-    digitalWrite(trigPin1, LOW);
+    digitalWrite(PIN_TRIGGER_1, LOW);
     delayMicroseconds(5);
-    digitalWrite(trigPin2, LOW);
+    digitalWrite(PIN_TRIGGER_2, LOW);
     delayMicroseconds(5);
-    digitalWrite(trigPin3, LOW);
+    digitalWrite(PIN_TRIGGER_3, LOW);
 
     /*Fires all Sonars to detect objects ahead...
      * Sonars are not fired in order to avoid reflections of sonar in the next sensor.
        distance# reurned (trigpin#, echopin#, distance#, duration#, Sonar#, LCDColumn#, LCD Row#)
      *********************************************************************************************/
     if (Sonar_1_Activate)
-        distance1 = PingSonarY(trigPin1, echoPin1, 1, 1, 1, 5, 0); // SONAR1
+        distance1 = PingSonarY(PIN_TRIGGER_1, PIN_ECHO_1, 1, 1, 1, 5, 0); // SONAR1
     delay(15);
     if (Sonar_2_Activate)
-        distance2 = PingSonarY(trigPin2, echoPin2, 2, 2, 2, 0, 0); // SONAR2
+        distance2 = PingSonarY(PIN_TRIGGER_2, PIN_ECHO_2, 2, 2, 2, 0, 0); // SONAR2
     delay(15);
     if (Sonar_3_Activate)
-        distance3 = PingSonarY(trigPin3, echoPin3, 3, 3, 3, 10, 0); // SONAR3
+        distance3 = PingSonarY(PIN_TRIGGER_3, PIN_ECHO_3, 3, 3, 3, 10, 0); // SONAR3
     delay(15);
 }
 
@@ -367,7 +368,7 @@ int PingSonarY(int trigPinY, int echoPinY, int distanceY, long durationY, int so
 
 void Test_Compass_Turn_Function()
 {
-    digitalWrite(Relay_Motors, LOW);
+    digitalWrite(PIN_RELAY_MOTORS, LOW);
     delay(200);
     SetPins_ToGoForwards();
     Motor_Action_Go_Full_Speed();
@@ -377,5 +378,5 @@ void Test_Compass_Turn_Function()
     SetPins_ToGoForwards();
     Motor_Action_Go_Full_Speed();
     delay(2000);
-    digitalWrite(Relay_Motors, HIGH);
+    digitalWrite(PIN_RELAY_MOTORS, HIGH);
 }

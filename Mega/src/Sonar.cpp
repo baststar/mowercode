@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <LCD_Display.h>
 #include <Sonar.h>
+#include <config.h>
 #include <declarations.h>
 
 void Check_Sonar_Sensors()
@@ -8,20 +9,20 @@ void Check_Sonar_Sensors()
     // Ping Sonar sensors
 
     // Clears the Trig Pin
-    digitalWrite(trigPin1, LOW);
+    digitalWrite(PIN_TRIGGER_1, LOW);
     delayMicroseconds(5);
-    digitalWrite(trigPin2, LOW);
+    digitalWrite(PIN_TRIGGER_2, LOW);
     delayMicroseconds(5);
-    digitalWrite(trigPin3, LOW);
+    digitalWrite(PIN_TRIGGER_3, LOW);
 
     // Pings each sonar at a 15ms interval
 
     if (Sonar_2_Activate == 1)
-        distance2 = PingSonarX(trigPin2, echoPin2, 2, 2, 2, 0, 0); // SONAR2
+        distance2 = PingSonarX(PIN_TRIGGER_2, PIN_ECHO_2, 2, 2, 2, 0, 0); // SONAR2
     if (Sonar_1_Activate == 1)
-        distance1 = PingSonarX(trigPin1, echoPin1, 1, 1, 1, 1, 0); // SONAR1
+        distance1 = PingSonarX(PIN_TRIGGER_1, PIN_ECHO_1, 1, 1, 1, 1, 0); // SONAR1
     if (Sonar_3_Activate == 1)
-        distance3 = PingSonarX(trigPin3, echoPin3, 3, 3, 3, 2, 0); // SONAR3
+        distance3 = PingSonarX(PIN_TRIGGER_3, PIN_ECHO_3, 3, 3, 3, 2, 0); // SONAR3
 }
 
 /* SONAR Function

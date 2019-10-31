@@ -10,42 +10,6 @@
 // Libraries for Real Time Clock
 #include <stdio.h>
 
-#define pinPerimeterLeft A5  // perimeter pin normally A5
-#define pinPerimeterRight A4 // leave open
-#define pinLED LED_BUILTIN
-
-// Sonar Setup for Front Sonars 1-3
-#define echoPin1 34 // S1
-#define trigPin1 35
-#define echoPin2 36 // S2
-#define trigPin2 37
-#define echoPin3 38 // S3
-#define trigPin3 39
-
-// Membrane Switch
-#define Start_Key 50 // connect wire 1 to pin 2
-#define Plus_Key 51  // connect wire 2 to pin 3
-#define Minus_Key 52 // connect wire 3 to pin 4
-#define Stop_Key 53  // connect wire 4 to pin 5
-
-// Pin Setup for the wheel Motor Bridge Controller
-// Motor A
-#define ENAPin 7 // EN Pins need a digital pin with PWM
-#define IN1Pin 6 // IN Pins dont need digital PWM
-#define IN2Pin 5
-// Motor B
-#define ENBPin 2 // EN Pins need a digital pin with PWM
-#define IN3Pin 4 // IN Pins dont need digital PWM
-#define IN4Pin 3
-
-// Motor Blades
-#define RPWM 8
-#define L_EN 9
-#define R_EN 10
-
-// Relay Switch
-#define Relay_Motors 24
-
 extern LiquidCrystal_I2C lcd;
 extern DS1302 rtc;
 extern DFRobot_QMC5883 compass;

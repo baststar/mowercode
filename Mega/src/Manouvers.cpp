@@ -12,6 +12,7 @@
 #include <WIFI.h>
 #include <Wire_Detection.h>
 #include <Wire_Tracking.h>
+#include <config.h>
 #include <declarations.h>
 
 // Manouvers are a set of motion functions or motor actions that are regulary called
@@ -701,7 +702,7 @@ void Manouver_Outside_Wire_ReFind_Function()
         PrintBoundaryWireStatus();
         // Check_Wire_In_Out();
         delay(500);
-        distance_blockage = PingSonarX(trigPin1, echoPin1, 1, 1, 1, 4, 0);
+        distance_blockage = PingSonarX(PIN_TRIGGER_1, PIN_ECHO_1, 1, 1, 1, 4, 0);
         delay(500);
         Serial.print(F("Distance measured from sonar :"));
         Serial.println(distance_blockage);
@@ -715,7 +716,7 @@ void Manouver_Outside_Wire_ReFind_Function()
                 ADCMan.run();
                 UpdateWireSensor();
                 PrintBoundaryWireStatus();
-                distance_blockage = PingSonarX(trigPin1, echoPin1, 1, 1, 1, 4, 0);
+                distance_blockage = PingSonarX(PIN_TRIGGER_1, PIN_ECHO_1, 1, 1, 1, 4, 0);
                 delay(10);
                 // Check_Wire_In_Out();
             }
@@ -732,7 +733,7 @@ void Manouver_Outside_Wire_ReFind_Function()
             delay(200);
             Motor_Action_Turn_Speed();
             delay(100);
-            distance_blockage = PingSonarX(trigPin1, echoPin1, 1, 1, 1, 4, 0);
+            distance_blockage = PingSonarX(PIN_TRIGGER_1, PIN_ECHO_1, 1, 1, 1, 4, 0);
             delay(10);
         }
         Motor_Action_Stop_Motors();

@@ -2,11 +2,12 @@
 #include <Compass.h>
 #include <LCD_Display.h>
 #include <Motor_Action.h>
+#include <config.h>
 #include <declarations.h>
 
 void Pattern_Mow_Spirals()
 {
-    // analogWrite(ENAPin, PWM_MaxSpeed_RH - (100 - Loop_Cycle_Mowing));             // 255 - 200 = 55 up to 255 again. (255 is max speed). Speed is set in the settings
+    // analogWrite(PIN_ENA, PWM_MaxSpeed_RH - (100 - Loop_Cycle_Mowing));             // 255 - 200 = 55 up to 255 again. (255 is max speed). Speed is set in the settings
 
     int PWM_1 = 50; // diameter 0.4m
     int PWM_2 = 70; //
@@ -35,12 +36,12 @@ void Pattern_Mow_Spirals()
     Get_Compass_Reading(); // keeps the compass active
 
     if (Spiral_Mow == 1)
-        analogWrite(ENBPin, PWM_MaxSpeed_LH);
+        analogWrite(PIN_ENB, PWM_MaxSpeed_LH);
     if (Spiral_Mow == 2)
-        analogWrite(ENAPin, PWM_MaxSpeed_RH);
+        analogWrite(PIN_ENA, PWM_MaxSpeed_RH);
     if (Spiral_Mow == 3) {
-        analogWrite(ENAPin, PWM_MaxSpeed_RH);
-        analogWrite(ENBPin, PWM_MaxSpeed_LH);
+        analogWrite(PIN_ENA, PWM_MaxSpeed_RH);
+        analogWrite(PIN_ENB, PWM_MaxSpeed_LH);
     }
 
     if (Spiral_Mow < 3) {
@@ -55,81 +56,81 @@ void Pattern_Mow_Spirals()
 
         if (Loop_Cycle_Mowing < End_Linking) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_MaxSpeed_RH);
+                analogWrite(PIN_ENA, PWM_MaxSpeed_RH);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_MaxSpeed_LH);
+                analogWrite(PIN_ENB, PWM_MaxSpeed_LH);
             lcd.print("|");
         }
 
         // Inside Spiral
         if ((Loop_Cycle_Mowing >= End_Linking) && (Loop_Cycle_Mowing < End_Spiral_1)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_1);
+                analogWrite(PIN_ENA, PWM_1);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_1);
+                analogWrite(PIN_ENB, PWM_1);
             lcd.print("1");
         }
 
         // Sprial Ring 2
         if ((Loop_Cycle_Mowing >= End_Spiral_1) && (Loop_Cycle_Mowing < End_Spiral_2)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_2);
+                analogWrite(PIN_ENA, PWM_2);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_2);
+                analogWrite(PIN_ENB, PWM_2);
             lcd.print("2");
         }
 
         // Sprial Ring 3
         if ((Loop_Cycle_Mowing >= End_Spiral_2) && (Loop_Cycle_Mowing < End_Spiral_3)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_3);
+                analogWrite(PIN_ENA, PWM_3);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_3);
+                analogWrite(PIN_ENB, PWM_3);
             lcd.print("3");
         }
 
         // Sprial Ring 4
         if ((Loop_Cycle_Mowing >= End_Spiral_3) && (Loop_Cycle_Mowing < End_Spiral_4)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_4);
+                analogWrite(PIN_ENA, PWM_4);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_4);
+                analogWrite(PIN_ENB, PWM_4);
             lcd.print("4");
         }
 
         // Sprial Ring 5
         if ((Loop_Cycle_Mowing >= End_Spiral_4) && (Loop_Cycle_Mowing < End_Spiral_5)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_5);
+                analogWrite(PIN_ENA, PWM_5);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_5);
+                analogWrite(PIN_ENB, PWM_5);
             lcd.print("5");
         }
 
         // Sprial Ring 6
         if ((Loop_Cycle_Mowing >= End_Spiral_5) && (Loop_Cycle_Mowing < End_Spiral_6)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_6);
+                analogWrite(PIN_ENA, PWM_6);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_6);
+                analogWrite(PIN_ENB, PWM_6);
             lcd.print("6");
         }
 
         // Sprial Ring 7
         if ((Loop_Cycle_Mowing >= End_Spiral_6) && (Loop_Cycle_Mowing < End_Spiral_7)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_7);
+                analogWrite(PIN_ENA, PWM_7);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_7);
+                analogWrite(PIN_ENB, PWM_7);
             lcd.print("7");
         }
 
         // Mower moves away to new position
         if ((Loop_Cycle_Mowing >= End_Spiral_7) && (Loop_Cycle_Mowing < Max_Cycles_Spirals)) {
             if (Spiral_Mow == 1)
-                analogWrite(ENAPin, PWM_MaxSpeed_RH);
+                analogWrite(PIN_ENA, PWM_MaxSpeed_RH);
             if (Spiral_Mow == 2)
-                analogWrite(ENBPin, PWM_MaxSpeed_LH);
+                analogWrite(PIN_ENB, PWM_MaxSpeed_LH);
             lcd.print("X");
         }
     }
