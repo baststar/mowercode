@@ -56,9 +56,10 @@ int j = 0;
 int k = 0;
 
 bool Manuel_Mode;
-bool Automatic_Mode;
+int Automatic_Mode;
 
 int All;
+int RX_Data_Recieved;
 
 void setup()
 {
@@ -79,7 +80,7 @@ void setup()
 void loop()
 {
     loopstatus = loopstatus + 1;
-    // RX_Data_Recieved = 0; // resets the data received bool
+    RX_Data_Recieved = 0; // resets the data received bool
 
     if (!Blynk.connected()) {
         Blynk.run();
