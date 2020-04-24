@@ -145,6 +145,12 @@ void Setup_Membrane_Buttons()
     pinMode(PIN_STOP_KEY, INPUT_PULLUP);  // set pin as input
 }
 
+void Setup_Bumper_Bar()
+{
+    pinMode(Bumper_Switch_Frnt_RH, INPUT_PULLUP);
+    pinMode(Bumper_Switch_Frnt_LH, INPUT_PULLUP);
+}
+
 void Setup_ADCMan()
 {
     Serial.println(F("ADCMAN"));

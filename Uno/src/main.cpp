@@ -34,10 +34,10 @@
 #include "RunningMedian.h"
 #include "TimerOne.h"
 
-#define USE_DEVELOPER_TEST 1 // uncomment for new perimeter signal test (developers)
+// #define USE_DEVELOPER_TEST 1 // uncomment for new perimeter signal test (developers)
 //---------------------------------------------------------------------------------------------------
 
-#define USE_AUTO_PERIMETER_CURRENT 0 // Use auto Perimeter power set to 0 for not used
+#define USE_AUTO_PERIMETER_CURRENT 1 // Use auto Perimeter power set to 0 for not used
 // Spannungsmessung
 long previousMillisVolt = 0; // will store last time messure was updated
 long intervalVolt = 5;       // voltage messeurement interval (milliseconds)

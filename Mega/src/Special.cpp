@@ -35,11 +35,11 @@ void Special_Exit_From_Docking_Station()
     Serial.print(F("Right Wheel PWM:"));
     Serial.println(PWM_MaxSpeed_RH);
     delay(4000);                  // Backwards time
-    Motor_Action_Stop_Motors;     // Stop
+    Motor_Action_Stop_Motors();   // Stop
     SetPins_ToTurnLeft();         // Prepare motors to turn left
     Motor_Action_Turn_Speed();    // Turn the wheels
     delay(500);                   // Turn time
-    Motor_Action_Stop_Motors;     // Stop
+    Motor_Action_Stop_Motors();   // Stop
     SetPins_ToGoBackwards();      // Set again to go backwards
     Motor_Action_Go_Full_Speed(); // Turn the wheels
     delay(500);                   // Backwards Time
