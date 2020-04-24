@@ -63,6 +63,11 @@ bool Sonar_Hit_2 = 0;
 bool Sonar_Hit_3 = 0;
 bool Sonar_Hit = 0;
 
+// Bumper Variables
+bool Bump_Frnt_LH;
+bool Bump_Frnt_RH;
+bool Bumper;
+
 // Mower Status Variables
 bool Mower_Docked;
 bool Mower_Parked;
@@ -76,10 +81,27 @@ byte Start_Key_X;
 byte Plus_Key_X;
 byte Minus_Key_X;
 byte Stop_Key_X;
+bool Menu_Complete_Settings;
+bool Menu_Complete_Alarms;
+bool Menu_Complete_Sensors;
+bool Menu_Complete_Motion;
+bool Menu_Complete_NAVI;
+bool Menu_Complete_Tracking;
 bool Menu_Complete;
 byte Menu_Mode_Selection;
 int Menu_View;
 int Mow_Time_Set;
+int Max_Options_Timing;
+int Max_Options_Docked;
+int Max_Options_Parked;
+int Max_Options_Settings;
+int Max_Options_Test;
+int Max_Options_Alarms;
+int Max_Options_Sensors;
+int Max_Options_Motion;
+int Max_Options_Tracking;
+int Max_Options_NAVI;
+int Max_Options_BETA;
 
 // Serial Communication
 float Volts;
@@ -219,11 +241,41 @@ int PWM_LEFT_EEPROM;
 int PWM_RIGHT_EEPROM;
 int PWM_BLADE_EEPROM;
 int COMPASS_EEPROM;
-float Traking_PID_P_EEPROM;
+float Tracking_PID_P_EEPROM;
 int Pattern_Mow_EEPROM;
 float Minimum_Volt_EEPROM;
 int Compass_Home_EEPROM;
 int Tip_Safety_EEPROM;
+int Mower_Turn_Delay_Min_EEPROM;
+int Mower_Turn_Delay_Max_EEPROM;
+int Mower_Reverse_Delay_EEPROM;
+bool Sonar_1_Activate_EEPROM;
+bool Sonar_2_Activate_EEPROM;
+bool Sonar_3_Activate_EEPROM;
+int Track_Wire_Zone_1_Cycles_EEPROM;
+int Track_Wire_Zone_2_Cycles_EEPROM;
+bool Use_Charging_Station_EEPROM;
+bool CW_Tracking_To_Charge_EEPROM;
+bool CCW_Tracking_To_Charge_EEPROM;
+bool CW_Tracking_To_Start_EEPROM;
+bool CCW_Tracking_To_Start_EEPROM;
+int Max_Cycles_Straight_EEPROM;
+bool Compass_Heading_Hold_Enabled_EEPROM;
+float CPower_EEPROM;
+int Max_Sonar_Hit_EEPROM;
+long maxdistancesonar_EEPROM;
+bool Perimeter_Wire_Enabled_EEPROM;
+int Max_Cycle_Wire_Find_EEPROM;
+int Max_Cycle_Wire_Find_Back_EEPROM;
+int Max_Tracking_Turn_Right_EEPROM;
+int Max_Tracking_Turn_Left_EEPROM;
+bool Rain_Sensor_Installed_EEPROM;
+int Rain_Total_Hits_Go_Home_EEPROM;
+bool WIFI_Enabled_EEPROM;
+bool Cutting_Blades_Activate_EEPROM;
+int Low_Battery_Instances_Chg_EEPROM;
+int Alarm_1_Action_EEPROM;
+bool Bumper_Activate_Frnt_EEPROM;
 
 /***********************************************************************************************
 
@@ -342,6 +394,10 @@ bool Sonar_3_Activate = SONAR_THREE_ENABLED; // Activate (1) Deactivate (0) Sona
 int Max_Sonar_Hit = MAX_SONAR_HIT;           // Maximum number of Sonar hits before object is discovered
 long maxdistancesonar = MAX_DISTANCE_SONAR;  // distance in cm from the mower that the sonar will activate at.
 
+// Bumper Module
+bool Bumper_Activate_Frnt =
+    BUMPER_ACTIVATE_FRNT; // EEPROM // Activates the bumper bar on the front facia - defualt is off.  Enable in the LCD settings menu.
+
 // Wheel Motors Setup
 int Max_Cycles_Straight = MAX_CYCLES_STRAIGHT; // Number of loops the Sketch will run before the mower just turns
                                                // around anyway. Adjust according to your garden length
@@ -376,12 +432,14 @@ bool Alarm_1_ON = ALARM_1_ON;         // EEPROM            // Activate Alarm 1  
 int Alarm_1_Hour = ALARM_1_HOUR;      // EEPROM            // Mowing Hour Number 1
 int Alarm_1_Minute = ALARM_1_MINUTE;  // EEPROM            // Alarm Minute 1
 bool Alarm_1_Repeat = ALARM_1_REPEAT; // Repeat the Alarm at the same time
+int Alarm_1_Action = ALARM_1_ACTION;  // EEPROM // Sets the actions to be performed when the alarm is called
 
 // Action for Alarm 2 can be set in "void Activate_Alarms()"
 bool Alarm_2_ON = ALARM_2_ON;         // EEPROM            // Activate Alarm 2 (1 = ON 0 = OFF)
 int Alarm_2_Hour = ALARM_2_HOUR;      // EEPROM            // Mowing Hour Number 2
 int Alarm_2_Minute = ALARM_2_MINUTE;  // EEPROM            // Alarm minute 2
 bool Alarm_2_Repeat = ALARM_2_REPEAT; // Repeat the Alarm at the same time
+int Alarm_2_Action = ALARM_2_ACTION;  // EEPROM // Sets the actions to be performed when the alarm is called
 
 // Action for Alarm 3 can be set in "void Activate_Alarms()"
 // Go Home Alarm
@@ -389,6 +447,7 @@ bool Alarm_3_ON = ALARM_3_ON;         // EEPROM            // Activate Alarm 3 (
 int Alarm_3_Hour = ALARM_3_HOUR;      // EEPROM            // Mowing Hour Number 3
 int Alarm_3_Minute = ALARM_3_MINUTE;  // EEPROM            // Alarm minute 3
 bool Alarm_3_Repeat = ALARM_3_REPEAT; // Repeat the Alarm at the same time
+int Alarm_3_Action = ALARM_3_ACTION;  // EEPROM // Sets the actions to be performed when the alarm is called
 
 byte Alarm_Second = ALARM_SECOND; // Seconds
 

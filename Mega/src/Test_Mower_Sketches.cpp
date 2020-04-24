@@ -285,7 +285,7 @@ void Test_Sonar_Array()
     digitalWrite(PIN_TRIGGER_3, LOW);
 
     /*Fires all Sonars to detect objects ahead...
-     * Sonars are not fired in order to avoid reflections of sonar in the next sensor.
+       Sonars are not fired in order to avoid reflections of sonar in the next sensor.
        distance# reurned (trigpin#, echopin#, distance#, duration#, Sonar#, LCDColumn#, LCD Row#)
      *********************************************************************************************/
     if (Sonar_1_Activate)

@@ -11,3 +11,4 @@ void Turn_Off_Relay();
 void Setup_Membrane_Buttons();
 void Setup_ADCMan();
 void Setup_Check_Pattern_Mow();
+void Setup_Bumper_Bar();

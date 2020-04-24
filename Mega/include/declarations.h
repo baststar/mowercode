@@ -49,6 +49,11 @@ extern bool Sonar_Hit_2;
 extern bool Sonar_Hit_3;
 extern bool Sonar_Hit;
 
+// Bumper Variables
+extern bool Bump_Frnt_LH;
+extern bool Bump_Frnt_RH;
+extern bool Bumper;
+
 // Mower Status Variables
 extern bool Mower_Docked;
 extern bool Mower_Parked;
@@ -62,10 +67,28 @@ extern byte Start_Key_X;
 extern byte Plus_Key_X;
 extern byte Minus_Key_X;
 extern byte Stop_Key_X;
+
+extern bool Menu_Complete_Settings;
+extern bool Menu_Complete_Alarms;
+extern bool Menu_Complete_Sensors;
+extern bool Menu_Complete_Motion;
+extern bool Menu_Complete_NAVI;
+extern bool Menu_Complete_Tracking;
 extern bool Menu_Complete;
 extern byte Menu_Mode_Selection;
 extern int Menu_View;
 extern int Mow_Time_Set;
+extern int Max_Options_Timing;
+extern int Max_Options_Docked;
+extern int Max_Options_Parked;
+extern int Max_Options_Settings;
+extern int Max_Options_Test;
+extern int Max_Options_Alarms;
+extern int Max_Options_Sensors;
+extern int Max_Options_Motion;
+extern int Max_Options_Tracking;
+extern int Max_Options_NAVI;
+extern int Max_Options_BETA;
 
 // Serial Communication
 extern float Volts;
@@ -185,11 +208,41 @@ extern int PWM_LEFT_EEPROM;
 extern int PWM_RIGHT_EEPROM;
 extern int PWM_BLADE_EEPROM;
 extern int COMPASS_EEPROM;
-extern float Traking_PID_P_EEPROM;
+extern float Tracking_PID_P_EEPROM;
 extern int Pattern_Mow_EEPROM;
 extern float Minimum_Volt_EEPROM;
 extern int Compass_Home_EEPROM;
 extern int Tip_Safety_EEPROM;
+extern int Mower_Turn_Delay_Min_EEPROM;
+extern int Mower_Turn_Delay_Max_EEPROM;
+extern int Mower_Reverse_Delay_EEPROM;
+extern bool Sonar_1_Activate_EEPROM;
+extern bool Sonar_2_Activate_EEPROM;
+extern bool Sonar_3_Activate_EEPROM;
+extern int Track_Wire_Zone_1_Cycles_EEPROM;
+extern int Track_Wire_Zone_2_Cycles_EEPROM;
+extern bool Use_Charging_Station_EEPROM;
+extern bool CW_Tracking_To_Charge_EEPROM;
+extern bool CCW_Tracking_To_Charge_EEPROM;
+extern bool CW_Tracking_To_Start_EEPROM;
+extern bool CCW_Tracking_To_Start_EEPROM;
+extern int Max_Cycles_Straight_EEPROM;
+extern bool Compass_Heading_Hold_Enabled_EEPROM;
+extern float CPower_EEPROM;
+extern int Max_Sonar_Hit_EEPROM;
+extern long maxdistancesonar_EEPROM;
+extern bool Perimeter_Wire_Enabled_EEPROM;
+extern int Max_Cycle_Wire_Find_EEPROM;
+extern int Max_Cycle_Wire_Find_Back_EEPROM;
+extern int Max_Tracking_Turn_Right_EEPROM;
+extern int Max_Tracking_Turn_Left_EEPROM;
+extern bool Rain_Sensor_Installed_EEPROM;
+extern int Rain_Total_Hits_Go_Home_EEPROM;
+extern bool WIFI_Enabled_EEPROM;
+extern bool Cutting_Blades_Activate_EEPROM;
+extern int Low_Battery_Instances_Chg_EEPROM;
+extern int Alarm_1_Action_EEPROM;
+extern bool Bumper_Activate_Frnt_EEPROM;
 
 /***********************************************************************************************
 
@@ -309,6 +362,9 @@ extern int Max_Sonar_Hit;     // Maximum number of Sonar hits before
 extern long maxdistancesonar; // distance in cm from the mower that the sonar
                               // will activate at.
 
+// Bumper Module
+extern bool Bumper_Activate_Frnt; // EEPROM // Activates the bumper bar on the front facia - defualt is off.  Enable in the LCD settings menu.
+
 // Wheel Motors Setup
 extern int Max_Cycles_Straight; // Number of loops the Sketch will run before
                                 // the mower just turns around anyway. Adjust
@@ -347,12 +403,14 @@ extern bool Alarm_1_ON;     // EEPROM    // Activate Alarm 1  (1 = ON 0 = OFF)
 extern int Alarm_1_Hour;    // EEPROM    // Mowing Hour Number 1
 extern int Alarm_1_Minute;  // EEPROM    // Alarm Minute 1
 extern bool Alarm_1_Repeat; // Repeat the Alarm at the same time
+extern int Alarm_1_Action;  // EEPROM // Sets the actions to be performed when the alarm is called
 
 // Action for Alarm 2 can be set in "void Activate_Alarms()"
 extern bool Alarm_2_ON;     // EEPROM // Activate Alarm 2 (1 = ON 0 = OFF)
 extern int Alarm_2_Hour;    // EEPROM // Mowing Hour Number 2
 extern int Alarm_2_Minute;  // EEPROM // Alarm minute 2
 extern bool Alarm_2_Repeat; // Repeat the Alarm at the same time
+extern int Alarm_2_Action;  // EEPROM // Sets the actions to be performed when the alarm is called
 
 // Action for Alarm 3 can be set in "void Activate_Alarms()"
 // Go Home Alarm
@@ -360,6 +418,7 @@ extern bool Alarm_3_ON;     // EEPROM // Activate Alarm 3 (1 = ON 0 = OFF)
 extern int Alarm_3_Hour;    // EEPROM // Mowing Hour Number 3
 extern int Alarm_3_Minute;  // EEPROM // Alarm minute 3
 extern bool Alarm_3_Repeat; // Repeat the Alarm at the same time
+extern int Alarm_3_Action;  // EEPROM // Sets the actions to be performed when the alarm is called
 
 extern byte Alarm_Second; // Seconds
 

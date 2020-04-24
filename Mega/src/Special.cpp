@@ -38,7 +38,7 @@ void Special_Exit_From_Docking_Station()
     Motor_Action_Stop_Motors();   // Stop
     SetPins_ToTurnLeft();         // Prepare motors to turn left
     Motor_Action_Turn_Speed();    // Turn the wheels
-    delay(500);                   // Turn time
+    delay(1000);                  // Turn time
     Motor_Action_Stop_Motors();   // Stop
     SetPins_ToGoBackwards();      // Set again to go backwards
     Motor_Action_Go_Full_Speed(); // Turn the wheels

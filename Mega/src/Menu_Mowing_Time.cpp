@@ -1,6 +1,12 @@
+#include <Apply_Setup.h>
 #include <Arduino.h>
-#include <Buttons_Docked.h>
-#include <Buttons_Timing.h>
+#include <EEPROM.h>
+#include <Menu_Docked.h>
+#include <Menu_Mowing_Time.h>
+#include <Menu_Set_Time.h>
+#include <Menu_Settings.h>
+#include <Motor_Action.h>
+#include <config.h>
 #include <declarations.h>
 
 // Test to displyed on the LCD screen when using the membrane key menus
@@ -17,6 +23,7 @@ void Print_LCD_Menu_Timing(byte LCD_Menu_Timing)
         lcd.print(F("2hr Mow Time"));
     if (LCD_Menu_Timing == 4)
         lcd.print(F("  ")); // leave blank
+    Max_Options_Timing = 4;
 }
 
 void Print_Membrane_Switch_Input_Timing()
@@ -35,9 +42,9 @@ void Print_Membrane_Switch_Input_Timing()
 
     while (Menu_Complete == false) { // holds the program in a loop until a selection has been made in the membrane button menu
         if (Menu_View == 0) {
-            lcd.setCursor(2, 0);
+            lcd.setCursor(1, 0);
             Print_LCD_Menu_Timing(1);
-            lcd.setCursor(2, 1);
+            lcd.setCursor(1, 1);
             Print_LCD_Menu_Timing(2);
         }
         // Gets the values again from the keys
@@ -74,71 +81,23 @@ void Print_Membrane_Switch_Input_Timing()
 
 void Run_Menu_Order_Timing()
 {
-    if (Menu_View == 1) {
-        Serial.print(F("- key is pressed "));
-        lcd.clear();
-        lcd.setCursor(2, 0);
-        Print_LCD_Menu_Timing(1);
-        lcd.setCursor(2, 1);
-        Print_LCD_Menu_Timing(2);
-        lcd.setCursor(0, 0);
-        lcd.print(">");
-        Menu_Mode_Selection = 1;
-        Serial.print(F("Menu View : "));
-        Serial.print(Menu_View);
-        Serial.print(F("| Menu Selection"));
-        Serial.println(Menu_Mode_Selection);
-        delay(100);
-    }
-    if (Menu_View == 2) {
-        Serial.print(F("- key is pressed "));
-        lcd.clear();
-        lcd.setCursor(2, 0);
-        Print_LCD_Menu_Timing(2);
-        lcd.setCursor(2, 1);
-        Print_LCD_Menu_Timing(3);
-        lcd.setCursor(0, 0);
-        lcd.print(">");
-        Menu_Mode_Selection = 2;
-        Serial.print(F("Menu View : "));
-        Serial.print(Menu_View);
-        Serial.print(F("| Menu Selection"));
-        Serial.println(Menu_Mode_Selection);
-        delay(100);
-    }
-    if (Menu_View == 3) {
-        Serial.print(F("- key is pressed "));
-        lcd.clear();
-        lcd.setCursor(2, 0);
-        Print_LCD_Menu_Timing(3);
-        lcd.setCursor(2, 1);
-        Print_LCD_Menu_Timing(4);
-        lcd.setCursor(0, 0);
-        lcd.print(">");
-        Menu_Mode_Selection = 3;
-        Serial.print(F("Menu View : "));
-        Serial.print(Menu_View);
-        Serial.print(F("| Menu Selection"));
-        Serial.println(Menu_Mode_Selection);
-        delay(100);
-    }
-    if (Menu_View == 4) {
-        Serial.print(F("- key is pressed "));
-        lcd.clear();
-        lcd.setCursor(2, 0);
-        Print_LCD_Menu_Timing(4);
-        lcd.setCursor(2, 1);
-        Print_LCD_Menu_Timing(5);
-        lcd.setCursor(0, 0);
-        lcd.print(">");
-        Menu_Mode_Selection = 4;
-        Serial.print(F("Menu View : "));
-        Serial.print(Menu_View);
-        Serial.print(F("| Menu Selection"));
-        Serial.println(Menu_Mode_Selection);
-        delay(100);
-    }
-
+    if (Menu_View > Max_Options_Timing)
+        Menu_View = Menu_View - 1;
+    if (Menu_View < 0)
+        Menu_View = Menu_View + 1;
+    Serial.print(F("- key is pressed "));
+    lcd.clear();
+    lcd.setCursor(1, 0);
+    Print_LCD_Menu_Timing(Menu_View);
+    lcd.setCursor(1, 1);
+    Print_LCD_Menu_Timing(Menu_View + 1);
+    lcd.setCursor(0, 0);
+    lcd.print(">");
+    Menu_Mode_Selection = Menu_View;
+    Serial.print(F("Menu View : "));
+    Serial.print(Menu_View);
+    Serial.print(F("| Menu Selection"));
+    Serial.println(Menu_Mode_Selection);
     delay(100);
 }
 

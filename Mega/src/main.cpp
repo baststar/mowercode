@@ -2,16 +2,21 @@
 #include <AmpVolts.h>
 #include <Apply_Setup.h>
 #include <Arduino.h>
-#include <Buttons_Docked.h>
-#include <Buttons_Parked.h>
-#include <Buttons_Settings.h>
-#include <Buttons_Test.h>
+#include <BETA_Tip.h>
 #include <Compass.h>
 #include <EEPROM.h>
 #include <EEPROM_Functions.h>
 #include <LCD_Display.h>
 #include <LiquidCrystal_I2C.h>
+#include <MENU_Beta.h>
 #include <Manouvers.h>
+#include <Menu_Docked.h>
+#include <Menu_NAVI.h>
+#include <Menu_Parked.h>
+#include <Menu_Sensors.h>
+#include <Menu_Set_Time.h>
+#include <Menu_Settings.h>
+#include <Menu_Tracking.h>
 #include <Rain.h>
 #include <Sonar.h>
 #include <TXRX_NANO.h>
@@ -54,6 +59,9 @@ void setup()
     Setup_Motor_Pins();
     Setup_ADCMan();
     Setup_Check_Pattern_Mow();
+    if (Bumper_Activate_Frnt == true) {
+        Setup_Bumper_Bar();
+    }
 }
 
 void loop()

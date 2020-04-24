@@ -46,9 +46,16 @@ void Activate_Alarms()
             Serial.println(F("ALARM 1"));
             delay(2000);
             // Insert action for Alarm 1 Here
-            Exit_Zone = 1;
-            Track_Wire_Itterations = Track_Wire_Zone_1_Cycles;
-            Manouver_Exit_To_Zone_X();
+            if (Alarm_1_Action == 1) {
+                Exit_Zone = 1;
+                Track_Wire_Itterations = Track_Wire_Zone_1_Cycles;
+                Manouver_Exit_To_Zone_X();
+            }
+            if (Alarm_1_Action == 2) {
+                Exit_Zone = 2;
+                Track_Wire_Itterations = Track_Wire_Zone_2_Cycles;
+                Manouver_Exit_To_Zone_X();
+            }
         }
     }
 
@@ -58,6 +65,11 @@ void Activate_Alarms()
             Serial.println("");
             Serial.println(F("ALARM 2"));
             delay(2000);
+            if (Alarm_2_Action == 1) {
+                Exit_Zone = 1;
+                Track_Wire_Itterations = Track_Wire_Zone_1_Cycles;
+                Manouver_Exit_To_Zone_X();
+            }
             // Insert action for Alarm 2 Here
             //
             //
@@ -70,6 +82,11 @@ void Activate_Alarms()
             Serial.println("");
             Serial.println(F("ALARM 3"));
             delay(2000);
+            if (Alarm_3_Action == 1) {
+                Exit_Zone = 1;
+                Track_Wire_Itterations = Track_Wire_Zone_1_Cycles;
+                Manouver_Exit_To_Zone_X();
+            }
             // Insert action for Alarm 3 Here
             //
             //
