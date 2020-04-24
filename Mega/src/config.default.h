@@ -42,14 +42,17 @@ clear these settings you need to clear the EEPROM
 #define ALARM_1_HOUR 12  // int  EEPROM
 #define ALARM_1_MINUTE 0 // int  EEPROM
 #define ALARM_1_REPEAT 0 // bool
+#define ALARM_1_ACTION 1 // int EEPROM
 #define ALARM_2_ON 0     // bool EEPROM
 #define ALARM_2_HOUR 12  // int  EEPROM
 #define ALARM_2_MINUTE 0 // int  EEPROM
 #define ALARM_2_REPEAT 0 // bool
+#define ALARM_2_ACTION 1 // int EEPROM
 #define ALARM_3_ON 0     // bool EEPROM
 #define ALARM_3_HOUR 12  // int  EEPROM
 #define ALARM_3_MINUTE 0 // int  EEPROM
 #define ALARM_3_REPEAT 0 // bool
+#define ALARM_3_ACTION 1 // int EEPROM
 #define ALARM_SECOND 5   // byte
 
 // WIRE DETECTION
@@ -135,6 +138,10 @@ clear these settings you need to clear the EEPROM
 #define SONAR_THREE_ENABLED 1 // bool
 #define MAX_SONAR_HIT 3       // int
 #define MAX_DISTANCE_SONAR 30 // long
+
+// Bumper Module
+// Activates the bumper bar on the front facia - defualt is off.  Enable in the LCD settings menu.
+#define BUMPER_ACTIVATE_FRNT 0 // bool
 
 // COMPASS
 // Compass alternative settings if the QMC Compass is freezing
@@ -242,3 +249,13 @@ clear these settings you need to clear the EEPROM
 
 // Relay Switch
 #define PIN_RELAY_MOTORS 24
+
+// Bumper
+#define Bumper_Switch_Frnt_RH 46 // Define Pin 47 on the MEGA to detect the microswitch
+#define Bumper_Switch_Frnt_LH 47 // Define Pin 46 on the MEGA to detect the microswitch
+
+// Membrane Switch
+#define Start_Key 50 // connect wire 1 to pin 2
+#define Plus_Key 51  // connect wire 2 to pin 3
+#define Minus_Key 52 // connect wire 3 to pin 4
+#define Stop_Key 53  // connect wire 4 to pin 5
