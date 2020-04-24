@@ -96,8 +96,8 @@ clear these settings you need to clear the EEPROM
 // TIP SAFETY
 // Experimental and not working yet!! - Stops all motors if the mower overturns or is picked up.
 #define TIP_SAFETY_ENABLED 0       // bool EEPROM
-#define TIP_SAFETY_MAX_TILT 4000   // int
-#define TIP_SAFETY_MIN_TILT -4000  // int
+#define TIP_SAFETY_MAX_TILT 1800   // int
+#define TIP_SAFETY_MIN_TILT -1800  // int
 #define TIP_SAFETY_MAX_TILT_HITS 5 // int
 
 // MOTOR-SETUP
@@ -159,7 +159,7 @@ clear these settings you need to clear the EEPROM
 #define COMPASS_HEADING_HOLD_ENABLED 0 // bool
 #define HOME_WIRE_COMPASS_HEADING 110  // int
 #define COMPASS_CORRECTION_POWER 2     // int
-#define COMPASS_QMC_REFRESH_SETTING 4  // int
+#define COMPASS_QMC_REFRESH_SETTING 3  // int
 #define COMPASS_QMC_SAMPLE_SETTING 3   // int
 
 // DOCKING STATION

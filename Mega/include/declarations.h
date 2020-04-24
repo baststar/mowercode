@@ -251,9 +251,10 @@ extern bool Bumper_Activate_Frnt_EEPROM;
   The following setup parameters will setup the mower for your garden
   Turn on or off the settings to defien how you like the mower to behave.
 
-  Settings marked with EEPROM can be adjusted using the mower LCD menu.  Once
-changes and saved the settings will override the settings in this menu.  To
-clear these settings you need to clear the EEPROM
+  Settings marked with EEPROM can be adjusted using the mower LCD menu.  Once changes and saved
+  the EEPROM settings will override the settings in this menu.
+
+  To clear these settings you need to clear the EEPROM
 
   1 = Turned ON      0 = Turned OFF       Value = Value set for variable.
 
