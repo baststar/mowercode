@@ -1,40 +1,36 @@
+
+
 /*
-
   Ardumower (www.ardumower.de)
-  Copyright (c) 2013-2014 by Alexander Grau
-  Copyright (c) 2013-2014 by Sven Gennat
+ Copyright (c) 2013-2014 by Alexander Grau
+ Copyright (c) 2013-2014 by Sven Gennat
+ Copyright (c) 2015 by Jürgen Lange
 
-  Private-use only! (you need to ask for a commercial-use)
+ This program is free software: you can redistribute it and/or modify
+ it under the terms of the GNU General Public License as published by
+ the Free Software Foundation, either version 3 of the License, or
+ (at your option) any later version.
 
-  This program is free software: you can redistribute it and/or modify
-  it under the terms of the GNU General Public License as published by
-  the Free Software Foundation, either version 3 of the License, or
-  (at your option) any later version.
+ This program is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ GNU General Public License for more details.
 
-  This program is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  GNU General Public License for more details.
-
-  You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-  Private-use only! (you need to ask for a commercial-use)
-*/
+ You should have received a copy of the GNU General Public License
+ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 /*
   Perimeter sender v2   (for details see   http://wiki.ardumower.de/index.php?title=Perimeter_wire  )
-  Requires: Perimeter sender PCB v1.0   ( https://www.marotronics.de/Perimeter-Sender-Prototyp )
+ Requires: Perimeter sender PCB v1.0   ( https://www.marotronics.de/Perimeter-Sender-Prototyp )
 
  */
 
-#include <Arduino.h>
+#include <EEPROM.h>
+#include <RunningMedian.h>
+#include <TimerOne.h>
 
-#include "EEPROM.h"
-#include "RunningMedian.h"
-#include "TimerOne.h"
-
-// #define USE_DEVELOPER_TEST 1 // uncomment for new perimeter signal test (developers)
+//#define USE_DEVELOPER_TEST    1      // uncomment for new perimeter signal test (developers)
 //---------------------------------------------------------------------------------------------------
 
 #define USE_AUTO_PERIMETER_CURRENT 1 // Use auto Perimeter power set to 0 for not used
@@ -60,16 +56,9 @@ byte perimeterPowerPWM = 200;   // PWM start value
 #define pinPerimeterPower 11    // PWM pin for Voltage-Control (11)--->(OPA2340)--->(PIN 4 of LM2596)
 
 byte printTag = 1; // Ausgabesteuerung c = calib, 0 = normal, 1 = Regelung
-
-// ---- choose only one perimeter signal code ----
-#define SIGCODE_1 // Ardumower default perimeter signal
-//#define SIGCODE_2  // Ardumower alternative perimeter signal
-//#define SIGCODE_3  // Ardumower alternative perimeter signal
-
 // --- MC33926 motor driver ---
-#define USE_DOUBLE_AMPLTIUDE \
-    1 // 1: use +/- input voltage for amplitude (default),
-      // 0: use only +input/GND voltage for amplitude
+#define USE_DOUBLE_AMPLTIUDE 1 // uncomment to use +/- input voltage for amplitude (default),
+// comment to use only +input/GND voltage for amplitude
 
 #define pinIN1 9    // M1_IN1         (if using old L298N driver, connect this pin to L298N-IN1)
 #define pinIN2 2    // M1_IN2         (if using old L298N driver, connect this pin to L298N-IN2)
@@ -92,17 +81,15 @@ byte printTag = 1; // Ausgabesteuerung c = calib, 0 = normal, 1 = Regelung
 
 // ---- sender automatic standby (via current sensor for charger) ----
 // sender detects robot via a charging current through the charging pins
-#define USE_CHG_CURRENT 0   // use charging current sensor for robot detection? (set to '0' if not connected!)
-#define pinChargeCurrent A2 // ACS712-05 current sensor OUT
-#define CHG_CURRENT_MIN 0.008
-// minimum Ampere for charging detection
-#define ROBOT_OUT_OF_STATION_TIMEOUT_MINS 360 // timeout for perimeter switch-off if robot not in station (minutes)
+#define USE_CHG_CURRENT 1     // use charging current sensor for robot detection? (set to '0' if not connected!)
+#define pinChargeCurrent A2   // ACS712-05 current sensor OUT
+#define CHG_CURRENT_MIN 0.008 // minimum Ampere for charging detection
 
 // ---- sender status LED ----
 #define pinLED 13 // ON: perimeter closed, OFF: perimeter open, BLINK: robot is charging
 
 // code version
-#define VER "596"
+#define VER "592"
 
 // --------------------------------------
 
@@ -118,17 +105,12 @@ int faults = 0;
 boolean isCharging = false;
 boolean stateLED = false;
 unsigned int chargeADCZero = 0;
-
 RunningMedian<unsigned int, 16> periCurrentMeasurements;
 RunningMedian<unsigned int, 96> chargeCurrentMeasurements;
-
-int timeSeconds = 0;
 
 unsigned long nextTimeControl = 0;
 unsigned long nextTimeInfo = 0;
 unsigned long nextTimeToggleLED = 0;
-unsigned long nextTimeSec = 0;
-int robotOutOfStationTimeMins = 0;
 
 // must be multiple of 2 !
 // http://grauonline.de/alexwww/ardumower/filter/filter.html
@@ -138,15 +120,7 @@ int robotOutOfStationTimeMins = 0;
 // a more motor driver friendly signal (sender)
 int8_t sigcode[] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, -1, 0, 0, 0, 0, 1, 0, 0, 0, 0};
 #else
-
-#if defined(SIGCODE_1)
 int8_t sigcode[] = {1, 1, -1, -1, 1, -1, 1, -1, -1, 1, -1, 1, 1, -1, -1, 1, -1, -1, 1, -1, -1, 1, 1, -1};
-#elif defined(SIGCODE_2)
-int8_t sigcode[] = {1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, 1, 1, -1, -1, 1, 1, -1, -1, 1, -1, 1, -1};
-#elif defined(SIGCODE_3)
-int8_t sigcode[] = {1, 1, -1, -1, 1, -1, 1, 1, -1, 1, 1, -1, -1, 1, 1, -1, 1, -1, -1, 1, -1, -1, 1, -1};
-#endif
-
 #endif
 
 // using transparently 5v / 1.1v ref
@@ -157,17 +131,14 @@ int analogReadMillivolt(int pin)
     // first read using 5v ref
     adc = analogRead(pin);
     millivolt = ((double)adc) / 1024.0 * 5000.0;
-
-    // START: REP_AL added
     // ist so nicht sinnvoll da der ADC Zeit braucht sich umzustellen erste Messung ist ungenau!!
     /* if (adc < 10){
-      // read using 1.1v ref
-      analogReference(INTERNAL);
-      adc = analogRead(pin);
-      millivolt = ((double)adc) / 1024.0 * 1100.0;
-      analogReference(DEFAULT);
-    } */
-    // END: REP_AL added
+     // read using 1.1v ref
+     analogReference(INTERNAL);
+     adc = analogRead(pin);
+     millivolt = ((double)adc) / 1024.0 * 1100.0;
+     analogReference(DEFAULT);
+     }*/
     return millivolt;
 }
 
@@ -176,7 +147,7 @@ void timerCallback()
     if (enableSender) {
         if (sigcode[step] == 1) {
             digitalWrite(pinIN1, LOW);
-#if USE_DOUBLE_AMPLTIUDE
+#ifdef USE_DOUBLE_AMPLTIUDE
             digitalWrite(pinIN2, HIGH);
 #endif
             digitalWrite(pinEnable, HIGH);
@@ -205,9 +176,8 @@ void readEEPROM()
         // EEPROM data available
         chargeADCZero = (EEPROM.read(1) << 8) | EEPROM.read(2);
     }
-    else {
+    else
         Serial.println("no EEPROM data found, using default calibration (INA169)");
-    }
     Serial.print("chargeADCZero=");
     Serial.println(chargeADCZero);
 }
@@ -242,32 +212,21 @@ void setup()
     pinMode(pinFault, INPUT);
     pinMode(pinPot, INPUT);
     pinMode(pinChargeCurrent, INPUT);
-
+    analogWrite(pinPerimeterPower, perimeterPowerPWM);
     // configure ADC reference
     analogReference(DEFAULT); // ADC 5.0v ref
     // analogReference(INTERNAL); // ADC 1.1v ref
 
     // sample rate 9615 Hz (19230,76923076923 / 2 => 9615.38)
     int T = 1000.0 * 1000.0 / 9615.38;
-    Serial.begin(19200);
+    Serial.begin(115200);
 
     Serial.println("START");
     Serial.print("Ardumower Sender ");
     Serial.println(VER);
-#if defined(SIGCODE_1)
-    Serial.println("SIGCODE_1");
-#elif defined(SIGCODE_2)
-    Serial.println("SIGCODE_2");
-#elif defined(SIGCODE_3)
-    Serial.println("SIGCODE_3");
+#ifdef USE_DEVELOPER_TEST
+    Serial.println("Warning: USE_DEVELOPER_TEST activated");
 #endif
-
-    Serial.print("USE_PERI_FAULT=");
-    Serial.println(USE_PERI_FAULT);
-    Serial.print("USE_PERI_CURRENT=");
-    Serial.println(USE_PERI_CURRENT);
-    Serial.print("USE_CHG_CURRENT =");
-    Serial.println(USE_CHG_CURRENT);
     // Serial.println("press...");
     // Serial.println("  1  for current sensor calibration");
     // Serial.println();
@@ -388,14 +347,13 @@ void loop()
         // -----------------------------------------------------------------------------------------
         // -----------------------------------------------------------------------------------------
     } // <------------- END if(USE_AUTO_PERIMETER_CURRENT)
-      // -------------------------------------------------------------------------------------------
-      // -------------------------------------------------------------------------------------------
-      // -------------------------------------------------------------------------------------------
-
+    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------------
     if (millis() >= nextTimeControl) {
         nextTimeControl = millis() + 100;
         dutyPWM = ((int)(duty * 255.0));
-        if ((isCharging) || (robotOutOfStationTimeMins >= ROBOT_OUT_OF_STATION_TIMEOUT_MINS)) {
+        if (isCharging) {
             // switch off perimeter
             enableSender = false;
         }
@@ -413,16 +371,6 @@ void loop()
         }
     }
 
-    if (millis() >= nextTimeSec) {
-        nextTimeSec = millis() + 1000;
-        timeSeconds++;
-        if (timeSeconds >= 60) {
-            if (robotOutOfStationTimeMins < 1440)
-                robotOutOfStationTimeMins++;
-            timeSeconds = 0;
-        }
-    }
-
     if (millis() >= nextTimeInfo) {
         nextTimeInfo = millis() + 500;
         checkKey();
@@ -434,8 +382,6 @@ void loop()
             chargeCurrentMeasurements.getAverage(v);
             chargeCurrent = ((double)(((int)v) - ((int)chargeADCZero))) / 1023.0 * 1.1;
             isCharging = (abs(chargeCurrent) >= CHG_CURRENT_MIN);
-            if (isCharging)
-                robotOutOfStationTimeMins = 0; // reset timeout
         }
 
         if (USE_PERI_CURRENT) {
@@ -467,8 +413,6 @@ void loop()
             Serial.print(dutyPWM);
             Serial.print("\tfaults=");
             Serial.print(faults);
-            Serial.print("\ttout=");
-            Serial.print(robotOutOfStationTimeMins);
             Serial.println();
         }
 
@@ -510,7 +454,7 @@ void loop()
         }
     }
     else {
-        // not charging => indicate perimeter wire state (OFF=broken/perimeter turned off)
+        // not charging => indicate perimeter wire state (OFF=broken)
         stateLED = (periCurrentAvg >= PERI_CURRENT_MIN);
     }
     digitalWrite(pinLED, stateLED);
