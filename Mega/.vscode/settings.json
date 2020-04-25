@@ -6,6 +6,6 @@
     "editor.tabSize": 4,
     "editor.defaultFormatter": "xaver.clang-format",
     "editor.formatOnPaste": true,
-    "editor.formatOnType": true,
-    "editor.formatOnSave": true,
+    "editor.formatOnType": false,
+    "editor.formatOnSave": true
 }
