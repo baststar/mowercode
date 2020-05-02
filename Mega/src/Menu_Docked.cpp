@@ -14,8 +14,7 @@
 // BUTTONS DOCKED MENU
 
 // Reads each of the membrane keys and detects if a key is pressed.
-void Read_Membrane_Keys()
-{
+void Read_Membrane_Keys() {
     Start_Key_X = digitalRead(Start_Key);
     Plus_Key_X = digitalRead(Plus_Key);
     Minus_Key_X = digitalRead(Minus_Key);
@@ -23,8 +22,7 @@ void Read_Membrane_Keys()
 }
 
 // Test to displyed on the LCD screen when using the membrane key menus
-void Print_LCD_Menu_Docked(byte LCD_Menu_Docked)
-{
+void Print_LCD_Menu_Docked(byte LCD_Menu_Docked) {
     if (LCD_Menu_Docked == 1)
         lcd.print(F("Exit Dock Z-1"));
     if (LCD_Menu_Docked == 2)
@@ -52,8 +50,7 @@ void Print_LCD_Menu_Docked(byte LCD_Menu_Docked)
     Max_Options_Docked = 12;
 }
 
-void Check_Membrane_Switch_Input_Docked()
-{
+void Check_Membrane_Switch_Input_Docked() {
     // Menu Options if the Mower is Docked
     Read_Membrane_Keys();
     Menu_Complete = 1;
@@ -113,8 +110,7 @@ void Check_Membrane_Switch_Input_Docked()
 }
 
 // Code to scroll the menu and print the menu options in the LCD
-void Run_Menu_Order_Docked()
-{
+void Run_Menu_Order_Docked() {
     if (Menu_View > Max_Options_Docked)
         Menu_View = Menu_View - 1;
     if (Menu_View < 0)
@@ -136,15 +132,13 @@ void Run_Menu_Order_Docked()
 }
 
 // Defines the actions when that option is selected with the keypad.
-void Activate_Menu_Option_Docked()
-{
+void Activate_Menu_Option_Docked() {
     if (Menu_Mode_Selection == 1) {
         // Exit the mower from the Garage and go to Zone 1;
         lcd.clear();
         lcd.print("Manuel Start");
         lcd.setCursor(0, 1);
         lcd.print("Exit Dock Z1");
-        Serial.println(F("Exit to Zone 1 - Free Mow"));
         delay(1000);
         lcd.clear();
         Print_Membrane_Switch_Input_Timing();
@@ -185,8 +179,9 @@ void Activate_Menu_Option_Docked()
         Print_Membrane_Switch_Input_Timing(); // Changes the menu to select the mow time
         Menu_Mode_Selection = 0;
         delay(1000);
-        if (Mow_Time_Set == 1)
+        if (Mow_Time_Set == 1) {
             Manouver_Start_Mower();
+        }
         lcd.clear();
     }
 

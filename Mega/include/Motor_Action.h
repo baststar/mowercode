@@ -8,6 +8,7 @@ void Motor_Action_Stop_Motors();
 void SetPins_ToTurnLeft();
 void SetPins_ToTurnRight();
 void Motor_Action_Turn_Speed();
+void Motor_Action_Set_Speed(int left, int right);
 void Motor_Action_Spin_Blades();
 void Motor_Action_Stop_Spin_Blades();
 void Motor_Action_Dynamic_PWM_Steering();

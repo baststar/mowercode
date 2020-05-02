@@ -4,8 +4,7 @@
 #include <Motor_Action.h>
 #include <declarations.h>
 
-void Check_if_Raining_From_Nano()
-{
+void Check_if_Raining_From_Nano() {
     if (Rain_Sensor_Installed == 1) {
         if ((Rain_Detected == 1) || (Rain_Detected == 0)) { // If the value recieved is equal to 1 or 0 as expected then print the value to the serial monitor
             Serial.print(F("Rain:"));

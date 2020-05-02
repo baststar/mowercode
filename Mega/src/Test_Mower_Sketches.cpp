@@ -4,46 +4,65 @@
 #include <Manouvers.h>
 #include <Motor_Action.h>
 #include <Test_Mower_Sketches.h>
+#include <Wire_Tracking.h>
 #include <config.h>
 #include <declarations.h>
 
+
 /* Perimieter Wire Collision Motion
  ************************************************************************************/
-void Test_Mower_Check_Wire()
-{
+
+void Test_Mower_Check_Wire() {
+
     ADCMan.run();
-    // ADCMan.setCapture(PIN_PERIMETER_LEFT, 1, 0);
+    int magnitude1 = perimeter.getMagnitude(0);
+    int magnitude2 = perimeter.getMagnitude(1);
+    int magnitude1s = perimeter.getSmoothMagnitude(0);
+    int magnitude2s = perimeter.getSmoothMagnitude(1);
 
-    if (millis() >= nextTime) {
-        nextTime = millis() + 50;
-        if (perimeter.isInside(0) != inside) {
-            inside = perimeter.isInside(0);
-            counter++;
-        }
-    }
 
-    /* Prints Values to the Serial Monitor of mag, smag and signal quality.  */
-    Serial.print(F("Inside (1) or Outside (0):  "));
-    Serial.print((perimeter.isInside(0)));
-    Serial.print(F("     MAG: "));
-    Serial.print((int)perimeter.getMagnitude(0));
-    Serial.print(F("    smag: "));
-    Serial.print((int)perimeter.getSmoothMagnitude(0));
-    Serial.print(F("     qaulity: "));
-    Serial.println((perimeter.getFilterQuality(0)));
-
+    lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("IN/Out:");
-    lcd.setCursor(8, 0);
-    lcd.print(perimeter.isInside(0));
+    lcd.print("1 " + String(magnitude1) + " 2 " + String(magnitude2));
     lcd.setCursor(0, 1);
-    lcd.print("MAG:");
-    lcd.setCursor(8, 1);
-    lcd.print(perimeter.getMagnitude(0));
+    lcd.print("1s " + String(magnitude1s) + " 2s " + String(magnitude2s));
+
+    // sFunction(magnitude1, 400, SLOWEST_POSSIBLE_SPEED_VALUE);
+    delay(100);
+
+
+    // ADCMan.run();
+    // // ADCMan.setCapture(PIN_PERIMETER_LEFT, 1, 0);
+
+    // if (millis() >= nextTime) {
+    //     nextTime = millis() + 50;
+    //     if (perimeter.isInside(0) != inside) {
+    //         inside = perimeter.isInside(0);
+    //         counter++;
+    //     }
+    // }
+
+    // /* Prints Values to the Serial Monitor of mag, smag and signal quality.  */
+    // Serial.print(F("Inside (1) or Outside (0):  "));
+    // Serial.print((perimeter.isInside(0)));
+    // Serial.print(F("     MAG: "));
+    // Serial.print((int)perimeter.getMagnitude(0));
+    // Serial.print(F("    smag: "));
+    // Serial.print((int)perimeter.getSmoothMagnitude(0));
+    // Serial.print(F("     qaulity: "));
+    // Serial.println((perimeter.getFilterQuality(0)));
+
+    // lcd.setCursor(0, 0);
+    // lcd.print("IN/Out:");
+    // lcd.setCursor(8, 0);
+    // lcd.print(perimeter.isInside(0));
+    // lcd.setCursor(0, 1);
+    // lcd.print("MAG:");
+    // lcd.setCursor(8, 1);
+    // lcd.print(perimeter.getMagnitude(0));
 }
 
-void Test_Relay()
-{
+void Test_Relay() {
     digitalWrite(PIN_RELAY_MOTORS, HIGH);
     Serial.println("Relay OFF");
     lcd.print("Relay OFF");
@@ -56,8 +75,7 @@ void Test_Relay()
     lcd.clear();
 }
 
-void Test_Wheel_Motors()
-{
+void Test_Wheel_Motors() {
     digitalWrite(PIN_RELAY_MOTORS, LOW);
     delay(200);
     if (I == 1) {
@@ -233,8 +251,7 @@ void Test_Wheel_Motors()
     delay(200);
 }
 
-void Test_Mower_Blade_Motor()
-{
+void Test_Mower_Blade_Motor() {
     // Spin the blade motor for 7 seconds
     digitalWrite(PIN_RELAY_MOTORS, LOW);
     delay(200);
@@ -275,8 +292,7 @@ void Test_Mower_Blade_Motor()
     delay(200);
 }
 
-void Test_Sonar_Array()
-{
+void Test_Sonar_Array() {
     // Clears the Trig Pin
     digitalWrite(PIN_TRIGGER_1, LOW);
     delayMicroseconds(5);
@@ -306,8 +322,7 @@ void Test_Sonar_Array()
 // Distance calculated is then used for the object avoidance logic
 // Sonars used can be activated in the settings.
 
-int PingSonarY(int trigPinY, int echoPinY, int distanceY, long durationY, int sonarY, int LCDRow, int LCDColumn)
-{
+int PingSonarY(int trigPinY, int echoPinY, int distanceY, long durationY, int sonarY, int LCDRow, int LCDColumn) {
     pinMode(trigPinY, OUTPUT);
     pinMode(echoPinY, INPUT);
     // Sets the trigPin at High state for 10 micro secs sending a sound wave
@@ -366,15 +381,14 @@ int PingSonarY(int trigPinY, int echoPinY, int distanceY, long durationY, int so
     return sonarY;
 }
 
-void Test_Compass_Turn_Function()
-{
+void Test_Compass_Turn_Function() {
     digitalWrite(PIN_RELAY_MOTORS, LOW);
     delay(200);
     SetPins_ToGoForwards();
     Motor_Action_Go_Full_Speed();
     delay(2000);
     Manouver_Turn_Around();
-    Turn_To_Compass_Heading();
+    Turn_To_Compass_Heading2();
     SetPins_ToGoForwards();
     Motor_Action_Go_Full_Speed();
     delay(2000);

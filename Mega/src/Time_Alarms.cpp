@@ -4,8 +4,7 @@
 #include <declarations.h>
 
 // digital clock display of the time
-void DisplayTime()
-{
+void DisplayTime() {
     Serial.print(F("Time:"));
     Time t = rtc.time();
 
@@ -20,8 +19,7 @@ void DisplayTime()
     Serial.print(buf);
 }
 
-void Print_Time_On_Serial()
-{
+void Print_Time_On_Serial() {
     Serial.print(F("Time:"));
     Time t = rtc.time();
     Serial.print(t.hr);
@@ -35,8 +33,7 @@ void Print_Time_On_Serial()
     Serial.print(t.sec);
 }
 
-void Activate_Alarms()
-{
+void Activate_Alarms() {
     Time t = rtc.time();
 
     // Manual ALARM 1
@@ -95,8 +92,7 @@ void Activate_Alarms()
 }
 
 // Set when choosing an option of 1hr or 2hr mow etc.
-void Check_Timed_Mow()
-{
+void Check_Timed_Mow() {
     if (Alarm_Timed_Mow_ON == 1) {
         Time t = rtc.time();
         if ((t.hr == Alarm_Timed_Mow_Hour) && (t.min == Alarm_Timed_Mow_Minute)) {
@@ -112,8 +108,7 @@ void Check_Timed_Mow()
 }
 
 // Prints the alarms set to the serial monitor
-void Display_Next_Alarm()
-{
+void Display_Next_Alarm() {
     // Print_Day();
 
     if (Alarm_1_ON == 1) {
@@ -153,8 +148,7 @@ void Display_Next_Alarm()
         Serial.print("|Alarm 3 OFF");
 }
 
-void Set_Time_On_RTC()
-{
+void Set_Time_On_RTC() {
     // Set_Time to 1 in the setting menu to set time.  Load the sketch then immediatley Set_Time = 0 and reload the sketch.
     rtc.writeProtect(false);
     rtc.halt(false);
@@ -163,8 +157,7 @@ void Set_Time_On_RTC()
     delay(10);
 }
 
-void Manage_Alarms()
-{
+void Manage_Alarms() {
     Alarm_Timed_Mow_ON = 0; // Turns off the 1 hr Alarm
     if (Alarm_1_Repeat == 0)
         Alarm_1_ON = 0;

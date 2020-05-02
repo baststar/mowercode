@@ -252,7 +252,7 @@ void Pattern_Mow_Parallel()
                 lcd.print(Compass_Target);
                 delay(1000);
                 lcd.clear();
-                Turn_To_Compass_Heading();
+                Turn_To_Compass_Heading2();
                 lcd.clear();
             }
             if (Leg == 2) {
@@ -269,7 +269,7 @@ void Pattern_Mow_Parallel()
                 lcd.print(Compass_Target);
                 delay(1000);
                 lcd.clear();
-                Turn_To_Compass_Heading();
+                Turn_To_Compass_Heading2();
                 lcd.clear();
             }
         }

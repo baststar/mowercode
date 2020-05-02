@@ -6,8 +6,7 @@
 #include <config.h>
 #include <declarations.h>
 
-void Print_Mower_Status()
-{
+void Print_Mower_Status() {
     // Serial.print("Mower Stat....");
     if (Mower_Docked == 1)
         Serial.print(F("Docked:1|"));
@@ -23,30 +22,37 @@ void Print_Mower_Status()
         Serial.print(F("Mower Error:1|"));
 }
 
-void Setup_Tip_Safety()
-{
+void Setup_Tip_Safety() {
     if (Tip_Safety == 1) {
         Calibrate_Compass_Angle();
     }
 }
 
-void Prepare_Mower_from_Settings()
-{
+void Prepare_Mower_from_Settings() {
+
     if (Use_Charging_Station == 1) {
         Mower_Docked = 1;
         Mower_Parked = 0;
         Mower_Running = 0;
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("0 mower running to 0");
+        delay(3000);
     }
 
     if (Use_Charging_Station == 0) {
+
         Mower_Docked = 0;
         Mower_Parked = 1;
         Mower_Running = 0;
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("1 mower running to 0");
+        delay(3000);
     }
 }
 
-void Setup_Compass()
-{
+void Setup_Compass() {
     if (Compass_Activate == 1) {
         /*Setup Compass
         *************************************************************************/
@@ -107,8 +113,7 @@ void Setup_Compass()
     }
 }
 
-void Setup_Relays()
-{
+void Setup_Relays() {
     Serial.println(F("Setup Relays"));
     pinMode(PIN_RELAY_MOTORS, OUTPUT);
     delay(5);
@@ -116,28 +121,24 @@ void Setup_Relays()
     delay(5);
 }
 
-void Setup_Motor_Pins()
-{
+void Setup_Motor_Pins() {
     Serial.println(F("Setup Motor Pins"));
     pinMode(PIN_L_EN, OUTPUT);
     pinMode(PIN_R_EN, OUTPUT);
     pinMode(PIN_RPWM, OUTPUT);
 }
 
-void Turn_On_Relay()
-{
+void Turn_On_Relay() {
     Serial.print(F("Relay:ON|"));
     digitalWrite(PIN_RELAY_MOTORS, LOW); // Turn of the relay for the main battery power
 }
 
-void Turn_Off_Relay()
-{
+void Turn_Off_Relay() {
     Serial.print(F("Relay:Off|"));
     digitalWrite(PIN_RELAY_MOTORS, HIGH); // Turn of the relay for the main battery power
 }
 
-void Setup_Membrane_Buttons()
-{
+void Setup_Membrane_Buttons() {
     Serial.println(F("Setup Membrane Keys"));
     pinMode(PIN_START_KEY, INPUT_PULLUP); // set pin as input
     pinMode(PIN_PLUS_KEY, INPUT_PULLUP);  // set pin as input
@@ -145,14 +146,12 @@ void Setup_Membrane_Buttons()
     pinMode(PIN_STOP_KEY, INPUT_PULLUP);  // set pin as input
 }
 
-void Setup_Bumper_Bar()
-{
+void Setup_Bumper_Bar() {
     pinMode(Bumper_Switch_Frnt_RH, INPUT_PULLUP);
     pinMode(Bumper_Switch_Frnt_LH, INPUT_PULLUP);
 }
 
-void Setup_ADCMan()
-{
+void Setup_ADCMan() {
     Serial.println(F("ADCMAN"));
     ADCMan.init();
     perimeter.setPins(PIN_PERIMETER_LEFT, PIN_PERIMETER_RIGHT);
@@ -161,8 +160,7 @@ void Setup_ADCMan()
     ADCMan.run();
 }
 
-void Setup_Check_Pattern_Mow()
-{
+void Setup_Check_Pattern_Mow() {
     if (Pattern_Mow == 1) {
         lcd.clear();
         lcd.setCursor(0, 0);

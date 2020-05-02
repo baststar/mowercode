@@ -13,8 +13,7 @@
 
 // BUTTONS TIMING MENU
 
-void Print_LCD_Menu_Timing(byte LCD_Menu_Timing)
-{
+void Print_LCD_Menu_Timing(byte LCD_Menu_Timing) {
     if (LCD_Menu_Timing == 1)
         lcd.print(F("Max Mow Time"));
     if (LCD_Menu_Timing == 2)
@@ -26,8 +25,7 @@ void Print_LCD_Menu_Timing(byte LCD_Menu_Timing)
     Max_Options_Timing = 4;
 }
 
-void Print_Membrane_Switch_Input_Timing()
-{
+void Print_Membrane_Switch_Input_Timing() {
     // Menu Options if the Mower is Timing.
     Read_Membrane_Keys();
     Menu_Complete = 1;
@@ -79,8 +77,7 @@ void Print_Membrane_Switch_Input_Timing()
     Activate_Menu_Option_Timing();
 }
 
-void Run_Menu_Order_Timing()
-{
+void Run_Menu_Order_Timing() {
     if (Menu_View > Max_Options_Timing)
         Menu_View = Menu_View - 1;
     if (Menu_View < 0)
@@ -101,8 +98,7 @@ void Run_Menu_Order_Timing()
     delay(100);
 }
 
-void Activate_Menu_Option_Timing()
-{
+void Activate_Menu_Option_Timing() {
     if (Menu_Mode_Selection == 1) {
         // Maximum Mower Timing
         lcd.clear();
@@ -110,7 +106,7 @@ void Activate_Menu_Option_Timing()
         lcd.setCursor(0, 1);
         lcd.print(F("Selected"));
         Serial.println(F("Maximum Mow Time Selected"));
-        delay(5000);
+        delay(1000);
         lcd.clear();
         Menu_Mode_Selection = 0;
         lcd.clear();
@@ -151,7 +147,7 @@ void Activate_Menu_Option_Timing()
             lcd.print("0");
         lcd.print(Alarm_Timed_Mow_Minute);
         Mow_Time_Set = 1;
-        delay(2000);
+        delay(1000);
     }
 
     if (Menu_Mode_Selection == 3) {
@@ -185,6 +181,6 @@ void Activate_Menu_Option_Timing()
             lcd.print("0");
         lcd.print(Alarm_Timed_Mow_Minute);
         Mow_Time_Set = 1;
-        delay(2000);
+        delay(1000);
     }
 }

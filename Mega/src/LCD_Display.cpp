@@ -4,8 +4,7 @@
 #include <Wire.h>
 #include <declarations.h>
 
-void Setup_Run_LCD_Intro()
-{
+void Setup_Run_LCD_Intro() {
     Serial.println("Setup LCD");
     lcd.begin(16, 2);
     lcd.clear();
@@ -21,8 +20,7 @@ void Setup_Run_LCD_Intro()
     Serial.println("LCD Setup OK");
 }
 
-void Print_Mower_Error()
-{
+void Print_Mower_Error() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(F("Mower Error"));
@@ -36,16 +34,14 @@ void Print_Mower_Error()
     }
 }
 
-void Print_LCD_Volt_Info()
-{
+void Print_LCD_Volt_Info() {
     lcd.setCursor(10, 0);
     lcd.print("V:");
     lcd.setCursor(12, 0);
     lcd.print(Volts);
 }
 
-void Print_Charging_LCD()
-{
+void Print_Charging_LCD() {
     lcd.setCursor(0, 0);
     if (Charge_Detected_MEGA == 1)
         lcd.print("Charging");
@@ -53,8 +49,7 @@ void Print_Charging_LCD()
         lcd.print("        ");
 }
 
-void Print_Raining_LCD()
-{
+void Print_Raining_LCD() {
     lcd.setCursor(4, 0);
     if (Rain_Detected == 1)
         lcd.print("Rain");
@@ -63,23 +58,20 @@ void Print_Raining_LCD()
         lcd.print("    ");
 }
 
-void Print_Recharge_LCD()
-{
+void Print_Recharge_LCD() {
     lcd.setCursor(0, 1);
     lcd.print("Recharge Batt");
 }
 
-void Print_LCD_Wire()
-{
+void Print_LCD_Wire() {
     lcd.setCursor(0, 1);
     lcd.print("WIRE Detect ");
 }
 
-void Print_LCD_Mowing()
-{
+void Print_LCD_Mowing() {
     if (Alarm_Timed_Mow_ON == 0) {
         lcd.setCursor(0, 1);
-        lcd.print("Mowing..    ");
+        lcd.print("Mowing...");
     }
     if (Alarm_Timed_Mow_ON == 1) {
         lcd.setCursor(0, 1);
@@ -93,8 +85,7 @@ void Print_LCD_Mowing()
     }
 }
 
-void Print_LCD_Spiral()
-{
+void Print_LCD_Spiral() {
     if (Alarm_Timed_Mow_ON == 0) {
         lcd.setCursor(0, 1);
         lcd.print("Spiral.. ");
@@ -111,8 +102,7 @@ void Print_LCD_Spiral()
     }
 }
 
-void Print_LCD_Parallel()
-{
+void Print_LCD_Parallel() {
     if (Alarm_Timed_Mow_ON == 0) {
         lcd.setCursor(0, 1);
         lcd.print("Parallel");
@@ -129,8 +119,7 @@ void Print_LCD_Parallel()
     }
 }
 
-void Print_LCD_Compass_Mowing()
-{
+void Print_LCD_Compass_Mowing() {
     if (Compass_Heading_Locked == 1) {
         lcd.setCursor(0, 1);
         if (PWM_Right > PWM_Left)
@@ -146,8 +135,7 @@ void Print_LCD_Compass_Mowing()
     }
 }
 
-void Print_LCD_Parallel_Mowing()
-{
+void Print_LCD_Parallel_Mowing() {
     if (Compass_Heading_Locked == 1) {
         lcd.setCursor(0, 1);
         if (PWM_Right > PWM_Left)
@@ -163,26 +151,22 @@ void Print_LCD_Parallel_Mowing()
     }
 }
 
-void Print_LCD_Info_Parked()
-{
+void Print_LCD_Info_Parked() {
     lcd.setCursor(0, 1);
     lcd.print("Parked");
 }
 
-void Print_LCD_Info_Manuel()
-{
+void Print_LCD_Info_Manuel() {
     lcd.setCursor(0, 1);
     lcd.print("Manuel");
 }
 
-void Print_LCD_Info_Docked()
-{
+void Print_LCD_Info_Docked() {
     lcd.setCursor(0, 1);
     lcd.print("Docked");
 }
 
-void Print_LCD_NO_Wire()
-{
+void Print_LCD_NO_Wire() {
     if ((Mower_Docked == 1) || (Mower_Parked == 1)) {
         lcd.setCursor(7, 1);
         lcd.print(":WIRE OFF");
@@ -195,8 +179,7 @@ void Print_LCD_NO_Wire()
     }
 }
 
-void Print_LCD_Wire_ON()
-{
+void Print_LCD_Wire_ON() {
     if ((Mower_Docked == 1) || (Mower_Parked == 1) && (Wire_ON_Printed = 0)) {
         lcd.setCursor(7, 1);
         lcd.print(":               ");
@@ -209,14 +192,12 @@ void Print_LCD_Wire_ON()
     }
 }
 
-void Print_Sonar_Hit()
-{
+void Print_Sonar_Hit() {
     lcd.setCursor(0, 1);
     lcd.print("Sonar Object ");
 }
 
-void Print_LCD_Compass_Home()
-{
+void Print_LCD_Compass_Home() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Compass Home");
@@ -226,8 +207,7 @@ void Print_LCD_Compass_Home()
     }
 }
 
-void Print_Time_On_LCD()
-{
+void Print_Time_On_LCD() {
     if ((Charge_Detected_MEGA == 0) && (Mower_Running == 0) && (Rain_Detected == 0)) {
         lcd.setCursor(0, 0); // Spaces to the right & down
         Time t = rtc.time();

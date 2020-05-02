@@ -147,6 +147,8 @@ extern int Wire_Refind_Tries;
 
 extern int Tracking_Turn_Left;
 extern int Tracking_Turn_Right;
+extern int Tracking_Turn_Left_Milliseconds;
+extern int Tracking_Turn_Right_Milliseconds;
 extern bool Mower_Track_To_Charge;
 extern bool Mower_Track_To_Exit;
 
@@ -293,6 +295,10 @@ extern int Max_Tracking_Turn_Right;  // The maximum number of turn right
                                      // is called (wheel spins)
 extern int Max_Tracking_Turn_Left;   // a re-find the wire sub-routine is
                                      // called if this value is reached.
+
+extern unsigned long Max_Tracking_Turn_Left_Milliseconds;
+extern unsigned long Max_Tracking_Turn_Right_Milliseconds;
+
 extern int Max_Cycle_Wire_Find;      // Maximum number of forward tracking
                                      // cycles in finding wire before the
                                      // mower restarts a compass turn

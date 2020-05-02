@@ -111,7 +111,7 @@ float Amps;
 float VoltageAmp;
 int RawValueAmp;
 int RawValueVolt;
-int Rain_Detected;
+int Rain_Detected = 0;
 int Rain_Hit_Detected = 0;
 int Charging;
 // float Battery_Voltage_Last;
@@ -140,8 +140,7 @@ int Alarm_1_Saved_EEPROM;
 int Alarm_2_Saved_EEPROM;
 int Alarm_3_Saved_EEPROM;
 
-String dayAsString(const Time::Day day)
-{
+String dayAsString(const Time::Day day) {
     switch (day) {
     case Time::kSunday:
         return "Sunday";
@@ -180,6 +179,8 @@ int Wire_Refind_Tries = 0;
 
 int Tracking_Turn_Left;
 int Tracking_Turn_Right;
+int Tracking_Turn_Left_Milliseconds;
+int Tracking_Turn_Right_Milliseconds;
 bool Mower_Track_To_Charge;
 bool Mower_Track_To_Exit;
 
@@ -307,12 +308,12 @@ bool CW_Tracking_To_Charge = CLOCKWISE_TRACKING_TO_CHARGE;         // EEPROM // 
                                                                    // boundary wire to the charging station
 bool CCW_Tracking_To_Charge = COUNTERCLOCKWISE_TRACKING_TO_CHARGE; // EEPROM // Counter-Clock-Wise tracking around the
                                                                    // boundary wire to the charging station
-bool CW_Tracking_To_Start = CLOCKWISE_TRACKING_TO_START; // EEPROM // Clock-Wise  tracking around the boundary wire
-                                                         // when tracking to the start position
-bool CCW_Tracking_To_Start = COUNTERCLOCKWISE_TRACKING_TO_START; // EEPROM // Counter-Clock-Wise tracking around the
-                                                                 // boundary wire to the charging station
-byte Docked_Filter_Hits = DOCKED_FILTER_HITS;                    // Number of charge signals
-                                                                 // to be detected before mower powers off
+bool CW_Tracking_To_Start = CLOCKWISE_TRACKING_TO_START;           // EEPROM // Clock-Wise  tracking around the boundary wire
+                                                                   // when tracking to the start position
+bool CCW_Tracking_To_Start = COUNTERCLOCKWISE_TRACKING_TO_START;   // EEPROM // Counter-Clock-Wise tracking around the
+                                                                   // boundary wire to the charging station
+byte Docked_Filter_Hits = DOCKED_FILTER_HITS;                      // Number of charge signals
+                                                                   // to be detected before mower powers off
 
 // Wire Tracking
 int Track_Wire_Zone_1_Cycles = TRACK_WIRE_ZONE_1_CYCLES; // EEPROM // Zone 1 - Number of Itterations the
@@ -325,26 +326,32 @@ int Max_Tracking_Turn_Right = MAX_TRACKING_TURN_RIGHT;   // EEPROM // The maximu
                                                          // commands during wire tracking
                                                          // before a renewed wire find function
                                                          // is called (wheel spins)
-int Max_Tracking_Turn_Left = MAX_TRACKING_TURN_LEFT;     // EEPROM // a re-find the wire sub-routine is
-                                                         // called if this value is reached.
-int Max_Cycle_Wire_Find = MAX_CYCLE_WIRE_FIND;           // EEPROM // Maximum number of forward tracking
-                                                         // cycles in finding wire before the
-                                                         // mower restarts a compass turn
-                                                         // and wire find.
-int Max_Cycle_Wire_Find_Back = MAX_CYCLE_WIRE_BACK;      // EEPROM // Maximum number of Backward tracking
-                                                         // cycles in finding wire before the
-                                                         // mower restarts a compass turn and
-                                                         // wire find.
+
+int Max_Tracking_Turn_Left = MAX_TRACKING_TURN_LEFT; // EEPROM // a re-find the wire sub-routine is
+                                                     // called if this value is reached.
+
+unsigned long Max_Tracking_Turn_Left_Milliseconds = MAX_TRACKING_TURN_LEFT_MILLISECONDS;
+unsigned long Max_Tracking_Turn_Right_Milliseconds = MAX_TRACKING_TURN_RIGHT_MILLISECONDS;
+
+
+int Max_Cycle_Wire_Find = MAX_CYCLE_WIRE_FIND;      // EEPROM // Maximum number of forward tracking
+                                                    // cycles in finding wire before the
+                                                    // mower restarts a compass turn
+                                                    // and wire find.
+int Max_Cycle_Wire_Find_Back = MAX_CYCLE_WIRE_BACK; // EEPROM // Maximum number of Backward tracking
+                                                    // cycles in finding wire before the
+                                                    // mower restarts a compass turn and
+                                                    // wire find.
 
 // Compass Settings
-bool Compass_Activate = COMPASS_ENABLED; // EEPROM // Turns on the Compass (needs to be 1 to activate
-                                         // further compass features)
+bool Compass_Activate = COMPASS_ENABLED;                          // EEPROM // Turns on the Compass (needs to be 1 to activate
+                                                                  // further compass features)
 bool Compass_Heading_Hold_Enabled = COMPASS_HEADING_HOLD_ENABLED; // EEPROM // Activates the compass heading hold
                                                                   // function to keep the mower straight
 int Home_Wire_Compass_Heading = HOME_WIRE_COMPASS_HEADING;        // EEPROM // Heading the Mower will search for the
                                                                   // wire once the mowing is completed.
-int CPower = COMPASS_CORRECTION_POWER; // EEPROM // Magnification of heading to PWM - How strong the mower
-                                       // corrects itself in Compass Mowing
+int CPower = COMPASS_CORRECTION_POWER;                            // EEPROM // Magnification of heading to PWM - How strong the mower
+                                                                  // corrects itself in Compass Mowing
 
 // Pattern Mow
 int Pattern_Mow = PATTERN_MOW;                       // EEPROM
@@ -395,8 +402,7 @@ int Max_Sonar_Hit = MAX_SONAR_HIT;           // EEPROM// Maximum number of Sonar
 long maxdistancesonar = MAX_DISTANCE_SONAR;  // EEPROM// distance in cm from the mower that the sonar will activate at.
 
 // Bumper Module
-bool Bumper_Activate_Frnt =
-    BUMPER_ACTIVATE_FRNT; // EEPROM // Activates the bumper bar on the front facia - defualt is off.  Enable in the LCD settings menu.
+bool Bumper_Activate_Frnt = BUMPER_ACTIVATE_FRNT; // EEPROM // Activates the bumper bar on the front facia - defualt is off.  Enable in the LCD settings menu.
 
 // Wheel Motors Setup
 int Max_Cycles_Straight = MAX_CYCLES_STRAIGHT; // EEPROM// Number of loops the Sketch will run before the mower just

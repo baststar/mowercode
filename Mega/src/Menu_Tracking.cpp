@@ -14,8 +14,7 @@
 // Tracking SETTINGS MENU
 
 // Test to displyed on the LCD screen when using the membrane key menus
-void Print_LCD_Menu_Tracking(byte LCD_Menu_Tracking)
-{
+void Print_LCD_Menu_Tracking(byte LCD_Menu_Tracking) {
     if (LCD_Menu_Tracking == 1)
         lcd.print(F("Set PID"));
     if (LCD_Menu_Tracking == 2)
@@ -33,8 +32,7 @@ void Print_LCD_Menu_Tracking(byte LCD_Menu_Tracking)
     Max_Options_Tracking = 7;
 }
 
-void Print_Membrane_Switch_Input_Tracking()
-{
+void Print_Membrane_Switch_Input_Tracking() {
     Read_Membrane_Keys();
     Menu_Complete_Tracking = 1;
     Menu_Mode_Selection = 0;
@@ -87,8 +85,7 @@ void Print_Membrane_Switch_Input_Tracking()
 }
 
 // Code to scroll the menu and print the menu options in the LCD
-void Run_Menu_Order_Tracking()
-{
+void Run_Menu_Order_Tracking() {
     if (Menu_View > Max_Options_Tracking)
         Menu_View = Menu_View - 1;
     if (Menu_View < 0)
@@ -110,8 +107,7 @@ void Run_Menu_Order_Tracking()
 }
 
 // Defines the actions when that option is selected with the keypad.
-void Activate_Menu_Option_Tracking()
-{
+void Activate_Menu_Option_Tracking() {
     if (Menu_Mode_Selection == 1) {
         // Tracking PID Settings
         Menu_Mode_Selection = 0;
@@ -130,7 +126,7 @@ void Activate_Menu_Option_Tracking()
             delay(100);
             // Enter Code Here to Cycle until stop key is pressed.
             if (!Start_Key_X) {
-                Serial.println(F("Settings Saved"));
+                Serial.println(F("PID Saved"));
                 Menu_Complete_Tracking = true;
                 lcd.clear();
                 lcd.setCursor(0, 0);
@@ -141,13 +137,17 @@ void Activate_Menu_Option_Tracking()
                 delay(2000);
                 lcd.clear();
                 EEPROM.write(21, 1);
-                EEPROM.write(22, (P * 100));
+                EEPROM.write(22, (P * 10));
                 Menu_Mode_Selection = 0;
             }
             if (!Plus_Key_X) {
-                P = P + 0.01;
-                if (P > 10)
+
+                P = P + 0.10;
+
+                if (P > 10) {
                     P = 10;
+                }
+
                 lcd.setCursor(0, 1);
                 lcd.print(F("      ")); // Fully clear the number to stop reminants of a previous number from being left behind
                 lcd.setCursor(0, 1);
@@ -157,9 +157,13 @@ void Activate_Menu_Option_Tracking()
                 Serial.println(P);
             }
             if (!Minus_Key_X) {
-                P = P - 0.01;
-                if (P < 0)
+
+                P = P - 0.10;
+
+                if (P < 0) {
                     P = 0;
+                }
+
                 lcd.setCursor(0, 1);
                 lcd.print(F("      ")); // Fully clear the number to stop reminants of a previous number from being left behind
                 lcd.setCursor(0, 1);

@@ -2,17 +2,17 @@
 #include <Arduino.h>
 #include <Motor_Action.h>
 #include <Wire_Detection.h>
+#include <config.h>
 #include <declarations.h>
 
-void Special_Cut_Under_Trampoline_Function()
-{
+
+void Special_Cut_Under_Trampoline_Function() {
     // Enter Code Here
 }
 
 // after wire tracking the code to bering the mower to a sensible position away from the wire
-// This poart of the code should eb modified to fit your garden needs
-void Special_Move_Into_Garden_Zone_X()
-{
+// This poart of the code should be modified to fit your garden needs
+void Special_Move_Into_Garden_Zone_X() {
     Serial.println(F("start mower code here"));
     Motor_Action_Stop_Motors(); // Stop the wheel motors
     SetPins_ToTurnLeft();       // Turn left
@@ -22,41 +22,52 @@ void Special_Move_Into_Garden_Zone_X()
     SetPins_ToGoForwards();     // Get ready to move off
 }
 
-void Special_Exit_From_Docking_Station()
-{
+void Special_Exit_From_Docking_Station() {
+
     lcd.clear();
     lcd.print(F("Exiting Garage"));
-    delay(2000);
-    SetPins_ToGoBackwards();               // Prepare motors pins to go Backwards
-    Motor_Action_GoFullSpeed_Out_Garage(); // Turn the wheels
+    delay(1000);
+    SetPins_ToGoBackwards(); // Prepare motors pins to go Backwards
+    Motor_Action_Turn_Speed();
+
     Serial.print(F("Left Wheel PWM:"));
     Serial.print(PWM_MaxSpeed_LH);
     Serial.print("|");
     Serial.print(F("Right Wheel PWM:"));
+
     Serial.println(PWM_MaxSpeed_RH);
-    delay(4000);                  // Backwards time
-    Motor_Action_Stop_Motors();   // Stop
-    SetPins_ToTurnLeft();         // Prepare motors to turn left
-    Motor_Action_Turn_Speed();    // Turn the wheels
-    delay(1000);                  // Turn time
-    Motor_Action_Stop_Motors();   // Stop
-    SetPins_ToGoBackwards();      // Set again to go backwards
-    Motor_Action_Go_Full_Speed(); // Turn the wheels
-    delay(500);                   // Backwards Time
-    SetPins_ToTurnLeft();         // Set to go left
-    Motor_Action_Turn_Speed();    // Turn the wheels
-    delay(200);                   // Turning time
-    Motor_Action_Stop_Motors();   // Stop
-    SetPins_ToGoForwards();       // Set to go wheel motor pins to go forwards
-    Motor_Action_Stop_Motors();   // Stop / Park the mower here
-    lcd.clear();                  // Clears the LCD display
-    lcd.print("Garage Clear");    // Prints to the LCD screen
+
+    delay(EXIT_GARAGE_BACKWARDS_TIME_MILLISECONDS); // Backwards time
+    Motor_Action_Stop_Motors();                     // Stop
+    delay(500);
+    SetPins_ToTurnLeft();                                      // Prepare motors to turn left
+    Motor_Action_Turn_Speed();                                 // Turn the wheels
+    delay(EXIT_GARAGE_TURN_TIME_AFTER_BACKWARDS_MILLISECONDS); // Turn time
+
+    Motor_Action_Stop_Motors(); // Stop
+    SetPins_ToGoBackwards();    // Set again to go backwards
+    Motor_Action_Turn_Speed();  // Turn the wheels
+    delay(500);                 // Backwards Time
+    Motor_Action_Stop_Motors(); // Stop
+
+    // SetPins_ToTurnLeft();      // Set to go left
+    // Motor_Action_Turn_Speed(); // Turn the wheels
+
+    // delay(200); // Turning time
+
+    // Motor_Action_Stop_Motors(); // Stop
+
+    // SetPins_ToGoForwards(); // Set to go wheel motor pins to go forwards
+
+    // Motor_Action_Stop_Motors(); // Stop / Park the mower here
+
+    lcd.clear();               // Clears the LCD display
+    lcd.print("Garage Clear"); // Prints to the LCD screen
     delay(500);
     lcd.clear();
 }
 
-void Specials_Find_Wire_Track()
-{
+void Specials_Find_Wire_Track() {
     Serial.println("");
     Serial.println(F("Lost Mower - find wire Track"));
     lcd.clear();
@@ -132,8 +143,8 @@ void Specials_Find_Wire_Track()
         lcd.print(F("Finding Wire  "));
         delay(100);                                              // resets the cycles
         while ((inside != false) && (Wire_Find_Attempt < 100)) { // Move the mower forward until mower is outisde/ON the wire fence or 500 cycles have passed
-            Motor_Action_Go_Full_Speed(); // Go full speed (in this case forwards)
-            UpdateWireSensor();           // Read the wire sensor and see of the mower is now  or outside the wire
+            Motor_Action_Go_Full_Speed();                        // Go full speed (in this case forwards)
+            UpdateWireSensor();                                  // Read the wire sensor and see of the mower is now  or outside the wire
             ADCMan.run();
             PrintBoundaryWireStatus(); // Prints of the status of the wire sensor readings.
             Serial.println("");

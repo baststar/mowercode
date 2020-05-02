@@ -21,8 +21,7 @@
 // BUTTONS TEST MENU
 
 // Test to displyed on the LCD screen when using the membrane key menus
-void Print_LCD_Menu_Tests(byte LCD_Menu_Tests)
-{
+void Print_LCD_Menu_Tests(byte LCD_Menu_Tests) {
     if (LCD_Menu_Tests == 1)
         lcd.print(F("Wire Test"));
     if (LCD_Menu_Tests == 2)
@@ -58,8 +57,7 @@ void Print_LCD_Menu_Tests(byte LCD_Menu_Tests)
     Max_Options_Test = 16;
 }
 
-void Print_Membrane_Switch_Input_Tests()
-{
+void Print_Membrane_Switch_Input_Tests() {
     // Menu Options if the Mower is Tests.
     Read_Membrane_Keys();
     Menu_Complete = 1;
@@ -113,8 +111,7 @@ void Print_Membrane_Switch_Input_Tests()
     Activate_Menu_Option_Testing();
 }
 
-void Run_Menu_Order_Testing()
-{
+void Run_Menu_Order_Testing() {
     if (Menu_View > Max_Options_Test)
         Menu_View = Menu_View - 1;
     if (Menu_View < 0)
@@ -135,8 +132,7 @@ void Run_Menu_Order_Testing()
     delay(100);
 }
 
-void Activate_Menu_Option_Testing()
-{
+void Activate_Menu_Option_Testing() {
     if (Menu_Mode_Selection == 1) {
         // Perimeter Wire Test
         lcd.clear();
@@ -144,12 +140,14 @@ void Activate_Menu_Option_Testing()
         lcd.setCursor(0, 1);
         lcd.print("Activated");
         Serial.println(F("Perimeter Wire Test Started"));
-        delay(5000);
+        delay(1000);
         lcd.clear();
         Menu_Mode_Selection = 0;
         lcd.clear();
         Menu_Complete = false;
+
         while (Menu_Complete == false) {
+
             Test_Mower_Check_Wire();
             Read_Membrane_Keys();
             if (!Stop_Key_X) {

@@ -140,7 +140,7 @@ void Load_EEPROM_Saved_Data()
     Tracking_PID_P_EEPROM = EEPROM.read(21);
     if (Tracking_PID_P_EEPROM == 1) {
         P = EEPROM.read(22);
-        P = P / 100;
+        P = P / 10;
         Serial.print(F("Traking PID P Setting from EEPROM : "));
         Serial.println(P);
     }
