@@ -5,11 +5,14 @@
 #include <States/FSMMower.h>
 #include <States/StateParkedMenu.h>
 
+int parkedMenu_currentMenu = 0;
+const int parkedMenuArraySize = 2;
+String parkedMenuNames[parkedMenuArraySize] = {"Continue mowing", "To garage"};
 
 void read_parkedMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        trigger_fsm(FSMEVENT_DOCKED_MENU__TO__DOCKED);
+        // trigger_fsm(FSMEVENT_DOCKED_MENU__TO__DOCKED);
     } else if (PlusKey_pressed == 0) {
         parkedMenu_currentMenu++;
         if (parkedMenu_currentMenu >= parkedMenuArraySize) {

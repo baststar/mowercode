@@ -5,6 +5,9 @@
 #include <States/FSMMower.h>
 #include <States/StateDockedMenu.h>
 
+int dockedMenu_currentMenu = 0;
+const int dockedMenuArraySize = 4;
+String dockedMenuNames[dockedMenuArraySize] = {"Exit to zone 1", "Exit to zone 2", "Quick mowing", "Tests"};
 
 void read_dockedMenu_keys() {
     Read_Membrane_Keys();
@@ -19,6 +22,10 @@ void read_dockedMenu_keys() {
         dockedMenu_currentMenu--;
         if (dockedMenu_currentMenu < 0) {
             dockedMenu_currentMenu = dockedMenuArraySize - 1;
+        }
+    } else if (StartKey_pressed) {
+
+        if (dockedMenu_currentMenu == 0) {
         }
     }
 }

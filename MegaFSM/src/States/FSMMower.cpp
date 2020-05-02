@@ -15,6 +15,8 @@
 #include <States/StateTestMenu.h>
 #include <States/StateWireToGarden.h>
 
+int currentFSMEvent = NULL;
+int lastFSMEvent = NULL;
 Fsm fsm_mower(&state_docked);
 
 void setup_fsm() {
@@ -71,5 +73,7 @@ void loop_fsm() {
 }
 
 void trigger_fsm(int event) {
+    lastFSMEvent = currentFSMEvent;
+    currentFSMEvent = event;
     fsm_mower.trigger(event);
 }

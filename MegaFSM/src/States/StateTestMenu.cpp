@@ -5,11 +5,14 @@
 #include <States/FSMMower.h>
 #include <States/StateTestMenu.h>
 
+int testMenu_currentMenu = 0;
+const int testMenuArraySize = 2;
+String testMenuNames[testMenuArraySize] = {"Test Wire", "Test Relais"};
 
 void read_testMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        // trigger_fsm(EVENT_DOCKED_MENU__TO__DOCKED);
+        trigger_fsm(FSMEVENT_TEST_MENU__TO__DOCKED_MENU);
     } else if (PlusKey_pressed == 0) {
         testMenu_currentMenu++;
         if (testMenu_currentMenu >= testMenuArraySize) {
