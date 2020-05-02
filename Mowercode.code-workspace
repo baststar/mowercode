@@ -12,9 +12,16 @@
         {
             "name": "Uno",
             "path": "Uno"
+        },
+        {
+            "path": "MegaFSM"
         }
     ],
     "settings": {
-        "editor.defaultFormatter": "xaver.clang-format"
+        "editor.defaultFormatter": "xaver.clang-format",
+        "files.associations": {
+            "cmath": "cpp",
+            "type_traits": "cpp"
+        }
     }
 }

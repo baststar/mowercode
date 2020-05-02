@@ -1,0 +1,11 @@
+{
+    "editor.wordWrap": "off",
+    "editor.wordWrapColumn": 180,
+    "editor.detectIndentation": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "xaver.clang-format",
+    "editor.formatOnPaste": true,
+    "editor.formatOnType": false,
+    "editor.formatOnSave": true
+}
