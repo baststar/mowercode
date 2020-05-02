@@ -7,20 +7,27 @@
 
 void read_parked_keys() {
     Read_Membrane_Keys();
-    if (StopKey_pressed == 0) {
-        // trigger_fsm(EVENT_DOCKED__EXIT_GARAGE);
+    if (StartKey_pressed == 0) {
+        Trigger_FSM(FSMEVENT_PARKED__TO__PARKED_MENU, currentFSMSequence);
     }
 }
 
-// DOCKED-STATE
 void parked_on_enter() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("PARKED                     ");
+    delay(1000);
+    lcd.clear();
 }
+
 void parked() {
     read_parked_keys();
     lcd.setCursor(0, 0);
-    lcd.print("parked                ");
+    lcd.print("parked                  ");
 }
+
 void parked_on_exit() {
+    lcd.clear();
 }
 
 State state_parked(&parked_on_enter, &parked, &parked_on_exit);

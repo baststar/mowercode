@@ -2,4 +2,4 @@
 
 #include <Fsm.h>
 
-extern State state_followWire;
+extern State state_rotateToWire;

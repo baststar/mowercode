@@ -2,7 +2,9 @@
 
 extern int currentFSMEvent;
 extern int lastFSMEvent;
+extern int beforeMenuFSMEvent;
+extern int currentFSMSequence;
 
-void setup_fsm();
-void loop_fsm();
-void trigger_fsm(int event);
+void Setup_FSM();
+void Loop_FSM();
+void Trigger_FSM(int event, int sequence);

@@ -8,18 +8,26 @@
 void read_compassRotate_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        // trigger_fsm(EVENT_DOCKED__EXIT_GARAGE);
+        beforeMenuFSMEvent = currentFSMEvent;
+        Trigger_FSM(FSMEVENT_COMPASS_ROTATE__TO__PARKED, currentFSMSequence);
     }
 }
 
-// EXITGARAGE-STATE
 void compassRotate_on_enter() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("COMPASS ROTATE                 ");
+    delay(1000);
+    lcd.clear();
 }
+
 void compassRotate() {
     read_compassRotate_keys();
     lcd.setCursor(0, 0);
-    lcd.print("compassRotate               ");
+    lcd.print("compassRotate                   ");
 }
+
 void compassRotate_on_exit() {
+    lcd.clear();
 }
 State state_compassRotate(&compassRotate_on_enter, &compassRotate, &compassRotate_on_exit);

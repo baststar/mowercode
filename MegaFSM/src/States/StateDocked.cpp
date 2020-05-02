@@ -9,19 +9,24 @@
 void read_docked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
-        trigger_fsm(FSMEVENT_DOCKED__TO__DOCKED_MENU);
+        Trigger_FSM(FSMEVENT_DOCKED__TO__DOCKED_MENU, -1);
     }
 }
 
-// DOCKED-STATE
 void docked_on_enter() {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("DOCKED                    ");
+    delay(1000);
+    lcd.clear();
 }
 void docked() {
     read_docked_keys();
     lcd.setCursor(0, 0);
-    lcd.print("docked                ");
+    lcd.print("docked                        ");
 }
 void docked_on_exit() {
+    lcd.clear();
 }
 
 State state_docked(&docked_on_enter, &docked, &docked_on_exit);
