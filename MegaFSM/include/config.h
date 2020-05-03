@@ -3,12 +3,11 @@
 // PERIMETER IS CLOCKWISE (true) OR COUNTERCLOCKWISE (false) FROM GARAGE
 #define PERIMETER_IS_CLOCKWISE_FROM_GARAGE true
 // MAX MAGNITUDE TO MEASURE LEFT OR RIGHT FROM CABLE TO FOLLOW THE PERIMETER
-// The magnitude 10cm from wire
-//
+// The magnitude 10cm left and 10cm right from wire - view magnitude in testmenu->wire
+// Adjust on the potentiometer on the sensor and here
 #define MAX_TRACKING_WIRE_MAGNITUDE_INSIDE 1100
-#define MAX_TRACKING_WIRE_MAGNITUDE_OUTSITE 700
-
-#define MAX_SAME_SITE_TRACKING_WIRE_TIME 2000
+#define MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE 700
+#define MAX_SAME_SITE_TRACKING_WIRE_TIME 2000 // time until mower makes strong turns while following wire and dont passes the wire from left or right
 
 // TIMES in milliseconds
 #define EXIT_GARAGE_BACKWARDS_TIME 2000

@@ -98,7 +98,7 @@ void followWire() {
 
         if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
             motorRightSpeed = slowSpeedRight;
-            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSITE, slowSpeedLeft);
+            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedLeft);
 
             if (motorLeftSpeed < 0) {
                 motorLeftSpeed = 0;
@@ -117,7 +117,7 @@ void followWire() {
         } else {
 
             motorLeftSpeed = slowSpeedLeft;
-            motorRightSpeed = slowSpeedRight - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSITE, slowSpeedRight);
+            motorRightSpeed = slowSpeedRight - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedRight);
             if (motorRightSpeed < 0) {
                 motorRightSpeed = 0;
             } else if (motorRightSpeed > slowSpeedRight) {
@@ -145,7 +145,7 @@ void followWire() {
         if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
 
             motorLeftSpeed = slowSpeedLeft;
-            motorRightSpeed = slowSpeedRight - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSITE, slowSpeedRight);
+            motorRightSpeed = slowSpeedRight - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedRight);
 
             if (motorRightSpeed < 0) {
                 motorRightSpeed = 0;
@@ -164,7 +164,7 @@ void followWire() {
         } else {
 
             motorRightSpeed = slowSpeedRight;
-            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSITE, slowSpeedLeft);
+            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedLeft);
             if (motorLeftSpeed < 0) {
                 motorLeftSpeed = 0;
             } else if (motorLeftSpeed > slowSpeedLeft) {
