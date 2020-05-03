@@ -54,7 +54,7 @@ void findWire() {
 
     if (MowerIsInsideWire() == false) {
         // DRIVEN OVER THE WIRE -> WIRE FOUND
-        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
+        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
             Trigger_FSM(FSMEVENT_FIND_WIRE__TO__FOLLOW_WIRE, currentFSMSequence);
         }
     }

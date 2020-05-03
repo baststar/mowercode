@@ -22,7 +22,6 @@ void MotorAction_StopMotors() {
     digitalWrite(PIN_ENA, 0); // Motor 1
     digitalWrite(PIN_IN_1, LOW);
     digitalWrite(PIN_IN_2, LOW);
-
     digitalWrite(PIN_ENB, 0); // Motor 2
     digitalWrite(PIN_IN_3, LOW);
     digitalWrite(PIN_IN_4, LOW);

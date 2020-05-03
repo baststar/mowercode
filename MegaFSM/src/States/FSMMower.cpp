@@ -117,7 +117,6 @@ void Setup_FSM() {
 
 void Loop_FSM() {
     fsm_mower.run_machine();
-    delay(100);
 }
 
 void Trigger_FSM(int event, int sequence) {

@@ -36,7 +36,7 @@ void read_parkedMenu_keys() {
             lcd.clear();
             Trigger_FSM(beforeMenuFSMEvent, currentFSMSequence);
         } else if (parkedMenu_currentMenu == 1) {
-            Trigger_FSM(FSMEVENT_PARKED_MENU__TO__FOLLOW_WIRE, FSMSEQUENCE_FOLLOW_WIRE);
+            Trigger_FSM(FSMEVENT_PARKED_MENU__TO__FIND_WIRE, FSMSEQUENCE_FOLLOW_WIRE);
         }
     }
 }
