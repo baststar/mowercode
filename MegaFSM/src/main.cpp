@@ -7,7 +7,7 @@
 
 void setup() {
     Serial.begin(115200);
-    Serial.println("SETUP");
+    Serial1.begin(1200);
     Setup_All_Pins();
     Setup_LCD();
     Setup_Perimeter();

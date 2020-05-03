@@ -23,7 +23,7 @@ void wireToGarden_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("WIRE TO GARDEN                 ");
-    delay(1000);
+    delay(500);
     lcd.clear();
     startTimeWireToGarden = millis();
     currentTimeWireToGarden = startTimeWireToGarden;
@@ -32,7 +32,7 @@ void wireToGarden_on_enter() {
 void wireToGarden() {
     read_wireToGarden_keys();
     lcd.setCursor(0, 0);
-    lcd.print("wireToGarden                     ");
+    lcd.print("wireToGarden...                     ");
 
     currentTimeWireToGarden = millis();
 

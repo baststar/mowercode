@@ -24,19 +24,19 @@ void exitGarage_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("EXIT GARAGE                ");
-    delay(1000);
+    delay(500);
     lcd.clear();
 
     startTimeExitGarage = millis();
     currentTimeExitGarage = startTimeExitGarage;
     MotorAction_SetPinsToGoBackwards();
-    MotorAction_GoSlowSpeed();
+    MotorAction_GoFullSpeed();
 }
 
 void exitGarage() {
     read_exitGarage_keys();
     lcd.setCursor(0, 0);
-    lcd.print("exitGarage             ");
+    lcd.print("exitGarage...             ");
 
     currentTimeExitGarage = millis();
     if ((currentTimeExitGarage - startTimeExitGarage) >= EXIT_GARAGE_BACKWARDS_TIME) {

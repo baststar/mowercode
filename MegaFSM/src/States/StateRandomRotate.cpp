@@ -23,7 +23,7 @@ void randomRotate_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("RANDOM ROTATE                ");
-    delay(1000);
+    delay(500);
     lcd.clear();
     currentRotationTime = 0;
     maxRotationTime = random(RANDOM_ROTATE_TIME_MIN, RANDOM_ROTATE_TIME_MAX);
@@ -32,7 +32,7 @@ void randomRotate() {
 
     read_randomRotate_keys();
     lcd.setCursor(0, 0);
-    lcd.print("randomRotate                ");
+    lcd.print("randomRotate...                ");
 
     if (currentRotationTime >= maxRotationTime) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {

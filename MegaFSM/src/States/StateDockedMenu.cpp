@@ -22,11 +22,13 @@ void read_dockedMenu_keys() {
         if (dockedMenu_currentMenu >= dockedMenuArraySize) {
             dockedMenu_currentMenu = 0;
         }
+        delay(100);
     } else if (MinusKey_pressed == 0) {
         dockedMenu_currentMenu--;
         if (dockedMenu_currentMenu < 0) {
             dockedMenu_currentMenu = dockedMenuArraySize - 1;
         }
+        delay(100);
     } else if (StartKey_pressed == 0) {
 
         if (dockedMenu_currentMenu == 0) {
@@ -35,6 +37,8 @@ void read_dockedMenu_keys() {
             Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2);
         } else if (dockedMenu_currentMenu == 2) {
             Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING);
+        } else if (dockedMenu_currentMenu == 3) {
+            Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__TEST_MENU, -1);
         }
     }
 }
@@ -43,7 +47,7 @@ void dockedMenu_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("DOCKING-MENU                 ");
-    delay(1000);
+    delay(500);
     lcd.clear();
     dockedMenu_currentMenu = 0;
     dockedMenu_lastMenu = -1;

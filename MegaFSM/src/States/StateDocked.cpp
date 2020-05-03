@@ -1,9 +1,11 @@
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
+#include <MotorActions.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/StateDocked.h>
+
 
 
 void read_docked_keys() {
@@ -14,16 +16,18 @@ void read_docked_keys() {
 }
 
 void docked_on_enter() {
+    MotorAction_StopBlades();
+    MotorAction_StopMotors();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("DOCKED                    ");
-    delay(1000);
+    delay(500);
     lcd.clear();
 }
 void docked() {
     read_docked_keys();
     lcd.setCursor(0, 0);
-    lcd.print("docked                        ");
+    lcd.print("docked...                        ");
 }
 void docked_on_exit() {
     lcd.clear();

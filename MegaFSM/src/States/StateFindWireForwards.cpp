@@ -11,66 +11,83 @@
 #include <declarations.h>
 
 
-long int startTimeFindWire = 0;
-long int currentTimeFindWire = 0;
+long int startTimefindWireForwards = 0;
+long int currentTimefindWireForwards = 0;
+bool wireActivefindWireForwards = false;
+long int lastTimeFindWireForwards = 0;
+int wireNotFoundTotalTimefindWireForwards = 0;
+long int wireNotActiveMaxTimeFindWireForwards = 200;
+long int insideFalseTimeToBeOutside = 0;
+long int insideFalseTimeToBeOutsideMax = 150;
 
-void read_findWire_keys() {
+void read_findWireForwards_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_FIND_WIRE__TO__PARKED, currentFSMSequence);
+        Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__PARKED, currentFSMSequence);
     }
 }
 
-void findWire_on_enter() {
+void findWireForwards_on_enter() {
+    UpdatePerimeterStatus();
     lcd.clear();
     lcd.setCursor(0, 0);
-    lcd.print("FIND WIRE             ");
-    delay(1000);
+    lcd.print("FIND WIRE FORWARDS             ");
+    delay(500);
     lcd.clear();
-    startTimeFindWire = millis();
-    currentTimeFindWire = startTimeFindWire;
+    startTimefindWireForwards = millis();
+    currentTimefindWireForwards = startTimefindWireForwards;
+    lastTimeFindWireForwards = startTimefindWireForwards;
+    wireNotFoundTotalTimefindWireForwards = 0;
+    insideFalseTimeToBeOutside = 0;
     MotorAction_SetPinsToGoForward();
     MotorAction_GoSlowSpeed();
-    bool wireIsActive = IsBounderyWireActive();
-    if (IsBounderyWireActive() == false) {
-        Trigger_FSM(FSMEVENT_FIND_WIRE__TO__ERROR, currentFSMSequence);
-    }
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("ACTIVE? " + String(wireIsActive) + "             ");
-    delay(1000);
-    lcd.clear();
 }
 
-void findWire() {
-    read_findWire_keys();
-    lcd.setCursor(0, 0);
-    lcd.print("findWire             ");
+void findWireForwards() {
 
+    lcd.setCursor(0, 0);
+    lcd.print("findWireForwards...             ");
+
+    read_findWireForwards_keys();
     UpdatePerimeterStatus();
-    lcd.setCursor(0, 1);
-    lcd.print("mag: " + String(GetCurrentMagnitude()) + "             ");
+
+    wireActivefindWireForwards = IsBounderyWireActive();
+    currentTimefindWireForwards = millis();
+
+    if (wireActivefindWireForwards == false) {
+        wireNotFoundTotalTimefindWireForwards = wireNotFoundTotalTimefindWireForwards + (currentTimefindWireForwards - lastTimeFindWireForwards);
+        if (wireNotFoundTotalTimefindWireForwards >= wireNotActiveMaxTimeFindWireForwards) {
+            Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, currentFSMSequence);
+        }
+        return;
+    } else {
+        wireNotFoundTotalTimefindWireForwards = 0;
+    }
+
+    if ((currentTimefindWireForwards - startTimefindWireForwards) >= FIND_WIRE_SEARCH_TIME_MAX) {
+        Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, currentFSMSequence);
+    }
 
     if (MowerIsInsideWire() == false) {
-        // DRIVEN OVER THE WIRE -> WIRE FOUND
-        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
-            Trigger_FSM(FSMEVENT_FIND_WIRE__TO__FOLLOW_WIRE, currentFSMSequence);
+        insideFalseTimeToBeOutside = insideFalseTimeToBeOutside + (currentTimefindWireForwards - lastTimeFindWireForwards);
+        if (insideFalseTimeToBeOutside >= insideFalseTimeToBeOutsideMax) {
+            if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
+                Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, currentFSMSequence);
+            }
         }
+    } else {
+        insideFalseTimeToBeOutside = 0;
     }
-
-    currentTimeFindWire = millis();
-    if ((currentTimeFindWire - startTimeFindWire) >= FIND_WIRE_SEARCH_TIME_MAX) {
-        Trigger_FSM(FSMEVENT_FIND_WIRE__TO__ERROR, currentFSMSequence);
-    }
+    lastTimeFindWireForwards = currentTimefindWireForwards;
 }
 
-void findWire_on_exit() {
+void findWireForwards_on_exit() {
     MotorAction_StopMotors();
     MotorAction_SetPinsToGoForward();
     lcd.clear();
-    startTimeFindWire = 0;
-    currentTimeFindWire = 0;
+    startTimefindWireForwards = 0;
+    currentTimefindWireForwards = 0;
 }
 
-State state_findWire(&findWire_on_enter, &findWire, &findWire_on_exit);
+State state_findWireForwards(&findWireForwards_on_enter, &findWireForwards, &findWireForwards_on_exit);

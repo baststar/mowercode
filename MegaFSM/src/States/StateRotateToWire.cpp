@@ -1,11 +1,13 @@
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
+#include <MotorActions.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
 #include <States/StateRotateToWire.h>
 #include <config.h>
+
 
 
 long int startTimeRotateToWire = 0;
@@ -23,22 +25,29 @@ void rotateToWire_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("ROTATE TO WIRE                ");
-    delay(1000);
+    delay(500);
     lcd.clear();
     startTimeRotateToWire = millis();
     currentRotateToWireTime = startTimeRotateToWire;
+
+    if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE) {
+        MotorAction_SetPinsToRotateLeft();
+    } else {
+        MotorAction_SetPinsToRotateRight();
+    }
+    MotorAction_GoSlowSpeed();
 }
 void rotateToWire() {
 
     read_rotateToWire_keys();
     lcd.setCursor(0, 0);
-    lcd.print("rotateToWire                ");
+    lcd.print("rotateToWire...                ");
 
     currentRotateToWireTime = millis();
 
     if ((currentRotateToWireTime - startTimeRotateToWire) >= ROTATE_TO_WIRE_TIME) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
-            Trigger_FSM(FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE, currentFSMSequence);
+            Trigger_FSM(FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS, currentFSMSequence);
         } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
             Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, currentFSMSequence);
         } else {
@@ -47,6 +56,8 @@ void rotateToWire() {
     }
 }
 void rotateToWire_on_exit() {
+    MotorAction_StopMotors();
+    MotorAction_SetPinsToGoForward();
     lcd.clear();
 }
 

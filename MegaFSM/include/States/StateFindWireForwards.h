@@ -2,4 +2,4 @@
 
 #include <Fsm.h>
 
-extern State state_findWire;
+extern State state_findWireForwards;

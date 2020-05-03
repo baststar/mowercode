@@ -18,14 +18,14 @@ void mowing_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("MOWING                    ");
-    delay(1000);
+    delay(500);
     lcd.clear();
 }
 
 void mowing() {
     read_mowing_keys();
     lcd.setCursor(0, 0);
-    lcd.print("mowing                  ");
+    lcd.print("mowing...                  ");
 }
 
 void mowing_on_exit() {

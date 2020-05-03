@@ -16,17 +16,12 @@ void read_error_keys() {
 }
 
 void error_on_enter() {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("ERROR               ");
-    delay(1000);
-    lcd.clear();
 }
 
 void error() {
     read_error_keys();
     lcd.setCursor(0, 0);
-    lcd.print("ERROR                ");
+    lcd.print("ERROR...                ");
     lcd.setCursor(0, 1);
 
     if (StopKey_pressed == 0) {
@@ -34,13 +29,20 @@ void error() {
     }
 
     switch (lastFSMEvent) {
-    case FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE:
-    case FSMEVENT_MOWING__TO__FIND_WIRE:
-    case FSMEVENT_PARKED_MENU__TO__FIND_WIRE:
-        lcd.print("FIND WIRE                     ");
+    case FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_FORWARDS:
+    case FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS:
+    case FSMEVENT_MOWING__TO__FIND_WIRE_FORWARDS:
+    case FSMEVENT_PARKED_MENU__TO__FIND_WIRE_FORWARDS:
+        lcd.print("FIND WIRE FORWARDS                     ");
+        break;
+    case FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_BACKWARDS:
+    case FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_BACKWARDS:
+    case FSMEVENT_MOWING__TO__FIND_WIRE_BACKWARDS:
+    case FSMEVENT_PARKED_MENU__TO__FIND_WIRE_BACKWARDS:
+        lcd.print("FIND WIRE BACKWARDS                    ");
         break;
     default:
-        lcd.print("UNKNOWN ERROR                          ");
+        lcd.print("UNKNOWN ERR " + String(lastFSMEvent) + "               ");
         break;
     }
 }

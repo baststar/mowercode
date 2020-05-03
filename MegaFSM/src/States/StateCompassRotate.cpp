@@ -17,14 +17,14 @@ void compassRotate_on_enter() {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("COMPASS ROTATE                 ");
-    delay(1000);
+    delay(500);
     lcd.clear();
 }
 
 void compassRotate() {
     read_compassRotate_keys();
     lcd.setCursor(0, 0);
-    lcd.print("compassRotate                   ");
+    lcd.print("compassRotate...                   ");
 }
 
 void compassRotate_on_exit() {

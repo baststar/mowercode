@@ -4,9 +4,10 @@
 #include <config.h>
 
 Perimeter perimeter;
-unsigned long nextTimeUpdatePerimeterStatus = 0;
+long int nextTimeUpdatePerimeterStatus = 0;
 bool mowerIsInsideWire = false;
 int currentMagnitude = 0;
+long int currMillis = 0;
 
 void Setup_Perimeter() {
     ADCMan.init();
@@ -17,11 +18,10 @@ void Setup_Perimeter() {
 }
 
 bool IsBounderyWireActive() {
-    UpdatePerimeterStatus();
-    if (currentMagnitude > -20 && currentMagnitude < 20) {
-        return false;
+    if (currentMagnitude < -50 || currentMagnitude > 50) {
+        return true;
     }
-    return true;
+    return false;
 }
 
 bool MowerIsInsideWire() {
@@ -33,9 +33,10 @@ int GetCurrentMagnitude() {
 }
 
 void UpdatePerimeterStatus() {
-    if (millis() >= nextTimeUpdatePerimeterStatus) {
-        nextTimeUpdatePerimeterStatus = millis() + 50;
+    currMillis = millis();
+    if (currMillis >= nextTimeUpdatePerimeterStatus) {
         ADCMan.run();
+        nextTimeUpdatePerimeterStatus = currMillis + 25;
         currentMagnitude = perimeter.getMagnitude(0);
         mowerIsInsideWire = perimeter.isInside(0);
     }
