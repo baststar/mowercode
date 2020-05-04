@@ -17,12 +17,12 @@ void read_dockedMenu_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__DOCKED, -1);
+        return;
     } else if (PlusKey_pressed == 0) {
         dockedMenu_currentMenu++;
         if (dockedMenu_currentMenu >= dockedMenuArraySize) {
             dockedMenu_currentMenu = 0;
         }
-        delay(100);
     } else if (MinusKey_pressed == 0) {
         dockedMenu_currentMenu--;
         if (dockedMenu_currentMenu < 0) {
@@ -33,12 +33,16 @@ void read_dockedMenu_keys() {
 
         if (dockedMenu_currentMenu == 0) {
             Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1);
+            return;
         } else if (dockedMenu_currentMenu == 1) {
             Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2);
+            return;
         } else if (dockedMenu_currentMenu == 2) {
             Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING);
+            return;
         } else if (dockedMenu_currentMenu == 3) {
             Trigger_FSM(FSMEVENT_DOCKED_MENU__TO__TEST_MENU, -1);
+            return;
         }
     }
 }

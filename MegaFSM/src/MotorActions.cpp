@@ -2,18 +2,46 @@
 #include <MotorActions.h>
 #include <config.h>
 
+bool isForwardMovement = true;
 
 void MotorAction_GoFullSpeed() {
-    analogWrite(PIN_ENA, PWM_MAXSPEED_RIGHT);
-    analogWrite(PIN_ENB, PWM_MAXSPEED_LEFT);
+
+    int leftSpeed = PWM_MAXSPEED_LEFT;
+    int rightSpeed = PWM_MAXSPEED_RIGHT;
+
+    if (isForwardMovement == false) {
+        int tmp = leftSpeed;
+        leftSpeed = rightSpeed;
+        rightSpeed = tmp;
+    }
+
+    analogWrite(PIN_ENA, rightSpeed);
+    analogWrite(PIN_ENB, leftSpeed);
 }
 
 void MotorAction_GoSlowSpeed() {
-    analogWrite(PIN_ENA, PWM_MAXSPEED_RIGHT - PWM_SLOWSPEED_SUBSTRACTION);
-    analogWrite(PIN_ENB, PWM_MAXSPEED_LEFT - PWM_SLOWSPEED_SUBSTRACTION);
+
+    int leftSpeed = PWM_MAXSPEED_LEFT;
+    int rightSpeed = PWM_MAXSPEED_RIGHT;
+
+    if (isForwardMovement == false) {
+        int tmp = leftSpeed;
+        leftSpeed = rightSpeed;
+        rightSpeed = tmp;
+    }
+
+    analogWrite(PIN_ENA, rightSpeed - PWM_SLOWSPEED_SUBSTRACTION);
+    analogWrite(PIN_ENB, leftSpeed - PWM_SLOWSPEED_SUBSTRACTION);
 }
 
 void MotorAction_GoPWMSpeed(int leftSpeed, int rightSpeed) {
+
+    if (isForwardMovement == false) {
+        int tmp = leftSpeed;
+        leftSpeed = rightSpeed;
+        rightSpeed = tmp;
+    }
+
     analogWrite(PIN_ENA, rightSpeed); // ENA low = Right Swerve   ENB low = Left Swerve
     analogWrite(PIN_ENB, leftSpeed);
 }
@@ -28,6 +56,7 @@ void MotorAction_StopMotors() {
 }
 
 void MotorAction_SetPinsToGoForward() {
+    isForwardMovement = true;
     digitalWrite(PIN_IN_1, LOW); // Motor 1
     digitalWrite(PIN_IN_2, HIGH);
     digitalWrite(PIN_IN_3, LOW); // Motor 2
@@ -35,6 +64,7 @@ void MotorAction_SetPinsToGoForward() {
 }
 
 void MotorAction_SetPinsToGoBackwards() {
+    isForwardMovement = false;
     digitalWrite(PIN_IN_1, HIGH); // Motor 1
     digitalWrite(PIN_IN_2, LOW);
     digitalWrite(PIN_IN_3, HIGH); // Motor 2

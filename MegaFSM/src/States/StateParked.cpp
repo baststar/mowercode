@@ -11,6 +11,7 @@ void read_parked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
         Trigger_FSM(FSMEVENT_PARKED__TO__PARKED_MENU, currentFSMSequence);
+        return;
     }
 }
 

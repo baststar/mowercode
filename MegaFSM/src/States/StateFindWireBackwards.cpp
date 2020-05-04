@@ -20,6 +20,7 @@ void read_findWireBackwards_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__PARKED, currentFSMSequence);
+        return;
     }
 }
 
@@ -40,6 +41,7 @@ void findWireBackwards() {
     wireActivefindWireBackwards = IsBounderyWireActive();
     if (wireActivefindWireBackwards == false) {
         Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, currentFSMSequence);
+        return;
     }
 
     read_findWireBackwards_keys();
@@ -52,12 +54,14 @@ void findWireBackwards() {
         // DRIVEN OVER THE WIRE -> WIRE FOUND
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
             Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, currentFSMSequence);
+            return;
         }
     }
 
     currentTimefindWireBackwards = millis();
     if ((currentTimefindWireBackwards - startTimefindWireBackwards) >= FIND_WIRE_SEARCH_TIME_MAX) {
         Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, currentFSMSequence);
+        return;
     }
 }
 

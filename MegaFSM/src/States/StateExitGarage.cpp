@@ -17,6 +17,7 @@ void read_exitGarage_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__PARKED, currentFSMSequence);
+        return;
     }
 }
 
@@ -42,17 +43,20 @@ void exitGarage() {
     if ((currentTimeExitGarage - startTimeExitGarage) >= EXIT_GARAGE_BACKWARDS_TIME) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
             Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__ROTATE_TO_WIRE, currentFSMSequence);
+            return;
         } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
             Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, currentFSMSequence);
+            return;
         } else {
             Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__ERROR, currentFSMSequence);
+            return;
         }
     }
 }
 
 void exitGarage_on_exit() {
-    lcd.clear();
     MotorAction_StopMotors();
     MotorAction_SetPinsToGoForward();
+    lcd.clear();
 }
 State state_exitGarage(&exitGarage_on_enter, &exitGarage, &exitGarage_on_exit);

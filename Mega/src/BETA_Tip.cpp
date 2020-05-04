@@ -5,8 +5,7 @@
 // Test sketch to sense the tip of the Mower and shut dowen the
 // Mower blade.
 
-void Read_X_Y_Values()
-{
+void Read_X_Y_Values() {
     // Retrieve the raw values from the magnetometer (not scaled).
     //  MagnetometerRaw raw = compass.ReadRawAxis();
 
@@ -28,8 +27,7 @@ void Read_X_Y_Values()
     // Serial.print(scaled.ZAxis);
 }
 
-void Compass_Check_Tilt_Angle()
-{
+void Compass_Check_Tilt_Angle() {
     Vector mag = compass.readRaw();
     Y_Tilt = mag.YAxis + Calb_YAxis;
 
@@ -37,8 +35,7 @@ void Compass_Check_Tilt_Angle()
         Tilt_Y = Tilt_Y + 1;
         lcd.setCursor(6, 0);
         lcd.print("!");
-    }
-    else {
+    } else {
         Tilt_Y = 0;
         lcd.setCursor(6, 0);
         lcd.print(" ");
@@ -56,8 +53,7 @@ void Compass_Check_Tilt_Angle()
     }
 }
 
-void Test_Compass_Check_Tip_Angle()
-{
+void Test_Compass_Check_Tip_Angle() {
     Vector mag = compass.readRaw();
     lcd.setCursor(15, 0);
     lcd.print("*");
@@ -80,8 +76,7 @@ void Test_Compass_Check_Tip_Angle()
     // If Y Axis is tilted
     if ((Y_Tilt > Max_Tilt) || (Y_Tilt < Min_Tilt)) {
         Tilt_Y = Tilt_Y + 1;
-    }
-    else
+    } else
         Tilt_Y = 0;
 
     Serial.print(F("          Tilt X: "));
@@ -109,8 +104,7 @@ void Test_Compass_Check_Tip_Angle()
     }
 }
 
-void Calibrate_Compass_Angle()
-{
+void Calibrate_Compass_Angle() {
     float Calb_Total_X = 0;
     float Calb_Total_Y = 0;
     float Calb_Total_Z = 0;

@@ -16,6 +16,7 @@ void read_randomRotate_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_RANDOM_ROTATE__TO__PARKED, currentFSMSequence);
+        return;
     }
 }
 
@@ -39,6 +40,7 @@ void randomRotate() {
             Trigger_FSM(FSMEVENT_RANDOM_ROTATE__TO__MOWING, currentFSMSequence);
         } else {
             Trigger_FSM(FSMEVENT_RANDOM_ROTATE__TO__ERROR, currentFSMSequence);
+            return;
         }
     }
 }

@@ -49,6 +49,7 @@ void read_followWire_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_FOLLOW_WIRE__TO__PARKED, currentFSMSequence);
+        return;
     }
 }
 
@@ -64,9 +65,9 @@ void followWire_on_enter() {
     onSameSiteMillis = 0;
     motorLeftSpeed = 0;
     motorRightSpeed = 0;
-    MotorAction_SetPinsToGoForward();
     UpdatePerimeterStatus();
     lastInside = MowerIsInsideWire();
+    MotorAction_SetPinsToGoForward();
 }
 
 void followWire() {
@@ -79,6 +80,7 @@ void followWire() {
     UpdateVoltAmpCharge();
     if (IsCharging()) {
         Trigger_FSM(FSMEVENT_FOLLOW_WIRE__TO__DOCKED, -1);
+        return;
     }
 
     UpdatePerimeterStatus();
@@ -184,10 +186,12 @@ void followWire() {
     if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1) {
         if ((currentTimeFollowWire - startTimeFollowWire) >= FOLLOW_WIRE_ZONE_1_TIME) {
             Trigger_FSM(FSMEVENT_FOLLOW_WIRE__TO__WIRE_TO_GARDEN, currentFSMSequence);
+            return;
         }
     } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
         if ((currentTimeFollowWire - startTimeFollowWire) >= FOLLOW_WIRE_ZONE_2_TIME) {
             Trigger_FSM(FSMEVENT_FOLLOW_WIRE__TO__WIRE_TO_GARDEN, currentFSMSequence);
+            return;
         }
     }
 
@@ -197,13 +201,9 @@ void followWire() {
 }
 
 void followWire_on_exit() {
+    MotorAction_StopMotors();
     startTimeFollowWire = 0;
     currentTimeFollowWire = 0;
-    MotorAction_StopMotors();
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("EXIT FOLLOW WIRE           ");
-    delay(3000);
 }
 
 State state_followWire(&followWire_on_enter, &followWire, &followWire_on_exit);

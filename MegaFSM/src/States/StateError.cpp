@@ -12,6 +12,7 @@ void read_error_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_ERROR__TO__PARKED, currentFSMSequence);
+        return;
     }
 }
 
@@ -26,6 +27,7 @@ void error() {
 
     if (StopKey_pressed == 0) {
         Trigger_FSM(FSMEVENT_ERROR__TO__PARKED, -1);
+        return;
     }
 
     switch (lastFSMEvent) {

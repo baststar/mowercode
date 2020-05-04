@@ -10,7 +10,7 @@
 
 int parkedMenu_currentMenu = 0;
 int parkedMenu_lastMenu = -1;
-const int parkedMenuArraySize = 3;
+const int parkedMenuArraySize = 2;
 String parkedMenuNames[parkedMenuArraySize] = {"Continue", "To garage"};
 
 void read_parkedMenu_keys() {
@@ -18,6 +18,7 @@ void read_parkedMenu_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_PARKED_MENU__TO__PARKED, currentFSMSequence);
+        return;
     } else if (PlusKey_pressed == 0) {
         parkedMenu_currentMenu++;
         if (parkedMenu_currentMenu >= parkedMenuArraySize) {
@@ -38,8 +39,10 @@ void read_parkedMenu_keys() {
             delay(500);
             lcd.clear();
             Trigger_FSM(beforeMenuFSMEvent, currentFSMSequence);
+            return;
         } else if (parkedMenu_currentMenu == 1) {
             Trigger_FSM(FSMEVENT_PARKED_MENU__TO__FIND_WIRE_FORWARDS, FSMSEQUENCE_FOLLOW_WIRE);
+            return;
         }
     }
 }

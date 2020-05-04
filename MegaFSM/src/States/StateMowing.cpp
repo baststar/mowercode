@@ -11,6 +11,7 @@ void read_mowing_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_MOWING__TO__PARKED, currentFSMSequence);
+        return;
     }
 }
 

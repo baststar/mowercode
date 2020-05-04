@@ -18,6 +18,7 @@ void read_testMenu_keys() {
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(FSMEVENT_TEST_MENU__TO__DOCKED_MENU, -1);
+        return;
     } else if (PlusKey_pressed == 0) {
         testMenu_currentMenu++;
         if (testMenu_currentMenu >= testMenuArraySize) {
@@ -34,8 +35,6 @@ void read_testMenu_keys() {
 }
 
 void testMenu_on_enter() {
-    MotorAction_StopMotors();
-    MotorAction_StopBlades();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("TEST-MENU                   ");
@@ -52,7 +51,7 @@ void testMenu() {
     if (testMenu_currentMenu == 0) {
         UpdatePerimeterStatus();
         lcd.setCursor(0, 1);
-        lcd.print("mag: " + String(GetCurrentMagnitude()) + "             ");
+        lcd.print("mag: " + String(GetCurrentMagnitude()) + " i: " + String(MowerIsInsideWire()) + "           ");
     } else {
         lcd.setCursor(0, 1);
         lcd.print("                     ");

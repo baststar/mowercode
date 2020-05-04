@@ -12,6 +12,7 @@ void read_docked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
         Trigger_FSM(FSMEVENT_DOCKED__TO__DOCKED_MENU, -1);
+        return;
     }
 }
 
