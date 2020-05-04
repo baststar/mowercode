@@ -18,7 +18,7 @@ long int lastTimeFindWireForwards = 0;
 int wireNotFoundTotalTimefindWireForwards = 0;
 long int wireNotActiveMaxTimeFindWireForwards = 500;
 long int insideFalseTimeToBeOutside = 0;
-long int insideFalseTimeToBeOutsideMax = 400;
+long int insideFalseTimeToBeOutsideMax = 550;
 
 void read_findWireForwards_keys() {
     Read_Membrane_Keys();
@@ -30,7 +30,6 @@ void read_findWireForwards_keys() {
 }
 
 void findWireForwards_on_enter() {
-    UpdatePerimeterStatus();
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("FIND WIRE FORWARDS             ");
@@ -41,17 +40,19 @@ void findWireForwards_on_enter() {
     lastTimeFindWireForwards = startTimefindWireForwards;
     wireNotFoundTotalTimefindWireForwards = 0;
     insideFalseTimeToBeOutside = 0;
+    delay(25);
+    UpdatePerimeterStatus();
+    delay(25);
     MotorAction_SetPinsToGoForward();
     MotorAction_GoSlowSpeed();
 }
 
 void findWireForwards() {
-
     lcd.setCursor(0, 0);
     lcd.print("findWireForwards...             ");
-
     read_findWireForwards_keys();
     UpdatePerimeterStatus();
+
     lcd.setCursor(0, 1);
     lcd.print("mag: " + String(GetCurrentMagnitude()) + " i: " + String(MowerIsInsideWire()) + "           ");
 
