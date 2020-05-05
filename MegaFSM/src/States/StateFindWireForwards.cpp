@@ -24,7 +24,8 @@ void read_findWireForwards_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__PARKED, currentFSMSequence);
+        int stateId = (String(STATE_FIND_WIRE_FORWARDS) + String(9999) + String(STATE_PARKED)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     }
 }
@@ -62,7 +63,8 @@ void findWireForwards() {
     if (wireActivefindWireForwards == false) {
         wireNotFoundTotalTimefindWireForwards = wireNotFoundTotalTimefindWireForwards + (currentTimefindWireForwards - lastTimeFindWireForwards);
         if (wireNotFoundTotalTimefindWireForwards >= wireNotActiveMaxTimeFindWireForwards) {
-            Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, currentFSMSequence);
+            int stateId = (String(STATE_FIND_WIRE_FORWARDS) + String(9999) + String(STATE_ERROR)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         }
     } else {
@@ -70,7 +72,8 @@ void findWireForwards() {
     }
 
     if ((currentTimefindWireForwards - startTimefindWireForwards) >= FIND_WIRE_SEARCH_TIME_MAX) {
-        Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, currentFSMSequence);
+        int stateId = (String(STATE_FIND_WIRE_FORWARDS) + String(9999) + String(STATE_ERROR)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     }
 
@@ -79,7 +82,8 @@ void findWireForwards() {
         insideFalseTimeToBeOutside = insideFalseTimeToBeOutside + (currentTimefindWireForwards - lastTimeFindWireForwards);
         if (insideFalseTimeToBeOutside >= insideFalseTimeToBeOutsideMax) {
             if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
-                Trigger_FSM(FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, currentFSMSequence);
+                int stateId = (String(STATE_FIND_WIRE_FORWARDS) + String(9999) + String(STATE_FOLLOW_WIRE)).toInt();
+                Trigger_FSM(stateId, currentFSMSequence);
                 return;
             }
         }

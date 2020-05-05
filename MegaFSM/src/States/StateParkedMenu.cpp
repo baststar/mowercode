@@ -9,7 +9,6 @@
 
 
 int parkedMenu_currentMenu = 0;
-int parkedMenu_lastMenu = -1;
 const int parkedMenuArraySize = 2;
 String parkedMenuNames[parkedMenuArraySize] = {"Continue", "To garage"};
 
@@ -17,21 +16,23 @@ void read_parkedMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_PARKED_MENU__TO__PARKED, currentFSMSequence);
+        int stateId = (String(STATE_PARKED_MENU) + String(9999) + String(STATE_PARKED)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     } else if (PlusKey_pressed == 0) {
+        delay(100);
         parkedMenu_currentMenu++;
         if (parkedMenu_currentMenu >= parkedMenuArraySize) {
             parkedMenu_currentMenu = 0;
         }
-        delay(100);
     } else if (MinusKey_pressed == 0) {
+        delay(100);
         parkedMenu_currentMenu--;
         if (parkedMenu_currentMenu < 0) {
             parkedMenu_currentMenu = parkedMenuArraySize - 1;
         }
-        delay(100);
     } else if (StartKey_pressed == 0) {
+        delay(100);
         if (parkedMenu_currentMenu == 0) {
             lcd.clear();
             lcd.setCursor(0, 0);
@@ -41,7 +42,8 @@ void read_parkedMenu_keys() {
             Trigger_FSM(beforeMenuFSMEvent, currentFSMSequence);
             return;
         } else if (parkedMenu_currentMenu == 1) {
-            Trigger_FSM(FSMEVENT_PARKED_MENU__TO__FIND_WIRE_FORWARDS, FSMSEQUENCE_FOLLOW_WIRE);
+            int stateId = (String(STATE_PARKED_MENU) + String(9999) + String(STATE_FIND_WIRE_FORWARDS)).toInt();
+            Trigger_FSM(stateId, FSMSEQUENCE_FOLLOW_WIRE);
             return;
         }
     }
@@ -54,15 +56,10 @@ void parkedMenu_on_enter() {
     delay(500);
     lcd.clear();
     parkedMenu_currentMenu = 0;
-    parkedMenu_lastMenu = -1;
 }
 void parkedMenu() {
     read_parkedMenu_keys();
     Show_Parked_Menu();
-    if (parkedMenu_lastMenu != parkedMenu_currentMenu) {
-        parkedMenu_lastMenu = parkedMenu_currentMenu;
-        delay(200);
-    }
 }
 void parkedMenu_on_exit() {
     lcd.clear();

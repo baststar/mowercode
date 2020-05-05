@@ -9,28 +9,29 @@
 
 
 int testMenu_currentMenu = 0;
-int testMenu_lastMenu = -1;
 const int testMenuArraySize = 2;
 String testMenuNames[testMenuArraySize] = {"Test Wire", "Test Relais"};
 
 void read_testMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_TEST_MENU__TO__DOCKED_MENU, -1);
+        int stateId = (String(STATE_TEST_MENU) + String(9999) + String(STATE_DOCKED_MENU)).toInt();
+        Trigger_FSM(stateId, -1);
         return;
     } else if (PlusKey_pressed == 0) {
+        delay(100);
         testMenu_currentMenu++;
         if (testMenu_currentMenu >= testMenuArraySize) {
             testMenu_currentMenu = 0;
         }
-        delay(100);
     } else if (MinusKey_pressed == 0) {
+        delay(100);
         testMenu_currentMenu--;
         if (testMenu_currentMenu < 0) {
             testMenu_currentMenu = testMenuArraySize - 1;
         }
-        delay(100);
     }
 }
 
@@ -41,7 +42,6 @@ void testMenu_on_enter() {
     delay(500);
     lcd.clear();
     testMenu_currentMenu = 0;
-    testMenu_lastMenu = -1;
 }
 void testMenu() {
 

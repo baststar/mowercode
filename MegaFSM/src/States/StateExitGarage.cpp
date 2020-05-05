@@ -16,7 +16,8 @@ void read_exitGarage_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__PARKED, currentFSMSequence);
+        int stateId = (String(STATE_EXIT_GARAGE) + 9999 + String(STATE_PARKED)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     }
 }
@@ -42,13 +43,16 @@ void exitGarage() {
     currentTimeExitGarage = millis();
     if ((currentTimeExitGarage - startTimeExitGarage) >= EXIT_GARAGE_BACKWARDS_TIME) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
-            Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__ROTATE_TO_WIRE, currentFSMSequence);
+            int stateId = (String(STATE_EXIT_GARAGE) + String(9999) + String(STATE_ROTATE_TO_WIRE)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
-            Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, currentFSMSequence);
+            int stateId = (String(STATE_EXIT_GARAGE) + String(9999) + String(STATE_RANDOM_ROTATE)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         } else {
-            Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__ERROR, currentFSMSequence);
+            int stateId = (String(STATE_EXIT_GARAGE) + String(9999) + String(STATE_ERROR)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         }
     }

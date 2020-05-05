@@ -42,7 +42,7 @@ void MotorAction_GoPWMSpeed(int leftSpeed, int rightSpeed) {
         rightSpeed = tmp;
     }
 
-    analogWrite(PIN_ENA, rightSpeed); // ENA low = Right Swerve   ENB low = Left Swerve
+    analogWrite(PIN_ENA, rightSpeed);
     analogWrite(PIN_ENB, leftSpeed);
 }
 

@@ -10,7 +10,8 @@
 void read_parked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
-        Trigger_FSM(FSMEVENT_PARKED__TO__PARKED_MENU, currentFSMSequence);
+        int stateId = (String(STATE_PARKED) + String(9999) + String(STATE_PARKED_MENU)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     }
 }

@@ -17,7 +17,8 @@ void read_rotateToWire_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_ROTATE_TO_WIRE__TO__PARKED, currentFSMSequence);
+        int stateId = (String(STATE_ROTATE_TO_WIRE) + String(9999) + String(STATE_PARKED)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     }
 }
@@ -48,13 +49,16 @@ void rotateToWire() {
 
     if ((currentRotateToWireTime - startTimeRotateToWire) >= ROTATE_FROM_EXIT_GARAGE_TO_WIRE_TIME) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
-            Trigger_FSM(FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS, currentFSMSequence);
+            int stateId = (String(STATE_ROTATE_TO_WIRE) + String(9999) + String(STATE_FIND_WIRE_FORWARDS)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
-            Trigger_FSM(FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, currentFSMSequence);
+            int stateId = (String(STATE_ROTATE_TO_WIRE) + String(9999) + String(STATE_RANDOM_ROTATE)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         } else {
-            Trigger_FSM(FSMEVENT_ROTATE_TO_WIRE__TO__ERROR, currentFSMSequence);
+            int stateId = (String(STATE_ROTATE_TO_WIRE) + String(9999) + String(STATE_ERROR)).toInt();
+            Trigger_FSM(stateId, currentFSMSequence);
             return;
         }
     }

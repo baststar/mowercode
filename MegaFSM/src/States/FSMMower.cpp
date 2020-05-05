@@ -26,108 +26,140 @@ int beforeMenuFSMEvent = NULL;
 int currentFSMSequence = NULL;
 Fsm fsm_mower(&state_docked);
 
+State *allStates[] = {
+    &state_docked,           // 1
+    &state_dockedMenu,       // 2
+    &state_exitGarage,       // 3
+    &state_mowing,           // 4
+    &state_followWire,       // 5
+    &state_parked,           // 6
+    &state_parkedMenu,       // 7
+    &state_randomRotate,     // 8
+    &state_wireToGarden,     // 9
+    &state_testMenu,         // 10
+    &state_error,            // 11
+    &state_compassRotate,    // 12
+    &state_rotateToWire,     // 13
+    &state_findWireForwards, // 14
+    &state_findWireBackwards // 15
+};
+
 void Setup_FSM() {
 
-    // docked
-    fsm_mower.add_transition(&state_docked, &state_dockedMenu, FSMEVENT_DOCKED__TO__DOCKED_MENU, NULL);
-    fsm_mower.add_transition(&state_docked, &state_error, FSMEVENT_DOCKED__TO__ERROR, NULL);
+    for (unsigned int i = 1; i <= sizeof(allStates); i++) {
 
-    // dockedMenu
-    fsm_mower.add_transition(&state_dockedMenu, &state_docked, FSMEVENT_DOCKED_MENU__TO__DOCKED, NULL);
-    fsm_mower.add_transition(&state_dockedMenu, &state_exitGarage, FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, NULL);
-    fsm_mower.add_transition(&state_dockedMenu, &state_testMenu, FSMEVENT_DOCKED_MENU__TO__TEST_MENU, NULL);
-    fsm_mower.add_transition(&state_dockedMenu, &state_error, FSMEVENT_DOCKED_MENU__TO__ERROR, NULL);
+        State currentState = State(*allStates[i - 1]);
 
-    // testMenu
-    fsm_mower.add_transition(&state_testMenu, &state_dockedMenu, FSMEVENT_TEST_MENU__TO__DOCKED_MENU, NULL);
-    fsm_mower.add_transition(&state_testMenu, &state_error, FSMEVENT_TEST_MENU__TO__ERROR, NULL);
+        for (unsigned int j = 1; j <= sizeof(allStates); j++) {
 
-    // exitGarage
-    fsm_mower.add_transition(&state_exitGarage, &state_mowing, FSMEVENT_EXIT_GARAGE__TO__MOWING, NULL);
-    fsm_mower.add_transition(&state_exitGarage, &state_parked, FSMEVENT_EXIT_GARAGE__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_exitGarage, &state_randomRotate, FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, NULL);
-    fsm_mower.add_transition(&state_exitGarage, &state_findWireForwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_exitGarage, &state_findWireBackwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_exitGarage, &state_rotateToWire, FSMEVENT_EXIT_GARAGE__TO__ROTATE_TO_WIRE, NULL);
-    fsm_mower.add_transition(&state_exitGarage, &state_error, FSMEVENT_EXIT_GARAGE__TO__ERROR, NULL);
+            State tmpState = State(*allStates[j - 1]);
+            String transitionIdString = String(i) + String(9999) + String(j);
+            int transitionId = transitionIdString.toInt();
 
-    // mowing
-    fsm_mower.add_transition(&state_mowing, &state_findWireForwards, FSMEVENT_MOWING__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_mowing, &state_findWireBackwards, FSMEVENT_MOWING__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_mowing, &state_parked, FSMEVENT_MOWING__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_mowing, &state_randomRotate, FSMEVENT_MOWING__TO__RANDOM_ROTATE, NULL);
-    fsm_mower.add_transition(&state_mowing, &state_error, FSMEVENT_MOWING__TO__ERROR, NULL);
+            fsm_mower.add_transition(&*allStates[i - 1], &*allStates[j - 1], transitionId, NULL);
+        }
+    }
 
-    // parked
-    fsm_mower.add_transition(&state_parked, &state_parkedMenu, FSMEVENT_PARKED__TO__PARKED_MENU, NULL);
-    fsm_mower.add_transition(&state_parked, &state_error, FSMEVENT_PARKED__TO__ERROR, NULL);
+    // // docked
+    // fsm_mower.add_transition(&state_docked, &state_dockedMenu, FSMEVENT_DOCKED__TO__DOCKED_MENU, NULL);
+    // fsm_mower.add_transition(&state_docked, &state_error, FSMEVENT_DOCKED__TO__ERROR, NULL);
 
-    // parkedMenu
-    fsm_mower.add_transition(&state_parkedMenu, &state_parked, FSMEVENT_PARKED_MENU__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_followWire, FSMEVENT_PARKED_MENU__TO__FOLLOW_WIRE, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_PARKED_MENU__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_PARKED_MENU__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_randomRotate, FSMEVENT_PARKED_MENU__TO__RANDOM_ROTATE, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_error, FSMEVENT_PARKED_MENU__TO__ERROR, NULL);
-    // continue from parking
-    fsm_mower.add_transition(&state_parkedMenu, &state_exitGarage, FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_mowing, FSMEVENT_EXIT_GARAGE__TO__MOWING, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_mowing, FSMEVENT_WIRE_TO_GARDEN__TO__MOWING, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_randomRotate, FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_randomRotate, FSMEVENT_MOWING__TO__RANDOM_ROTATE, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_MOWING__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_FIND_WIRE_BACKWARDS__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_FIND_WIRE_FORWARDS__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_MOWING__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_followWire, FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_wireToGarden, FSMEVENT_FOLLOW_WIRE__TO__WIRE_TO_GARDEN, NULL);
-    fsm_mower.add_transition(&state_parkedMenu, &state_rotateToWire, FSMEVENT_EXIT_GARAGE__TO__ROTATE_TO_WIRE, NULL);
+    // // dockedMenu
+    // fsm_mower.add_transition(&state_dockedMenu, &state_docked, FSMEVENT_DOCKED_MENU__TO__DOCKED, NULL);
+    // fsm_mower.add_transition(&state_dockedMenu, &state_exitGarage, FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, NULL);
+    // fsm_mower.add_transition(&state_dockedMenu, &state_testMenu, FSMEVENT_DOCKED_MENU__TO__TEST_MENU, NULL);
+    // fsm_mower.add_transition(&state_dockedMenu, &state_error, FSMEVENT_DOCKED_MENU__TO__ERROR, NULL);
 
-    // findWireForwards
-    fsm_mower.add_transition(&state_findWireForwards, &state_followWire, FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, NULL);
-    fsm_mower.add_transition(&state_findWireForwards, &state_findWireBackwards, FSMEVENT_FIND_WIRE_FORWARDS__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_findWireForwards, &state_parked, FSMEVENT_FIND_WIRE_FORWARDS__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_findWireForwards, &state_error, FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, NULL);
+    // // testMenu
+    // fsm_mower.add_transition(&state_testMenu, &state_dockedMenu, FSMEVENT_TEST_MENU__TO__DOCKED_MENU, NULL);
+    // fsm_mower.add_transition(&state_testMenu, &state_error, FSMEVENT_TEST_MENU__TO__ERROR, NULL);
 
-    // findWireBackwards
-    fsm_mower.add_transition(&state_findWireBackwards, &state_followWire, FSMEVENT_FIND_WIRE_BACKWARDS__TO__FOLLOW_WIRE, NULL);
-    fsm_mower.add_transition(&state_findWireBackwards, &state_findWireForwards, FSMEVENT_FIND_WIRE_BACKWARDS__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_findWireBackwards, &state_parked, FSMEVENT_FIND_WIRE_BACKWARDS__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_findWireBackwards, &state_error, FSMEVENT_FIND_WIRE_BACKWARDS__TO__ERROR, NULL);
+    // // exitGarage
+    // fsm_mower.add_transition(&state_exitGarage, &state_mowing, FSMEVENT_EXIT_GARAGE__TO__MOWING, NULL);
+    // fsm_mower.add_transition(&state_exitGarage, &state_parked, FSMEVENT_EXIT_GARAGE__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_exitGarage, &state_randomRotate, FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, NULL);
+    // fsm_mower.add_transition(&state_exitGarage, &state_findWireForwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_exitGarage, &state_findWireBackwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_exitGarage, &state_rotateToWire, FSMEVENT_EXIT_GARAGE__TO__ROTATE_TO_WIRE, NULL);
+    // fsm_mower.add_transition(&state_exitGarage, &state_error, FSMEVENT_EXIT_GARAGE__TO__ERROR, NULL);
 
-    // followWire
-    fsm_mower.add_transition(&state_followWire, &state_docked, FSMEVENT_FOLLOW_WIRE__TO__DOCKED, NULL);
-    fsm_mower.add_transition(&state_followWire, &state_parked, FSMEVENT_FOLLOW_WIRE__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_followWire, &state_error, FSMEVENT_FOLLOW_WIRE__TO__ERROR, NULL);
-    fsm_mower.add_transition(&state_followWire, &state_wireToGarden, FSMEVENT_FOLLOW_WIRE__TO__WIRE_TO_GARDEN, NULL);
+    // // mowing
+    // fsm_mower.add_transition(&state_mowing, &state_findWireForwards, FSMEVENT_MOWING__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_mowing, &state_findWireBackwards, FSMEVENT_MOWING__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_mowing, &state_parked, FSMEVENT_MOWING__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_mowing, &state_randomRotate, FSMEVENT_MOWING__TO__RANDOM_ROTATE, NULL);
+    // fsm_mower.add_transition(&state_mowing, &state_error, FSMEVENT_MOWING__TO__ERROR, NULL);
 
-    // wireToGarden
-    fsm_mower.add_transition(&state_wireToGarden, &state_mowing, FSMEVENT_WIRE_TO_GARDEN__TO__MOWING, NULL);
-    fsm_mower.add_transition(&state_wireToGarden, &state_parked, FSMEVENT_WIRE_TO_GARDEN__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_wireToGarden, &state_error, FSMEVENT_WIRE_TO_GARDEN__TO__ERROR, NULL);
+    // // parked
+    // fsm_mower.add_transition(&state_parked, &state_parkedMenu, FSMEVENT_PARKED__TO__PARKED_MENU, NULL);
+    // fsm_mower.add_transition(&state_parked, &state_error, FSMEVENT_PARKED__TO__ERROR, NULL);
 
-    // randomRotate
-    fsm_mower.add_transition(&state_randomRotate, &state_mowing, FSMEVENT_RANDOM_ROTATE__TO__MOWING, NULL);
-    fsm_mower.add_transition(&state_randomRotate, &state_parked, FSMEVENT_RANDOM_ROTATE__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_randomRotate, &state_error, FSMEVENT_RANDOM_ROTATE__TO__ERROR, NULL);
+    // // parkedMenu
+    // fsm_mower.add_transition(&state_parkedMenu, &state_parked, FSMEVENT_PARKED_MENU__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_followWire, FSMEVENT_PARKED_MENU__TO__FOLLOW_WIRE, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_PARKED_MENU__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_PARKED_MENU__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_randomRotate, FSMEVENT_PARKED_MENU__TO__RANDOM_ROTATE, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_error, FSMEVENT_PARKED_MENU__TO__ERROR, NULL);
+    // // continue from parking
+    // fsm_mower.add_transition(&state_parkedMenu, &state_exitGarage, FSMEVENT_DOCKED_MENU__TO__EXIT_GARAGE, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_mowing, FSMEVENT_EXIT_GARAGE__TO__MOWING, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_mowing, FSMEVENT_WIRE_TO_GARDEN__TO__MOWING, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_randomRotate, FSMEVENT_EXIT_GARAGE__TO__RANDOM_ROTATE, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_randomRotate, FSMEVENT_MOWING__TO__RANDOM_ROTATE, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_MOWING__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireForwards, FSMEVENT_FIND_WIRE_BACKWARDS__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_FIND_WIRE_FORWARDS__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_EXIT_GARAGE__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_MOWING__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_findWireBackwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_followWire, FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_wireToGarden, FSMEVENT_FOLLOW_WIRE__TO__WIRE_TO_GARDEN, NULL);
+    // fsm_mower.add_transition(&state_parkedMenu, &state_rotateToWire, FSMEVENT_EXIT_GARAGE__TO__ROTATE_TO_WIRE, NULL);
 
-    // wireToGarden
-    fsm_mower.add_transition(&state_wireToGarden, &state_mowing, FSMEVENT_WIRE_TO_GARDEN__TO__MOWING, NULL);
-    fsm_mower.add_transition(&state_wireToGarden, &state_parked, FSMEVENT_WIRE_TO_GARDEN__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_wireToGarden, &state_error, FSMEVENT_WIRE_TO_GARDEN__TO__ERROR, NULL);
+    // // findWireForwards
+    // fsm_mower.add_transition(&state_findWireForwards, &state_followWire, FSMEVENT_FIND_WIRE_FORWARDS__TO__FOLLOW_WIRE, NULL);
+    // fsm_mower.add_transition(&state_findWireForwards, &state_findWireBackwards, FSMEVENT_FIND_WIRE_FORWARDS__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_findWireForwards, &state_parked, FSMEVENT_FIND_WIRE_FORWARDS__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_findWireForwards, &state_error, FSMEVENT_FIND_WIRE_FORWARDS__TO__ERROR, NULL);
 
-    // rotateToWire
-    fsm_mower.add_transition(&state_rotateToWire, &state_findWireForwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS, NULL);
-    fsm_mower.add_transition(&state_rotateToWire, &state_findWireBackwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_BACKWARDS, NULL);
-    fsm_mower.add_transition(&state_rotateToWire, &state_parked, FSMEVENT_ROTATE_TO_WIRE__TO__PARKED, NULL);
-    fsm_mower.add_transition(&state_rotateToWire, &state_error, FSMEVENT_ROTATE_TO_WIRE__TO__ERROR, NULL);
+    // // findWireBackwards
+    // fsm_mower.add_transition(&state_findWireBackwards, &state_followWire, FSMEVENT_FIND_WIRE_BACKWARDS__TO__FOLLOW_WIRE, NULL);
+    // fsm_mower.add_transition(&state_findWireBackwards, &state_findWireForwards, FSMEVENT_FIND_WIRE_BACKWARDS__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_findWireBackwards, &state_parked, FSMEVENT_FIND_WIRE_BACKWARDS__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_findWireBackwards, &state_error, FSMEVENT_FIND_WIRE_BACKWARDS__TO__ERROR, NULL);
 
-    // error
-    fsm_mower.add_transition(&state_error, &state_parked, FSMEVENT_ERROR__TO__PARKED, NULL);
+    // // followWire
+    // fsm_mower.add_transition(&state_followWire, &state_docked, FSMEVENT_FOLLOW_WIRE__TO__DOCKED, NULL);
+    // fsm_mower.add_transition(&state_followWire, &state_parked, FSMEVENT_FOLLOW_WIRE__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_followWire, &state_error, FSMEVENT_FOLLOW_WIRE__TO__ERROR, NULL);
+    // fsm_mower.add_transition(&state_followWire, &state_wireToGarden, FSMEVENT_FOLLOW_WIRE__TO__WIRE_TO_GARDEN, NULL);
+
+    // // wireToGarden
+    // fsm_mower.add_transition(&state_wireToGarden, &state_mowing, FSMEVENT_WIRE_TO_GARDEN__TO__MOWING, NULL);
+    // fsm_mower.add_transition(&state_wireToGarden, &state_parked, FSMEVENT_WIRE_TO_GARDEN__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_wireToGarden, &state_error, FSMEVENT_WIRE_TO_GARDEN__TO__ERROR, NULL);
+
+    // // randomRotate
+    // fsm_mower.add_transition(&state_randomRotate, &state_mowing, FSMEVENT_RANDOM_ROTATE__TO__MOWING, NULL);
+    // fsm_mower.add_transition(&state_randomRotate, &state_parked, FSMEVENT_RANDOM_ROTATE__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_randomRotate, &state_error, FSMEVENT_RANDOM_ROTATE__TO__ERROR, NULL);
+
+    // // wireToGarden
+    // fsm_mower.add_transition(&state_wireToGarden, &state_mowing, FSMEVENT_WIRE_TO_GARDEN__TO__MOWING, NULL);
+    // fsm_mower.add_transition(&state_wireToGarden, &state_parked, FSMEVENT_WIRE_TO_GARDEN__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_wireToGarden, &state_error, FSMEVENT_WIRE_TO_GARDEN__TO__ERROR, NULL);
+
+    // // rotateToWire
+    // fsm_mower.add_transition(&state_rotateToWire, &state_findWireForwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_FORWARDS, NULL);
+    // fsm_mower.add_transition(&state_rotateToWire, &state_findWireBackwards, FSMEVENT_ROTATE_TO_WIRE__TO__FIND_WIRE_BACKWARDS, NULL);
+    // fsm_mower.add_transition(&state_rotateToWire, &state_parked, FSMEVENT_ROTATE_TO_WIRE__TO__PARKED, NULL);
+    // fsm_mower.add_transition(&state_rotateToWire, &state_error, FSMEVENT_ROTATE_TO_WIRE__TO__ERROR, NULL);
+
+    // // error
+    // fsm_mower.add_transition(&state_error, &state_parked, FSMEVENT_ERROR__TO__PARKED, NULL);
 }
 
 void Loop_FSM() {

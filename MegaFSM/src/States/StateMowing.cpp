@@ -19,7 +19,8 @@ void read_mowing_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(FSMEVENT_MOWING__TO__PARKED, currentFSMSequence);
+        int stateId = (String(STATE_MOWING) + String(9999) + String(STATE_PARKED)).toInt();
+        Trigger_FSM(stateId, currentFSMSequence);
         return;
     }
 }
@@ -55,7 +56,12 @@ void mowing() {
 
             if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 ||
                 currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
-                Trigger_FSM(FSMEVENT_MOWING__TO__RANDOM_ROTATE, currentFSMSequence);
+                int stateId = (String(STATE_MOWING) + String(9999) + String(STATE_RANDOM_ROTATE)).toInt();
+                Trigger_FSM(stateId, currentFSMSequence);
+                return;
+            } else {
+                int stateId = (String(STATE_MOWING) + String(9999) + String(STATE_ERROR)).toInt();
+                Trigger_FSM(stateId, currentFSMSequence);
                 return;
             }
         }
