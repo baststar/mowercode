@@ -48,8 +48,7 @@ void read_followWire_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_FOLLOW_WIRE) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_PARKED), currentFSMSequence);
         return;
     }
 }
@@ -80,8 +79,7 @@ void followWire() {
 
     UpdateVoltAmpCharge();
     if (IsCharging()) {
-        int stateId = (String(STATE_FOLLOW_WIRE) + String(9999) + String(STATE_DOCKED)).toInt();
-        Trigger_FSM(stateId, -1);
+        Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_DOCKED), -1);
         return;
     }
 
@@ -187,14 +185,12 @@ void followWire() {
 
     if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1) {
         if ((currentTimeFollowWire - startTimeFollowWire) >= FOLLOW_WIRE_ZONE_1_TIME) {
-            int stateId = (String(STATE_FOLLOW_WIRE) + String(9999) + String(STATE_WIRE_TO_GARDEN)).toInt();
-            Trigger_FSM(stateId, currentFSMSequence);
+            Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN), currentFSMSequence);
             return;
         }
     } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
         if ((currentTimeFollowWire - startTimeFollowWire) >= FOLLOW_WIRE_ZONE_2_TIME) {
-            int stateId = (String(STATE_FOLLOW_WIRE) + String(9999) + String(STATE_WIRE_TO_GARDEN)).toInt();
-            Trigger_FSM(stateId, currentFSMSequence);
+            Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN), currentFSMSequence);
             return;
         }
     }

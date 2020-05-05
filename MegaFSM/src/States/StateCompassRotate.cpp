@@ -9,8 +9,7 @@ void read_compassRotate_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_COMPASS_ROTATE) + 9999 + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_COMPASS_ROTATE, STATE_PARKED), currentFSMSequence);
         return;
     }
 }

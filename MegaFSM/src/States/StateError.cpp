@@ -12,8 +12,7 @@ void read_error_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_ERROR) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_ERROR, STATE_PARKED), currentFSMSequence);
         return;
     }
 }
@@ -28,8 +27,7 @@ void error() {
     lcd.setCursor(0, 1);
 
     if (StopKey_pressed == 0) {
-        int stateId = (String(STATE_ERROR) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, -1);
+        Trigger_FSM(BuildStateTransitionId(STATE_ERROR, STATE_PARKED), -1);
         return;
     }
 

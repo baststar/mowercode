@@ -11,8 +11,7 @@
 void read_docked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
-        int stateId = (String(STATE_DOCKED) + String(9999) + String(STATE_DOCKED_MENU)).toInt();
-        Trigger_FSM(stateId, -1);
+        Trigger_FSM(BuildStateTransitionId(STATE_DOCKED, STATE_DOCKED_MENU), -1);
         return;
     }
 }

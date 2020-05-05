@@ -17,8 +17,7 @@ void read_wireToGarden_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_WIRE_TO_GARDEN) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_PARKED), currentFSMSequence);
         return;
     }
 }
@@ -54,8 +53,7 @@ void wireToGarden() {
     }
 
     if ((currentTimeWireToGarden - startTimeWireToGarden) >= (WIRE_INTO_TO_GARDEN_TIME + ROTATE_FROM_WIRE_TO_GARDEN_TIME)) {
-        int stateId = (String(STATE_WIRE_TO_GARDEN) + String(9999) + String(STATE_MOWING)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_MOWING), currentFSMSequence);
         return;
     }
 

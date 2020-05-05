@@ -16,8 +16,7 @@ void read_parkedMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_PARKED_MENU) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_PARKED_MENU, STATE_PARKED), currentFSMSequence);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(100);
@@ -42,8 +41,7 @@ void read_parkedMenu_keys() {
             Trigger_FSM(beforeMenuFSMEvent, currentFSMSequence);
             return;
         } else if (parkedMenu_currentMenu == 1) {
-            int stateId = (String(STATE_PARKED_MENU) + String(9999) + String(STATE_FIND_WIRE_FORWARDS)).toInt();
-            Trigger_FSM(stateId, FSMSEQUENCE_FOLLOW_WIRE);
+            Trigger_FSM(BuildStateTransitionId(STATE_PARKED_MENU, STATE_FIND_WIRE_FORWARDS), FSMSEQUENCE_FOLLOW_WIRE);
             return;
         }
     }

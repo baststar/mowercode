@@ -18,8 +18,7 @@ void read_randomRotate_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_RANDOM_ROTATE) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_PARKED), currentFSMSequence);
         return;
     }
     lastRotation = millis();
@@ -51,12 +50,10 @@ void randomRotate() {
     if (currentRotationTime >= maxRotationTime) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 ||
             currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
-            int stateId = (String(STATE_RANDOM_ROTATE) + String(9999) + String(STATE_MOWING)).toInt();
-            Trigger_FSM(stateId, currentFSMSequence);
+            Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_MOWING), currentFSMSequence);
             return;
         } else {
-            int stateId = (String(STATE_RANDOM_ROTATE) + String(9999) + String(STATE_ERROR)).toInt();
-            Trigger_FSM(stateId, currentFSMSequence);
+            Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_ERROR), currentFSMSequence);
             return;
         }
     }

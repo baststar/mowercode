@@ -17,8 +17,7 @@ void read_testMenu_keys() {
     if (StopKey_pressed == 0) {
         delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_TEST_MENU) + String(9999) + String(STATE_DOCKED_MENU)).toInt();
-        Trigger_FSM(stateId, -1);
+        Trigger_FSM(BuildStateTransitionId(STATE_TEST_MENU, STATE_DOCKED_MENU), -1);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(100);

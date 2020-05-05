@@ -59,7 +59,7 @@ void UpdateVoltAmpCharge() {
 }
 
 bool IsCharging() {
-    return Amps > 0.4;
+    return Amps > 0.6;
 }
 
 float GetBatteryVolt() {

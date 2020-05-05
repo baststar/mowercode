@@ -19,8 +19,7 @@ void read_findWireBackwards_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         beforeMenuFSMEvent = currentFSMEvent;
-        int stateId = (String(STATE_FIND_WIRE_BACKWARDS) + String(9999) + String(STATE_PARKED)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_PARKED), currentFSMSequence);
         return;
     }
 }
@@ -41,8 +40,7 @@ void findWireBackwards() {
 
     wireActivefindWireBackwards = IsBounderyWireActive();
     if (wireActivefindWireBackwards == false) {
-        int stateId = (String(STATE_FIND_WIRE_BACKWARDS) + String(9999) + String(STATE_ERROR)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR), currentFSMSequence);
         return;
     }
 
@@ -55,16 +53,14 @@ void findWireBackwards() {
     if (MowerIsInsideWire() == false) {
         // DRIVEN OVER THE WIRE -> WIRE FOUND
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
-            int stateId = (String(STATE_FIND_WIRE_BACKWARDS) + String(9999) + String(STATE_FOLLOW_WIRE)).toInt();
-            Trigger_FSM(stateId, currentFSMSequence);
+            Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_FOLLOW_WIRE), currentFSMSequence);
             return;
         }
     }
 
     currentTimefindWireBackwards = millis();
     if ((currentTimefindWireBackwards - startTimefindWireBackwards) >= FIND_WIRE_SEARCH_TIME_MAX) {
-        int stateId = (String(STATE_FIND_WIRE_BACKWARDS) + String(9999) + String(STATE_ERROR)).toInt();
-        Trigger_FSM(stateId, currentFSMSequence);
+        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR), currentFSMSequence);
         return;
     }
 }
