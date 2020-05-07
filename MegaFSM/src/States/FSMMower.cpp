@@ -3,9 +3,15 @@
 #include <LCD.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
+#include <States/Menus/StateDockedMenu.h>
+#include <States/Menus/StateParkedMenu.h>
+#include <States/Menus/StateSettingsMenu.h>
+#include <States/Menus/StateSettingsMotorspeedsMenu.h>
+#include <States/Menus/StateSettingsPerimeterMenu.h>
+#include <States/Menus/StateSettingsTimesMenu.h>
+#include <States/Menus/StateTestMenu.h>
 #include <States/StateCompassRotate.h>
 #include <States/StateDocked.h>
-#include <States/StateDockedMenu.h>
 #include <States/StateError.h>
 #include <States/StateExitGarage.h>
 #include <States/StateFindWireBackwards.h>
@@ -13,16 +19,13 @@
 #include <States/StateFollowWire.h>
 #include <States/StateMowing.h>
 #include <States/StateParked.h>
-#include <States/StateParkedMenu.h>
 #include <States/StateRandomRotate.h>
 #include <States/StateRotateToWire.h>
-#include <States/StateSettingsMenu.h>
-#include <States/StateSettingsMotorspeedsMenu.h>
-#include <States/StateSettingsPerimeterMenu.h>
-#include <States/StateSettingsTimesMenu.h>
-#include <States/StateTestMenu.h>
 #include <States/StateWireToGarden.h>
 #include <config.h>
+
+
+
 
 int currentFSMEvent = -1;
 int lastFSMEvent = -1;

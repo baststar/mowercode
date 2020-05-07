@@ -1,16 +1,16 @@
 #pragma once
 
-// PERIMETER IS CLOCKWISE (true) OR COUNTERCLOCKWISE (false) FROM GARAGE
-#define PERIMETER_IS_CLOCKWISE_FROM_GARAGE true
+// PERIMETER IS CLOCKWISE (1) OR COUNTERCLOCKWISE (0) FROM GARAGE
+#define PERIMETER_IS_CLOCKWISE_FROM_GARAGE 1
 // MAX MAGNITUDE TO MEASURE LEFT OR RIGHT FROM CABLE TO FOLLOW THE PERIMETER
 // The magnitude 10cm left and 10cm right from wire - view magnitude in testmenu->wire
 // Adjust on the potentiometer on the sensor and here
 #define MAX_TRACKING_WIRE_MAGNITUDE_INSIDE 1100
 #define MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE 700
-#define MAX_SAME_SITE_TRACKING_WIRE_TIME 2000 // time until mower makes strong turns while following wire and dont passes the wire from left or right
+#define MAX_SAME_SIDE_TRACKING_WIRE_TIME 2000 // time until mower makes strong turns while following wire and dont passes the wire from left or right
 
 // TIMES in milliseconds
-#define EXIT_GARAGE_BACKWARDS_TIME 8000
+#define EXIT_GARAGE_BACKWARDS_TIME 9000
 #define RANDOM_ROTATE_TIME_MIN 800
 #define RANDOM_ROTATE_TIME_MAX 1300
 #define ROTATE_FROM_EXIT_GARAGE_TO_WIRE_TIME 1000
@@ -23,7 +23,7 @@
 // MAX MOTOR SPEEDS
 #define PWM_MAXSPEED_RIGHT 242
 #define PWM_MAXSPEED_LEFT 255
-#define PWM_SLOWSPEED_SUBSTRACTION 100
+#define PWM_SLOWSPEED 160
 #define PWM_BLADESPEED 255
 
 // ARDUINO MEGA PINS

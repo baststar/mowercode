@@ -1,3 +1,4 @@
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
@@ -38,10 +39,10 @@ void exitGarage_on_enter() {
 void exitGarage() {
     read_exitGarage_keys();
     lcd.setCursor(0, 0);
-    lcd.print("exitGarage...             ");
+    lcd.print("exitGarage             ");
 
     currentTimeExitGarage = millis();
-    if ((currentTimeExitGarage - startTimeExitGarage) >= EXIT_GARAGE_BACKWARDS_TIME) {
+    if ((currentTimeExitGarage - startTimeExitGarage) >= eeprom_exit_garage_backwards_time) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
             Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_ROTATE_TO_WIRE), currentFSMSequence);
             return;

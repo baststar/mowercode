@@ -43,7 +43,7 @@ void mowing_on_enter() {
 void mowing() {
     read_mowing_keys();
     lcd.setCursor(0, 0);
-    lcd.print("mowing...                  ");
+    lcd.print("mowing                  ");
 
     UpdatePerimeterStatus();
 

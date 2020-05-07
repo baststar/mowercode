@@ -1,3 +1,4 @@
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
@@ -7,6 +8,7 @@
 #include <States/FSMSequences.h>
 #include <States/StateRandomRotate.h>
 #include <config.h>
+
 
 
 
@@ -32,8 +34,8 @@ void randomRotate_on_enter() {
     delay(500);
     clearLCD();
     currentRotationTime = 0;
-    maxRotationTime = random(RANDOM_ROTATE_TIME_MIN, RANDOM_ROTATE_TIME_MAX);
-    if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
+    maxRotationTime = random(eeprom_random_rotate_time_min, eeprom_random_rotate_time_max);
+    if (eeprom_perimeter_is_clockwise_from_garage == 1) {
         MotorAction_SetPinsToRotateLeft();
     } else {
         MotorAction_SetPinsToRotateRight();
@@ -44,7 +46,7 @@ void randomRotate() {
 
     read_randomRotate_keys();
     lcd.setCursor(0, 0);
-    lcd.print("randomRotate...                ");
+    lcd.print("randomRotate                ");
 
     currentRotationTime = currentRotationTime + (millis() - lastRotation);
 

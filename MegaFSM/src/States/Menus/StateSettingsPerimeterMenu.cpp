@@ -1,17 +1,15 @@
+#include <CustomFunctions.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
-#include <States/StateSettingsPerimeterMenu.h>
-#include <vector>
-
-using namespace std;
+#include <States/Menus/StateSettingsPerimeterMenu.h>
 
 
 int settingsPerimeterMenu_currentMenu = 0;
-vector<String> settingsPerimeterMenuNames = {"CW from Grarage", "Mag inside", "Mag outside", "Same site time on wire"};
+String settingsPerimeterMenuNames[] = {"CW from Grarage", "Mag inside", "Mag outside", "Same site time on wire"};
 
 void read_settingsPerimeter_keys() {
     Read_Membrane_Keys();
@@ -23,14 +21,14 @@ void read_settingsPerimeter_keys() {
     } else if (PlusKey_pressed == 0) {
         delay(250);
         settingsPerimeterMenu_currentMenu++;
-        if (settingsPerimeterMenu_currentMenu >= settingsPerimeterMenuNames.size()) {
+        if (settingsPerimeterMenu_currentMenu >= ARRAY_SIZE(settingsPerimeterMenuNames)) {
             settingsPerimeterMenu_currentMenu = 0;
         }
     } else if (MinusKey_pressed == 0) {
         delay(250);
         settingsPerimeterMenu_currentMenu--;
         if (settingsPerimeterMenu_currentMenu < 0) {
-            settingsPerimeterMenu_currentMenu = settingsPerimeterMenuNames.size() - 1;
+            settingsPerimeterMenu_currentMenu = ARRAY_SIZE(settingsPerimeterMenuNames) - 1;
         }
     } else if (StartKey_pressed == 0) {
         delay(250);
@@ -59,7 +57,7 @@ void settingsPerimeter_on_enter() {
     settingsPerimeterMenu_currentMenu = 0;
 }
 void settingsPerimeter() {
-    String menuname = GetMenuName(settingsPerimeterMenuNames, settingsPerimeterMenu_currentMenu);
+    String menuname = settingsPerimeterMenuNames[settingsPerimeterMenu_currentMenu];
     lcd.setCursor(0, 0);
     lcd.print(menuname + "           ");
     read_settingsPerimeter_keys();

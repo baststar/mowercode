@@ -1,17 +1,16 @@
+#include <CustomFunctions.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
 #include <MotorActions.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
-#include <States/StateTestMenu.h>
+#include <States/Menus/StateTestMenu.h>
 #include <perimeter.h>
-#include <vector>
 
-using namespace std;
 
 int testMenu_currentMenu = 0;
-vector<String> testMenuNames = {"Test Wire", "Test Relais"};
+String testMenuNames[] = {"Test Wire", "Test Relais"};
 
 void read_testMenu_keys() {
     Read_Membrane_Keys();
@@ -22,14 +21,14 @@ void read_testMenu_keys() {
     } else if (PlusKey_pressed == 0) {
         delay(250);
         testMenu_currentMenu++;
-        if (testMenu_currentMenu >= testMenuNames.size()) {
+        if (testMenu_currentMenu >= ARRAY_SIZE(testMenuNames)) {
             testMenu_currentMenu = 0;
         }
     } else if (MinusKey_pressed == 0) {
         delay(250);
         testMenu_currentMenu--;
         if (testMenu_currentMenu < 0) {
-            testMenu_currentMenu = testMenuNames.size() - 1;
+            testMenu_currentMenu = ARRAY_SIZE(testMenuNames) - 1;
         }
     }
 }
@@ -44,7 +43,7 @@ void testMenu_on_enter() {
 }
 
 void testMenu() {
-    String menuname = GetMenuName(testMenuNames, testMenu_currentMenu);
+    String menuname = testMenuNames[testMenu_currentMenu];
     lcd.setCursor(0, 0);
     lcd.print(menuname + "           ");
 
@@ -56,7 +55,7 @@ void testMenu() {
         lcd.setCursor(0, 1);
         lcd.print("                     ");
     }
-    
+
     read_testMenu_keys();
 }
 void testMenu_on_exit() {

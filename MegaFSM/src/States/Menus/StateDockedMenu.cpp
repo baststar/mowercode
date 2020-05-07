@@ -1,16 +1,15 @@
+#include <CustomFunctions.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
-#include <States/StateDockedMenu.h>
-#include <vector>
+#include <States/Menus/StateDockedMenu.h>
 
-using namespace std;
 
 int dockedMenu_currentMenu = 0;
-vector<String> dockedMenuNames = {"Mow from Zone 1", "Mow from Zone 2", "Quick mowing", "Tests", "Settings"};
+String dockedMenuNames[] = {"Mow from Zone 1", "Mow from Zone 2", "Quick mowing", "Tests...", "Settings..."};
 
 void read_dockedMenu_keys() {
 
@@ -23,14 +22,14 @@ void read_dockedMenu_keys() {
     } else if (PlusKey_pressed == 0) {
         delay(250);
         dockedMenu_currentMenu++;
-        if (dockedMenu_currentMenu >= dockedMenuNames.size()) {
+        if (dockedMenu_currentMenu >= ARRAY_SIZE(dockedMenuNames)) {
             dockedMenu_currentMenu = 0;
         }
     } else if (MinusKey_pressed == 0) {
         delay(250);
         dockedMenu_currentMenu--;
         if (dockedMenu_currentMenu < 0) {
-            dockedMenu_currentMenu = dockedMenuNames.size() - 1;
+            dockedMenu_currentMenu = ARRAY_SIZE(dockedMenuNames) - 1;
         }
     } else if (StartKey_pressed == 0) {
         delay(250);
@@ -62,7 +61,7 @@ void dockedMenu_on_enter() {
     dockedMenu_currentMenu = 0;
 }
 void dockedMenu() {
-    String menuname = GetMenuName(dockedMenuNames, dockedMenu_currentMenu);
+    String menuname = dockedMenuNames[dockedMenu_currentMenu];
     lcd.setCursor(0, 0);
     lcd.print(menuname + "           ");
     read_dockedMenu_keys();

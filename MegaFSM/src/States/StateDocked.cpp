@@ -31,7 +31,7 @@ void docked() {
     read_docked_keys();
     // ScrollRow0Text("docked...", "row2 text");
     lcd.setCursor(0, 0);
-    lcd.print("docked...                ");
+    lcd.print("docked                ");
 }
 
 void docked_on_exit() {

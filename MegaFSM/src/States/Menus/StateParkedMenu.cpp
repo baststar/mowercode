@@ -1,18 +1,16 @@
+#include <CustomFunctions.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
-#include <States/StateParkedMenu.h>
+#include <States/Menus/StateParkedMenu.h>
 #include <config.h>
-#include <vector>
-
-using namespace std;
 
 int parkedMenu_currentMenu = 0;
 
-vector<String> parkedMenuNames = {"Continue", "To garage"};
+String parkedMenuNames[] = {"Continue", "To garage"};
 
 void read_parkedMenu_keys() {
     Read_Membrane_Keys();
@@ -24,14 +22,14 @@ void read_parkedMenu_keys() {
     } else if (PlusKey_pressed == 0) {
         delay(250);
         parkedMenu_currentMenu++;
-        if (parkedMenu_currentMenu >= parkedMenuNames.size()) {
+        if (parkedMenu_currentMenu >= ARRAY_SIZE(parkedMenuNames)) {
             parkedMenu_currentMenu = 0;
         }
     } else if (MinusKey_pressed == 0) {
         delay(250);
         parkedMenu_currentMenu--;
         if (parkedMenu_currentMenu < 0) {
-            parkedMenu_currentMenu = parkedMenuNames.size() - 1;
+            parkedMenu_currentMenu = ARRAY_SIZE(parkedMenuNames) - 1;
         }
     } else if (StartKey_pressed == 0) {
         delay(250);
@@ -59,7 +57,7 @@ void parkedMenu_on_enter() {
     parkedMenu_currentMenu = 0;
 }
 void parkedMenu() {
-    String menuname = GetMenuName(parkedMenuNames, parkedMenu_currentMenu);
+    String menuname = parkedMenuNames[parkedMenu_currentMenu];
     lcd.setCursor(0, 0);
     lcd.print(menuname + "           ");
     read_parkedMenu_keys();

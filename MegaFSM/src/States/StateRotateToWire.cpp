@@ -1,3 +1,4 @@
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
@@ -7,7 +8,6 @@
 #include <States/FSMSequences.h>
 #include <States/StateRotateToWire.h>
 #include <config.h>
-
 
 
 long int startTimeRotateToWire = 0;
@@ -32,7 +32,7 @@ void rotateToWire_on_enter() {
     startTimeRotateToWire = millis();
     currentRotateToWireTime = startTimeRotateToWire;
 
-    if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE) {
+    if (eeprom_perimeter_is_clockwise_from_garage == 1) {
         MotorAction_SetPinsToRotateLeft();
     } else {
         MotorAction_SetPinsToRotateRight();
@@ -43,11 +43,11 @@ void rotateToWire() {
 
     read_rotateToWire_keys();
     lcd.setCursor(0, 0);
-    lcd.print("rotateToWire...                ");
+    lcd.print("rotateToWire                ");
 
     currentRotateToWireTime = millis();
 
-    if ((currentRotateToWireTime - startTimeRotateToWire) >= ROTATE_FROM_EXIT_GARAGE_TO_WIRE_TIME) {
+    if ((currentRotateToWireTime - startTimeRotateToWire) >= eeprom_rotate_from_exit_garage_to_wire_time) {
         if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
             Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_FIND_WIRE_FORWARDS), currentFSMSequence);
             return;

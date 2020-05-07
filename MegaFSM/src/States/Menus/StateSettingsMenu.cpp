@@ -1,18 +1,17 @@
+#include <CustomFunctions.h>
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
-#include <States/StateSettingsMenu.h>
-#include <vector>
-
-using namespace std;
+#include <States/Menus/StateSettingsMenu.h>
 
 
 int settingsMenu_currentMenu = 0;
 
-vector<String> settingsMenuNames = {"Motorspeeds", "Times", "Perimeter"};
+String settingsMenuNames[] = {"Motorspeeds...", "Times...", "Perimeter...", "Reset EEPROM"};
 
 void read_settingsMenu_keys() {
     Read_Membrane_Keys();
@@ -24,14 +23,14 @@ void read_settingsMenu_keys() {
     } else if (PlusKey_pressed == 0) {
         delay(250);
         settingsMenu_currentMenu++;
-        if (settingsMenu_currentMenu >= settingsMenuNames.size()) {
+        if (settingsMenu_currentMenu >= ARRAY_SIZE(settingsMenuNames)) {
             settingsMenu_currentMenu = 0;
         }
     } else if (MinusKey_pressed == 0) {
         delay(250);
         settingsMenu_currentMenu--;
         if (settingsMenu_currentMenu < 0) {
-            settingsMenu_currentMenu = settingsMenuNames.size() - 1;
+            settingsMenu_currentMenu = ARRAY_SIZE(settingsMenuNames) - 1;
         }
     } else if (StartKey_pressed == 0) {
         delay(250);
@@ -45,7 +44,8 @@ void read_settingsMenu_keys() {
             // Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING);
             return;
         } else if (settingsMenu_currentMenu == 3) {
-            // Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_TEST_MENU), -1);
+            ResetEEPROM();
+            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_DOCKED), -1);
             return;
         }
     }
@@ -60,8 +60,14 @@ void settingsMenu_on_enter() {
     settingsMenu_currentMenu = 0;
 }
 void settingsMenu() {
-    String menuname = GetMenuName(settingsMenuNames, settingsMenu_currentMenu);
+    String menuname = settingsMenuNames[settingsMenu_currentMenu];
     lcd.setCursor(0, 0);
+
+    if (settingsMenu_currentMenu == 3) {
+        lcd.write(126);
+        lcd.print(" ");
+    }
+
     lcd.print(menuname + "           ");
     read_settingsMenu_keys();
 }

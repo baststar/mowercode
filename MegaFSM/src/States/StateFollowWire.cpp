@@ -1,3 +1,4 @@
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
@@ -11,6 +12,7 @@
 #include <perimeter.h>
 
 
+
 long int startTimeFollowWire = 0;
 long int currentTimeFollowWire = 0;
 long int lastTimeFollowWire = 0;
@@ -19,8 +21,10 @@ bool lastInside = false;
 long int onSameSiteMillis = 0;
 int motorLeftSpeed = 0;
 int motorRightSpeed = 0;
-int slowSpeedLeft = PWM_MAXSPEED_LEFT - PWM_SLOWSPEED_SUBSTRACTION;
-int slowSpeedRight = PWM_MAXSPEED_RIGHT - PWM_SLOWSPEED_SUBSTRACTION;
+
+
+int slowSpeedRight = eeprom_pwm_slowspeed - (255 - eeprom_pwm_maxspeed_right);
+int slowSpeedLeft = eeprom_pwm_slowspeed - (255 - eeprom_pwm_maxspeed_left);
 
 int sFunction(int magnitude, int maxMagnitudeInside, int maxMagnitudeOutside, int maxSpeed) {
 
@@ -74,7 +78,7 @@ void followWire_on_enter() {
 void followWire() {
 
     lcd.setCursor(0, 0);
-    lcd.print("followWire...                ");
+    lcd.print("followWire                ");
 
     read_followWire_keys();
 
@@ -103,9 +107,9 @@ void followWire() {
             onSameSiteMillis = onSameSiteMillis + (currentTimeFollowWire - lastTimeFollowWire);
         }
 
-        if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
+        if (eeprom_perimeter_is_clockwise_from_garage == 1) {
             motorRightSpeed = slowSpeedRight;
-            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedLeft);
+            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, eeprom_max_tracking_wire_magnitude_inside, eeprom_max_tracking_wire_magnitude_outside, slowSpeedLeft);
 
             if (motorLeftSpeed < 0) {
                 motorLeftSpeed = 0;
@@ -113,7 +117,7 @@ void followWire() {
                 motorLeftSpeed = slowSpeedLeft;
             }
 
-            if (onSameSiteMillis > MAX_SAME_SITE_TRACKING_WIRE_TIME) {
+            if (onSameSiteMillis > eeprom_max_same_side_tracking_wire_time) {
                 MotorAction_SetPinsToRotateLeft();
                 motorLeftSpeed = slowSpeedLeft;
                 motorRightSpeed = slowSpeedRight;
@@ -124,14 +128,14 @@ void followWire() {
         } else {
 
             motorLeftSpeed = slowSpeedLeft;
-            motorRightSpeed = slowSpeedRight - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedRight);
+            motorRightSpeed = slowSpeedRight - sFunction(magnitude, eeprom_max_tracking_wire_magnitude_inside, eeprom_max_tracking_wire_magnitude_outside, slowSpeedRight);
             if (motorRightSpeed < 0) {
                 motorRightSpeed = 0;
             } else if (motorRightSpeed > slowSpeedRight) {
                 motorRightSpeed = slowSpeedRight;
             }
 
-            if (onSameSiteMillis > MAX_SAME_SITE_TRACKING_WIRE_TIME) {
+            if (onSameSiteMillis > eeprom_max_same_side_tracking_wire_time) {
                 MotorAction_SetPinsToRotateRight();
                 motorLeftSpeed = slowSpeedLeft;
                 motorRightSpeed = slowSpeedRight;
@@ -149,10 +153,10 @@ void followWire() {
             onSameSiteMillis = onSameSiteMillis + (currentTimeFollowWire - lastTimeFollowWire);
         }
 
-        if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
+        if (eeprom_perimeter_is_clockwise_from_garage == 1) {
 
             motorLeftSpeed = slowSpeedLeft;
-            motorRightSpeed = slowSpeedRight - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedRight);
+            motorRightSpeed = slowSpeedRight - sFunction(magnitude, eeprom_max_tracking_wire_magnitude_inside, eeprom_max_tracking_wire_magnitude_outside, slowSpeedRight);
 
             if (motorRightSpeed < 0) {
                 motorRightSpeed = 0;
@@ -160,7 +164,7 @@ void followWire() {
                 motorRightSpeed = slowSpeedRight;
             }
 
-            if (onSameSiteMillis > MAX_SAME_SITE_TRACKING_WIRE_TIME) {
+            if (onSameSiteMillis > eeprom_max_same_side_tracking_wire_time) {
                 MotorAction_SetPinsToRotateRight();
                 motorLeftSpeed = slowSpeedLeft;
                 motorRightSpeed = slowSpeedRight;
@@ -171,14 +175,14 @@ void followWire() {
         } else {
 
             motorRightSpeed = slowSpeedRight;
-            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, slowSpeedLeft);
+            motorLeftSpeed = slowSpeedLeft - sFunction(magnitude, eeprom_max_tracking_wire_magnitude_inside, eeprom_max_tracking_wire_magnitude_outside, slowSpeedLeft);
             if (motorLeftSpeed < 0) {
                 motorLeftSpeed = 0;
             } else if (motorLeftSpeed > slowSpeedLeft) {
                 motorLeftSpeed = slowSpeedLeft;
             }
 
-            if (onSameSiteMillis > MAX_SAME_SITE_TRACKING_WIRE_TIME) {
+            if (onSameSiteMillis > eeprom_max_same_side_tracking_wire_time) {
                 MotorAction_SetPinsToRotateLeft();
                 motorLeftSpeed = slowSpeedLeft;
                 motorRightSpeed = slowSpeedRight;
@@ -189,12 +193,12 @@ void followWire() {
     }
 
     if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1) {
-        if ((currentTimeFollowWire - startTimeFollowWire) >= FOLLOW_WIRE_ZONE_1_TIME) {
+        if ((currentTimeFollowWire - startTimeFollowWire) >= eeprom_follow_wire_zone_1_time) {
             Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN), currentFSMSequence);
             return;
         }
     } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
-        if ((currentTimeFollowWire - startTimeFollowWire) >= FOLLOW_WIRE_ZONE_2_TIME) {
+        if ((currentTimeFollowWire - startTimeFollowWire) >= eeprom_follow_wire_zone_2_time) {
             Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN), currentFSMSequence);
             return;
         }

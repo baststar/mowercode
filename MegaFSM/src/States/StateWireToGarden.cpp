@@ -1,3 +1,4 @@
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
@@ -7,6 +8,7 @@
 #include <States/FSMSequences.h>
 #include <States/StateWireToGarden.h>
 #include <config.h>
+
 
 
 long int startTimeWireToGarden = 0;
@@ -39,12 +41,12 @@ void wireToGarden() {
 
     read_wireToGarden_keys();
     lcd.setCursor(0, 0);
-    lcd.print("wireToGarden...                     ");
+    lcd.print("wireToGarden                     ");
 
     currentTimeWireToGarden = millis();
 
-    if (currentTimeWireToGarden - startTimeWireToGarden < ROTATE_FROM_WIRE_TO_GARDEN_TIME) {
-        if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
+    if (currentTimeWireToGarden - startTimeWireToGarden < eeprom_rotate_from_wire_to_garden_time) {
+        if (eeprom_perimeter_is_clockwise_from_garage == 1) {
             MotorAction_SetPinsToRotateLeft();
         } else {
             MotorAction_SetPinsToRotateRight();
@@ -53,7 +55,7 @@ void wireToGarden() {
         MotorAction_SetPinsToGoForward();
     }
 
-    if ((currentTimeWireToGarden - startTimeWireToGarden) >= (WIRE_INTO_TO_GARDEN_TIME + ROTATE_FROM_WIRE_TO_GARDEN_TIME)) {
+    if ((currentTimeWireToGarden - startTimeWireToGarden) >= (eeprom_wire_into_garden_time + eeprom_rotate_from_wire_to_garden_time)) {
         Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_MOWING), currentFSMSequence);
         return;
     }

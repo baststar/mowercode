@@ -1,13 +1,15 @@
 #include <Arduino.h>
+#include <EEPROMVariables.h>
 #include <MotorActions.h>
 #include <config.h>
+
 
 bool isForwardMovement = true;
 
 void MotorAction_GoFullSpeed() {
 
-    int leftSpeed = PWM_MAXSPEED_LEFT;
-    int rightSpeed = PWM_MAXSPEED_RIGHT;
+    int leftSpeed = eeprom_pwm_maxspeed_left;
+    int rightSpeed = eeprom_pwm_maxspeed_right;
 
     if (isForwardMovement == false) {
         int tmp = leftSpeed;
@@ -21,8 +23,8 @@ void MotorAction_GoFullSpeed() {
 
 void MotorAction_GoSlowSpeed() {
 
-    int leftSpeed = PWM_MAXSPEED_LEFT;
-    int rightSpeed = PWM_MAXSPEED_RIGHT;
+    int leftSpeed = eeprom_pwm_maxspeed_left;
+    int rightSpeed = eeprom_pwm_maxspeed_right;
 
     if (isForwardMovement == false) {
         int tmp = leftSpeed;
@@ -30,8 +32,11 @@ void MotorAction_GoSlowSpeed() {
         rightSpeed = tmp;
     }
 
-    analogWrite(PIN_ENA, rightSpeed - PWM_SLOWSPEED_SUBSTRACTION);
-    analogWrite(PIN_ENB, leftSpeed - PWM_SLOWSPEED_SUBSTRACTION);
+    int rightSlowSpeed = eeprom_pwm_slowspeed - (255 - rightSpeed);
+    int leftSlowSpeed = eeprom_pwm_slowspeed - (255 - leftSpeed);
+
+    analogWrite(PIN_ENA, rightSlowSpeed);
+    analogWrite(PIN_ENB, leftSlowSpeed);
 }
 
 void MotorAction_GoPWMSpeed(int leftSpeed, int rightSpeed) {
@@ -88,7 +93,7 @@ void MotorAction_SetPinsToRotateRight() {
 void MotorAction_StartBlades() {
     digitalWrite(PIN_R_EN, HIGH);
     digitalWrite(PIN_L_EN, HIGH);
-    analogWrite(PIN_RPWM, PWM_BLADESPEED);
+    analogWrite(PIN_RPWM, eeprom_pwm_bladespeed);
 }
 
 void MotorAction_StopBlades() {

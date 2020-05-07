@@ -29,7 +29,7 @@ void parked_on_enter() {
 void parked() {
     read_parked_keys();
     lcd.setCursor(0, 0);
-    lcd.print("parked...                  ");
+    lcd.print("parked                  ");
 }
 
 void parked_on_exit() {

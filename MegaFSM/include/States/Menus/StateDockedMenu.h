@@ -6,6 +6,6 @@
 using namespace std;
 
 extern int dockedMenu_currentMenu;
-extern vector<String> dockedMenuNames;
+extern String dockedMenuNames[];
 
 extern State state_dockedMenu;

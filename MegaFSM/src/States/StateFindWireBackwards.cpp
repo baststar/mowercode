@@ -1,3 +1,4 @@
+#include <EEPROMVariables.h>
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
@@ -47,7 +48,7 @@ void findWireBackwards() {
 
     read_findWireBackwards_keys();
     lcd.setCursor(0, 0);
-    lcd.print("findWireBackwards...             ");
+    lcd.print("findWireBackwards             ");
 
     UpdatePerimeterStatus();
 
@@ -60,7 +61,7 @@ void findWireBackwards() {
     }
 
     currentTimefindWireBackwards = millis();
-    if ((currentTimefindWireBackwards - startTimefindWireBackwards) >= FIND_WIRE_SEARCH_TIME_MAX) {
+    if ((currentTimefindWireBackwards - startTimefindWireBackwards) >= eeprom_find_wire_search_time_max) {
         Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR), currentFSMSequence);
         return;
     }

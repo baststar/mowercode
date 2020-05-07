@@ -1,16 +1,8 @@
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>
-#include <States/StateDockedMenu.h>
-#include <States/StateParkedMenu.h>
-#include <States/StateSettingsMenu.h>
-#include <States/StateSettingsMotorspeedsMenu.h>
-#include <States/StateSettingsPerimeterMenu.h>
-#include <States/StateSettingsTimesMenu.h>
-#include <States/StateTestMenu.h>
 #include <config.h>
-#include <vector>
 
-using namespace std;
+#define ARRAY_SIZE(x) sizeof(x) / sizeof(x[0])
 
 #define LCD_COLS 16
 #define LCD_ROWS 2
@@ -24,16 +16,6 @@ LiquidCrystal_I2C lcd(lcd_Addr, en, rw, rs, db4, db5, db6, db7, bl, POSITIVE);
 void Setup_LCD() {
     lcd.begin(LCD_COLS, LCD_ROWS);
     clearLCD();
-}
-
-String GetMenuName(vector<String> menu, int menuindex) {
-    int n = menu.size();
-    if (menuindex < 0) {
-        menuindex = n - 1;
-    } else if (menuindex > n - 1) {
-        menuindex = 0;
-    }
-    return menu.at(menuindex);
 }
 
 int scrollTextPosition = 0;
@@ -106,4 +88,11 @@ void ScrollRow0Text(String row0text, String row1Text) {
             }
         }
     }
+}
+
+void ShowError(String errormessage) {
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print(errormessage + "                ");
+    delay(2000);
 }
