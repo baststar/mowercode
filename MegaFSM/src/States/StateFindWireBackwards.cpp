@@ -18,6 +18,7 @@ bool wireActivefindWireBackwards = false;
 void read_findWireBackwards_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_PARKED), currentFSMSequence);
         return;
@@ -25,11 +26,11 @@ void read_findWireBackwards_keys() {
 }
 
 void findWireBackwards_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("FIND WIRE BACKWARDS            ");
     delay(500);
-    lcd.clear();
+    clearLCD();
     startTimefindWireBackwards = millis();
     currentTimefindWireBackwards = startTimefindWireBackwards;
     MotorAction_SetPinsToGoForward();
@@ -68,7 +69,7 @@ void findWireBackwards() {
 void findWireBackwards_on_exit() {
     MotorAction_StopMotors();
     MotorAction_SetPinsToGoForward();
-    lcd.clear();
+    clearLCD();
     startTimefindWireBackwards = 0;
     currentTimefindWireBackwards = 0;
 }

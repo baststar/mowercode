@@ -23,6 +23,7 @@ long int insideFalseTimeToBeOutsideMax = 550;
 void read_findWireForwards_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_PARKED), currentFSMSequence);
         return;
@@ -30,11 +31,11 @@ void read_findWireForwards_keys() {
 }
 
 void findWireForwards_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("FIND WIRE FORWARDS             ");
-    delay(500);
-    lcd.clear();
+    delay(2000);
+    clearLCD();
     startTimefindWireForwards = millis();
     currentTimefindWireForwards = startTimefindWireForwards;
     lastTimeFindWireForwards = startTimefindWireForwards;
@@ -81,6 +82,8 @@ void findWireForwards() {
             if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
                 Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_FOLLOW_WIRE), currentFSMSequence);
                 return;
+            } else {
+                Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_ERROR), currentFSMSequence);
             }
         }
     } else {
@@ -91,7 +94,7 @@ void findWireForwards() {
 
 void findWireForwards_on_exit() {
     MotorAction_StopMotors();
-    lcd.clear();
+    clearLCD();
     startTimefindWireForwards = 0;
     currentTimefindWireForwards = 0;
 }

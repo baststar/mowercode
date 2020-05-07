@@ -16,6 +16,7 @@ long int lastTimeCheckedWireToGardenRotation = 0;
 void read_wireToGarden_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_PARKED), currentFSMSequence);
         return;
@@ -23,11 +24,11 @@ void read_wireToGarden_keys() {
 }
 
 void wireToGarden_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("WIRE TO GARDEN                 ");
     delay(500);
-    lcd.clear();
+    clearLCD();
     startTimeWireToGarden = millis();
     currentTimeWireToGarden = startTimeWireToGarden;
     lastTimeCheckedWireToGardenRotation = startTimeWireToGarden;
@@ -62,7 +63,7 @@ void wireToGarden() {
 
 void wireToGarden_on_exit() {
     MotorAction_StopMotors();
-    lcd.clear();
+    clearLCD();
     startTimeWireToGarden = 0;
     currentTimeWireToGarden = 0;
 }

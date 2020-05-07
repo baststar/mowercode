@@ -10,6 +10,7 @@
 void read_parked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
+        delay(100);
         Trigger_FSM(BuildStateTransitionId(STATE_PARKED, STATE_PARKED_MENU), currentFSMSequence);
         return;
     }
@@ -18,11 +19,11 @@ void read_parked_keys() {
 void parked_on_enter() {
     MotorAction_StopMotors();
     MotorAction_StopBlades();
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("PARKED                     ");
     delay(500);
-    lcd.clear();
+    clearLCD();
 }
 
 void parked() {
@@ -32,7 +33,7 @@ void parked() {
 }
 
 void parked_on_exit() {
-    lcd.clear();
+    clearLCD();
 }
 
 State state_parked(&parked_on_enter, &parked, &parked_on_exit);

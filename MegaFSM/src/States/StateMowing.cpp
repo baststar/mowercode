@@ -18,6 +18,7 @@ long int insideFalseTimeToBeOutsideMowingMax = 300;
 void read_mowing_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_MOWING, STATE_PARKED), currentFSMSequence);
         return;
@@ -25,11 +26,11 @@ void read_mowing_keys() {
 }
 
 void mowing_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("MOWING                    ");
     delay(500);
-    lcd.clear();
+    clearLCD();
     startTimeMowing = millis();
     currentTimeMowing = startTimeMowing;
     lastTimeMowing = startTimeMowing;
@@ -77,7 +78,7 @@ void mowing() {
 void mowing_on_exit() {
     MotorAction_StopBlades();
     MotorAction_StopMotors();
-    lcd.clear();
+    clearLCD();
 }
 
 State state_mowing(&mowing_on_enter, &mowing, &mowing_on_exit);

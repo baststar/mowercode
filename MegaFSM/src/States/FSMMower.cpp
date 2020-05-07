@@ -1,5 +1,6 @@
 
 #include <Fsm.h>
+#include <LCD.h>
 #include <States/FSMEvents.h>
 #include <States/FSMMower.h>
 #include <States/StateCompassRotate.h>
@@ -15,41 +16,51 @@
 #include <States/StateParkedMenu.h>
 #include <States/StateRandomRotate.h>
 #include <States/StateRotateToWire.h>
+#include <States/StateSettingsMenu.h>
+#include <States/StateSettingsMotorspeedsMenu.h>
+#include <States/StateSettingsPerimeterMenu.h>
+#include <States/StateSettingsTimesMenu.h>
 #include <States/StateTestMenu.h>
 #include <States/StateWireToGarden.h>
 #include <config.h>
 
 
-int currentFSMEvent = NULL;
-int lastFSMEvent = NULL;
-int beforeMenuFSMEvent = NULL;
-int currentFSMSequence = NULL;
+
+
+int currentFSMEvent = -1;
+int lastFSMEvent = -1;
+int beforeMenuFSMEvent = -1;
+int currentFSMSequence = -1;
 Fsm fsm_mower(&state_docked);
 
-#define STATES_COUNT 15
+#define STATES_COUNT 19
 
 State *allStates[STATES_COUNT] = {
-    &state_docked,           // 1
-    &state_dockedMenu,       // 2
-    &state_exitGarage,       // 3
-    &state_mowing,           // 4
-    &state_followWire,       // 5
-    &state_parked,           // 6
-    &state_parkedMenu,       // 7
-    &state_randomRotate,     // 8
-    &state_wireToGarden,     // 9
-    &state_testMenu,         // 10
-    &state_error,            // 11
-    &state_compassRotate,    // 12
-    &state_rotateToWire,     // 13
-    &state_findWireForwards, // 14
-    &state_findWireBackwards // 15
+    &state_docked,                  // 1
+    &state_dockedMenu,              // 2
+    &state_exitGarage,              // 3
+    &state_mowing,                  // 4
+    &state_followWire,              // 5
+    &state_parked,                  // 6
+    &state_parkedMenu,              // 7
+    &state_randomRotate,            // 8
+    &state_wireToGarden,            // 9
+    &state_testMenu,                // 10
+    &state_error,                   // 11
+    &state_compassRotate,           // 12
+    &state_rotateToWire,            // 13
+    &state_findWireForwards,        // 14
+    &state_findWireBackwards,       // 15
+    &state_settingsMenu,            // 16
+    &state_settingsMotorspeedsMenu, // 17
+    &state_settingsTimesMenu,       // 18
+    &state_settingsPerimeterMenu,   // 19
 };
 
 int BuildStateTransitionId(int state1, int state2) {
-    char transitionId[5];
-    sprintf(transitionId, "%d%d%d", state1, 9, state2);
-    return String(transitionId).toInt();
+    char buffer[5];
+    snprintf(buffer, sizeof(buffer), "%d%d", state1, state2);
+    return String(buffer).toInt();
 }
 
 void Setup_FSM() {

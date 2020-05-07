@@ -47,6 +47,7 @@ int sFunction(int magnitude, int maxMagnitudeInside, int maxMagnitudeOutside, in
 void read_followWire_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_PARKED), currentFSMSequence);
         return;
@@ -54,11 +55,11 @@ void read_followWire_keys() {
 }
 
 void followWire_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("FOLLOW WIRE             ");
-    delay(500);
-    lcd.clear();
+    delay(2000);
+    clearLCD();
     startTimeFollowWire = millis();
     currentTimeFollowWire = startTimeFollowWire;
     lastTimeFollowWire = startTimeFollowWire;
@@ -79,6 +80,10 @@ void followWire() {
 
     UpdateVoltAmpCharge();
     if (IsCharging()) {
+        MotorAction_StopMotors();
+        lcd.setCursor(0, 0);
+        lcd.print("FOUND CHARGING");
+        delay(5000);
         Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_DOCKED), -1);
         return;
     }

@@ -15,6 +15,7 @@ long int currentTimeExitGarage = 0;
 void read_exitGarage_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_PARKED), currentFSMSequence);
         return;
@@ -22,11 +23,11 @@ void read_exitGarage_keys() {
 }
 
 void exitGarage_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("EXIT GARAGE                ");
     delay(500);
-    lcd.clear();
+    clearLCD();
 
     startTimeExitGarage = millis();
     currentTimeExitGarage = startTimeExitGarage;
@@ -57,6 +58,6 @@ void exitGarage() {
 void exitGarage_on_exit() {
     MotorAction_StopMotors();
     MotorAction_SetPinsToGoForward();
-    lcd.clear();
+    clearLCD();
 }
 State state_exitGarage(&exitGarage_on_enter, &exitGarage, &exitGarage_on_exit);

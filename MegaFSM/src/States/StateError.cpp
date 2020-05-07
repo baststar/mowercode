@@ -27,6 +27,7 @@ void error() {
     lcd.setCursor(0, 1);
 
     if (StopKey_pressed == 0) {
+        delay(100);
         Trigger_FSM(BuildStateTransitionId(STATE_ERROR, STATE_PARKED), -1);
         return;
     }
@@ -56,7 +57,7 @@ void error() {
 }
 
 void error_on_exit() {
-    lcd.clear();
+    clearLCD();
 }
 
 State state_error(&error_on_enter, &error, &error_on_exit);

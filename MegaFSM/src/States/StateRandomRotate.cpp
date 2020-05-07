@@ -17,6 +17,7 @@ long int lastRotation = 0;
 void read_randomRotate_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_PARKED), currentFSMSequence);
         return;
@@ -25,11 +26,11 @@ void read_randomRotate_keys() {
 }
 
 void randomRotate_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("RANDOM ROTATE                ");
     delay(500);
-    lcd.clear();
+    clearLCD();
     currentRotationTime = 0;
     maxRotationTime = random(RANDOM_ROTATE_TIME_MIN, RANDOM_ROTATE_TIME_MAX);
     if (PERIMETER_IS_CLOCKWISE_FROM_GARAGE == true) {
@@ -62,7 +63,7 @@ void randomRotate() {
 }
 void randomRotate_on_exit() {
     MotorAction_StopMotors();
-    lcd.clear();
+    clearLCD();
 }
 
 State state_randomRotate(&randomRotate_on_enter, &randomRotate, &randomRotate_on_exit);

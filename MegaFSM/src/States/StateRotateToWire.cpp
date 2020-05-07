@@ -16,6 +16,7 @@ long int currentRotateToWireTime = 0;
 void read_rotateToWire_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(100);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_PARKED), currentFSMSequence);
         return;
@@ -23,11 +24,11 @@ void read_rotateToWire_keys() {
 }
 
 void rotateToWire_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("ROTATE TO WIRE                ");
     delay(500);
-    lcd.clear();
+    clearLCD();
     startTimeRotateToWire = millis();
     currentRotateToWireTime = startTimeRotateToWire;
 
@@ -62,7 +63,7 @@ void rotateToWire() {
 void rotateToWire_on_exit() {
     MotorAction_StopMotors();
     MotorAction_SetPinsToGoForward();
-    lcd.clear();
+    clearLCD();
 }
 
 State state_rotateToWire(&rotateToWire_on_enter, &rotateToWire, &rotateToWire_on_exit);

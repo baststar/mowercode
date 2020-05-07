@@ -21,7 +21,23 @@
         "editor.defaultFormatter": "xaver.clang-format",
         "files.associations": {
             "cmath": "cpp",
-            "type_traits": "cpp"
+            "type_traits": "cpp",
+            "*.tcc": "cpp",
+            "functional": "cpp",
+            "array": "cpp",
+            "tuple": "cpp",
+            "utility": "cpp",
+            "vector": "cpp",
+            "associative_base": "cpp",
+            "bitset": "cpp",
+            "deque": "cpp",
+            "initializer_list": "cpp",
+            "limits": "cpp",
+            "list": "cpp",
+            "queue": "cpp",
+            "stack": "cpp",
+            "valarray": "cpp",
+            "regex": "cpp"
         }
     }
 }

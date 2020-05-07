@@ -6,46 +6,47 @@
 #include <States/FSMMower.h>
 #include <States/StateTestMenu.h>
 #include <perimeter.h>
+#include <vector>
 
+using namespace std;
 
 int testMenu_currentMenu = 0;
-const int testMenuArraySize = 2;
-String testMenuNames[testMenuArraySize] = {"Test Wire", "Test Relais"};
+vector<String> testMenuNames = {"Test Wire", "Test Relais"};
 
 void read_testMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_TEST_MENU, STATE_DOCKED_MENU), -1);
-        return;
     } else if (PlusKey_pressed == 0) {
-        delay(100);
+        delay(250);
         testMenu_currentMenu++;
-        if (testMenu_currentMenu >= testMenuArraySize) {
+        if (testMenu_currentMenu >= testMenuNames.size()) {
             testMenu_currentMenu = 0;
         }
     } else if (MinusKey_pressed == 0) {
-        delay(100);
+        delay(250);
         testMenu_currentMenu--;
         if (testMenu_currentMenu < 0) {
-            testMenu_currentMenu = testMenuArraySize - 1;
+            testMenu_currentMenu = testMenuNames.size() - 1;
         }
     }
 }
 
 void testMenu_on_enter() {
-    lcd.clear();
+    clearLCD();
     lcd.setCursor(0, 0);
     lcd.print("TEST-MENU                   ");
     delay(500);
-    lcd.clear();
+    clearLCD();
     testMenu_currentMenu = 0;
 }
-void testMenu() {
 
-    read_testMenu_keys();
-    Show_Test_Menu();
+void testMenu() {
+    String menuname = GetMenuName(testMenuNames, testMenu_currentMenu);
+    lcd.setCursor(0, 0);
+    lcd.print(menuname + "           ");
 
     if (testMenu_currentMenu == 0) {
         UpdatePerimeterStatus();
@@ -55,8 +56,10 @@ void testMenu() {
         lcd.setCursor(0, 1);
         lcd.print("                     ");
     }
+    
+    read_testMenu_keys();
 }
 void testMenu_on_exit() {
-    lcd.clear();
+    clearLCD();
 }
 State state_testMenu(&testMenu_on_enter, &testMenu, &testMenu_on_exit);
