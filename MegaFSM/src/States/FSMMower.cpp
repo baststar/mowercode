@@ -24,9 +24,6 @@
 #include <States/StateWireToGarden.h>
 #include <config.h>
 
-
-
-
 int currentFSMEvent = -1;
 int lastFSMEvent = -1;
 int beforeMenuFSMEvent = -1;
@@ -66,9 +63,7 @@ int BuildStateTransitionId(int state1, int state2) {
 void Setup_FSM() {
     // create any to any transitions
     for (unsigned int i = 1; i <= STATES_COUNT; i++) {
-        State currentState = State(*allStates[i - 1]);
         for (unsigned int j = 1; j <= STATES_COUNT; j++) {
-            State tmpState = State(*allStates[j - 1]);
             fsm_mower.add_transition(&*allStates[i - 1], &*allStates[j - 1], BuildStateTransitionId(i, j), NULL);
         }
     }
