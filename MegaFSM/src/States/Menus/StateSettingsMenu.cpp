@@ -11,7 +11,7 @@
 
 int settingsMenu_currentMenu = 0;
 
-String settingsMenuNames[] = {"Motorspeeds...", "Times...", "Perimeter...", "Reset EEPROM"};
+String settingsMenuNames[] = {"Motorspeeds...", "Mowtimes...", "Times...", "Perimeter...", "Reset EEPROM"};
 
 void read_settingsMenu_keys() {
     Read_Membrane_Keys();
@@ -38,12 +38,15 @@ void read_settingsMenu_keys() {
             Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_MOTORSPEED_MENU), -1);
             return;
         } else if (settingsMenu_currentMenu == 1) {
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_TIMES_MENU), -1);
+            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_MOWTIMES_MENU), -1);
             return;
         } else if (settingsMenu_currentMenu == 2) {
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_PERIMETER_MENU), -1);
+            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_TIMES_MENU), -1);
             return;
         } else if (settingsMenu_currentMenu == 3) {
+            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_PERIMETER_MENU), -1);
+            return;
+        } else if (settingsMenu_currentMenu == 4) {
             ResetEEPROM();
             Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_DOCKED), -1);
             return;
@@ -63,7 +66,7 @@ void settingsMenu() {
     String menuname = settingsMenuNames[settingsMenu_currentMenu];
     lcd.setCursor(0, 0);
 
-    if (settingsMenu_currentMenu == 3) {
+    if (settingsMenu_currentMenu == 4) {
         lcd.write(126);
         lcd.print(" ");
     }

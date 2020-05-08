@@ -43,10 +43,10 @@ void exitGarage() {
 
     currentTimeExitGarage = millis();
     if ((currentTimeExitGarage - startTimeExitGarage) >= eeprom_exit_garage_backwards_time) {
-        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
+        if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2) {
             Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_ROTATE_TO_WIRE), currentFSMSequence);
             return;
-        } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
+        } else if (currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
             Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_RANDOM_ROTATE), currentFSMSequence);
             return;
         } else {

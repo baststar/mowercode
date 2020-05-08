@@ -1,7 +1,6 @@
 #include <Arduino.h>
 #include <Keyboard.h>
 #include <config.h>
-#include <declarations.h>
 
 // KEYBOARD-EVENTS
 bool StartKey_pressed = 0;

@@ -33,13 +33,13 @@ void read_dockedMenu_keys() {
     } else if (StartKey_pressed == 0) {
         delay(250);
         if (dockedMenu_currentMenu == 0) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1);
+            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_ZONE_1);
             return;
         } else if (dockedMenu_currentMenu == 1) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2);
+            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_ZONE_2);
             return;
         } else if (dockedMenu_currentMenu == 2) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING);
+            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_QUICK_MOW);
             return;
         } else if (dockedMenu_currentMenu == 3) {
             Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_TEST_MENU), -1);

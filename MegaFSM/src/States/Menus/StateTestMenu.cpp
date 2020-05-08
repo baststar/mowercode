@@ -1,4 +1,5 @@
 #include <Clock.h>
+#include <Compass.h>
 #include <CustomFunctions.h>
 #include <Fsm.h>
 #include <Keyboard.h>
@@ -10,8 +11,9 @@
 #include <perimeter.h>
 
 
+
 int testMenu_currentMenu = 0;
-String testMenuNames[] = {"Perimeter", "Relais", "Clock"};
+String testMenuNames[] = {"Perimeter", "Compass", "Clock"};
 
 void read_testMenu_keys() {
     Read_Membrane_Keys();
@@ -37,7 +39,7 @@ void read_testMenu_keys() {
 void testMenu_on_enter() {
     clearLCD();
     lcd.setCursor(0, 0);
-    lcd.print("TESTSMENU                   ");
+    lcd.print("TESTS                  ");
     delay(500);
     clearLCD();
     testMenu_currentMenu = 0;
@@ -52,8 +54,11 @@ void testMenu() {
         UpdatePerimeterStatus();
         String insideOutside = MowerIsInsideWire() == 0 ? "Out" : "In";
         lcd.print(insideOutside + " mag: " + String(GetCurrentMagnitude()) + "           ");
+    } else if (testMenu_currentMenu == 1) {
+        String heading = String(GetHeading());
+        lcd.print(heading + "                    ");
     } else if (testMenu_currentMenu == 2) {
-        lcd.print(GetDateTimeAsString());
+        lcd.print(GetDateTimeAsString() + "                  ");
         TestRTC();
     } else {
         lcd.print("                     ");

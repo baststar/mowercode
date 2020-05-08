@@ -9,7 +9,6 @@
 #include <States/FSMSequences.h>
 #include <States/StateFindWireBackwards.h>
 #include <config.h>
-#include <declarations.h>
 
 
 long int startTimefindWireBackwards = 0;
@@ -54,7 +53,7 @@ void findWireBackwards() {
 
     if (MowerIsInsideWire() == false) {
         // DRIVEN OVER THE WIRE -> WIRE FOUND
-        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
+        if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
             Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_FOLLOW_WIRE), currentFSMSequence);
             return;
         }

@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <Clock.h>
+#include <Compass.h>
 #include <EEPROMVariables.h>
 #include <LCD.h>
 #include <Perimeter.h>
@@ -7,16 +8,18 @@
 #include <States/FSMMower.h>
 
 
+
 void setup() {
     Serial.begin(115200);
     Serial1.begin(1200);
-    SetupRTC();
     Setup_All_Pins();
     Setup_LCD();
     Setup_Perimeter();
+    SetupRTC();
+    SetupCompass();
     Setup_FSM();
-    PrintEEPROM();
     SetupVariablesFromEEPROM();
+    // PrintEEPROM();
 }
 
 void loop() {

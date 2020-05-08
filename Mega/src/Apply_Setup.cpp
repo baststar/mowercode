@@ -78,6 +78,7 @@ void Setup_Compass() {
         }
         // QMC5883 Compass
         else if (compass.isQMC()) {
+            
             Serial.println(F("Initialising DF Robot QMC5883 Compass"));
             lcd.setCursor(6, 0);
             lcd.print(F(": QMC5883"));

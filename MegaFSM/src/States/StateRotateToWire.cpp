@@ -48,10 +48,10 @@ void rotateToWire() {
     currentRotateToWireTime = millis();
 
     if ((currentRotateToWireTime - startTimeRotateToWire) >= eeprom_rotate_from_exit_garage_to_wire_time) {
-        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2) {
+        if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2) {
             Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_FIND_WIRE_FORWARDS), currentFSMSequence);
             return;
-        } else if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
+        } else if (currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
             Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_RANDOM_ROTATE), currentFSMSequence);
             return;
         } else {

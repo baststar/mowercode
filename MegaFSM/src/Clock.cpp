@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include <Clock.h>
 #include <CustomFunctions.h>
+#include <EEPROMVariables.h>
 #include <LCD.h>
 #include <RtcDS3231.h>
 #include <Wire.h>

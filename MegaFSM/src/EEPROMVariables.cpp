@@ -22,11 +22,32 @@ uint16_t eeprom_follow_wire_zone_1_time = FOLLOW_WIRE_ZONE_1_TIME;
 uint16_t eeprom_follow_wire_zone_2_time = FOLLOW_WIRE_ZONE_2_TIME;
 uint16_t eeprom_wire_into_garden_time = WIRE_INTO_TO_GARDEN_TIME;
 
+// MOWTIMES
+uint16_t eeprom_quick_mow_mowtime = QUICK_MOW_MOWTIME;
+uint16_t eeprom_exit_garage_mowtime = EXIT_GARAGE_MOWTIME;
+uint16_t eeprom_alarm_mowtime_1 = ALARM_MOWTIME_1;
+uint16_t eeprom_alarm_mowtime_2 = ALARM_MOWTIME_2;
+uint16_t eeprom_alarm_mowtime_3 = ALARM_MOWTIME_3;
+
 // MOTOR SPEEDS
 uint16_t eeprom_pwm_maxspeed_right = PWM_MAXSPEED_RIGHT;
 uint16_t eeprom_pwm_maxspeed_left = PWM_MAXSPEED_LEFT;
 uint16_t eeprom_pwm_slowspeed = PWM_SLOWSPEED;
 uint16_t eeprom_pwm_bladespeed = PWM_BLADESPEED;
+
+// ALARMS
+uint16_t eeprom_alarm_hour_1 = ALARM_HOUR_1;
+uint16_t eeprom_alarm_minute_1 = ALARM_MINUTE_1;
+uint16_t eeprom_alarm_active_1 = ALARM_ACTIVE_1;
+
+uint16_t eeprom_alarm_hour_2 = ALARM_HOUR_2;
+uint16_t eeprom_alarm_minute_2 = ALARM_MINUTE_2;
+uint16_t eeprom_alarm_active_2 = ALARM_ACTIVE_2;
+
+uint16_t eeprom_alarm_hour_3 = ALARM_HOUR_3;
+uint16_t eeprom_alarm_minute_3 = ALARM_MINUTE_3;
+uint16_t eeprom_alarm_active_3 = ALARM_ACTIVE_3;
+
 
 void PrintEEPROM() {
 
@@ -49,11 +70,31 @@ void PrintEEPROM() {
         Serial.println("FOLLOW_WIRE_ZONE_2_TIME " + String(EEPROM.readInt(EEPROM_INDEX_FOLLOW_WIRE_ZONE_2_TIME)));
         Serial.println("WIRE_INTO_TO_GARDEN_TIME " + String(EEPROM.readInt(EEPROM_INDEX_WIRE_INTO_TO_GARDEN_TIME)));
 
+        // MOWTIMES
+        Serial.println("QUICK_MOW_MOWTIME " + String(EEPROM.readInt(EEPROM_INDEX_QUICK_MOW_MOWTIME)));
+        Serial.println("EXIT_GARAGE_MOWTIME " + String(EEPROM.readInt(EEPROM_INDEX_EXIT_GARAGE_MOWTIME)));
+        Serial.println("ALARM_MOWTIME_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_1)));
+        Serial.println("ALARM_MOWTIME_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_2)));
+        Serial.println("ALARM_MOWTIME_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_3)));
+
         // MAX MOTOR SPEEDS
         Serial.println("PWM_MAXSPEED_RIGHT " + String(EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT)));
         Serial.println("PWM_MAXSPEED_LEFT " + String(EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_LEFT)));
         Serial.println("PWM_SLOWSPEED " + String(EEPROM.readInt(EEPROM_INDEX_PWM_SLOWSPEED)));
         Serial.println("PWM_BLADESPEED " + String(EEPROM.readInt(EEPROM_INDEX_PWM_BLADESPEED)));
+
+        // ALARMS
+        Serial.println("ALARM_HOUR_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_1)));
+        Serial.println("ALARM_MINUTE_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_1)));
+        Serial.println("ALARM_ACTIVE_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_1)));
+
+        Serial.println("ALARM_HOUR_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_2)));
+        Serial.println("ALARM_MINUTE_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_2)));
+        Serial.println("ALARM_ACTIVE_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_2)));
+
+        Serial.println("ALARM_HOUR_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_3)));
+        Serial.println("ALARM_MINUTE_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_3)));
+        Serial.println("ALARM_ACTIVE_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_3)));
 
     } else {
         ShowError("EEPROM not ready");
@@ -81,11 +122,31 @@ void SetupVariablesFromEEPROM() {
         eeprom_follow_wire_zone_2_time = EEPROM.readInt(EEPROM_INDEX_FOLLOW_WIRE_ZONE_2_TIME);
         eeprom_wire_into_garden_time = EEPROM.readInt(EEPROM_INDEX_WIRE_INTO_TO_GARDEN_TIME);
 
+        // MOWTIMES
+        eeprom_quick_mow_mowtime = EEPROM.readInt(EEPROM_INDEX_QUICK_MOW_MOWTIME);
+        eeprom_exit_garage_mowtime = EEPROM.readInt(EEPROM_INDEX_EXIT_GARAGE_MOWTIME);
+        eeprom_alarm_mowtime_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_1);
+        eeprom_alarm_mowtime_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_2);
+        eeprom_alarm_mowtime_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_3);
+
         // MAX MOTOR SPEEDS
         eeprom_pwm_maxspeed_right = EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT);
         eeprom_pwm_maxspeed_left = EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_LEFT);
         eeprom_pwm_slowspeed = EEPROM.readInt(EEPROM_INDEX_PWM_SLOWSPEED);
         eeprom_pwm_bladespeed = EEPROM.readInt(EEPROM_INDEX_PWM_BLADESPEED);
+
+        // ALARMS
+        eeprom_alarm_hour_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_1);
+        eeprom_alarm_minute_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_1);
+        eeprom_alarm_active_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_1);
+
+        eeprom_alarm_hour_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_2);
+        eeprom_alarm_minute_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_2);
+        eeprom_alarm_active_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_2);
+
+        eeprom_alarm_hour_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_3);
+        eeprom_alarm_minute_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_3);
+        eeprom_alarm_active_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_3);
 
     } else {
         ShowError("EEPROM not ready");
@@ -113,11 +174,31 @@ void ResetEEPROM() {
         EEPROM.writeInt(EEPROM_INDEX_FOLLOW_WIRE_ZONE_2_TIME, FOLLOW_WIRE_ZONE_2_TIME);
         EEPROM.writeInt(EEPROM_INDEX_WIRE_INTO_TO_GARDEN_TIME, WIRE_INTO_TO_GARDEN_TIME);
 
+        // MOWTIMES
+        EEPROM.writeInt(EEPROM_INDEX_QUICK_MOW_MOWTIME, QUICK_MOW_MOWTIME);
+        EEPROM.writeInt(EEPROM_INDEX_EXIT_GARAGE_MOWTIME, EXIT_GARAGE_MOWTIME);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_MOWTIME_1, ALARM_MOWTIME_1);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_MOWTIME_2, ALARM_MOWTIME_2);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_MOWTIME_3, ALARM_MOWTIME_3);
+
         // MAX MOTOR SPEEDS
         EEPROM.writeInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT, PWM_MAXSPEED_RIGHT);
         EEPROM.writeInt(EEPROM_INDEX_PWM_MAXSPEED_LEFT, PWM_MAXSPEED_LEFT);
         EEPROM.writeInt(EEPROM_INDEX_PWM_SLOWSPEED, PWM_SLOWSPEED);
         EEPROM.writeInt(EEPROM_INDEX_PWM_BLADESPEED, PWM_BLADESPEED);
+
+        // ALARMS
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_HOUR_1, ALARM_HOUR_1);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_MINUTE_1, ALARM_MINUTE_1);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_ACTIVE_1, ALARM_ACTIVE_1);
+
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_HOUR_2, ALARM_HOUR_2);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_MINUTE_2, ALARM_MINUTE_2);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_ACTIVE_2, ALARM_ACTIVE_2);
+
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_HOUR_3, ALARM_HOUR_3);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_MINUTE_3, ALARM_MINUTE_3);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_ACTIVE_3, ALARM_ACTIVE_3);
 
         ShowError("EEPROM RESETTET");
     } else {

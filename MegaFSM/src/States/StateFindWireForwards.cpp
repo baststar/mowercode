@@ -9,7 +9,6 @@
 #include <States/FSMSequences.h>
 #include <States/StateFindWireForwards.h>
 #include <config.h>
-#include <declarations.h>
 
 
 long int startTimefindWireForwards = 0;
@@ -80,7 +79,7 @@ void findWireForwards() {
 
         insideFalseTimeToBeOutside = insideFalseTimeToBeOutside + (currentTimefindWireForwards - lastTimeFindWireForwards);
         if (insideFalseTimeToBeOutside >= insideFalseTimeToBeOutsideMax) {
-            if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
+            if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
                 Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_FOLLOW_WIRE), currentFSMSequence);
                 return;
             } else {

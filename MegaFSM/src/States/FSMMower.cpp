@@ -7,6 +7,7 @@
 #include <States/Menus/StateParkedMenu.h>
 #include <States/Menus/StateSettingsMenu.h>
 #include <States/Menus/StateSettingsMotorspeedsMenu.h>
+#include <States/Menus/StateSettingsMowtimesMenu.h>
 #include <States/Menus/StateSettingsPerimeterMenu.h>
 #include <States/Menus/StateSettingsTimesMenu.h>
 #include <States/Menus/StateTestMenu.h>
@@ -31,7 +32,7 @@ int beforeMenuFSMEvent = -1;
 int currentFSMSequence = -1;
 Fsm fsm_mower(&state_docked);
 
-#define STATES_COUNT 19
+#define STATES_COUNT 20
 
 State *allStates[STATES_COUNT] = {
     &state_docked,                  // 1
@@ -53,6 +54,7 @@ State *allStates[STATES_COUNT] = {
     &state_settingsMotorspeedsMenu, // 17
     &state_settingsTimesMenu,       // 18
     &state_settingsPerimeterMenu,   // 19
+    &state_settingsMowtimesMenu,    // 20
 };
 
 int BuildStateTransitionId(int state1, int state2) {

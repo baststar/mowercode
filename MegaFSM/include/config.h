@@ -26,6 +26,27 @@
 #define PWM_SLOWSPEED 160
 #define PWM_BLADESPEED 255
 
+// MOWTIMES
+#define QUICK_MOW_MOWTIME 3   // minutes
+#define EXIT_GARAGE_MOWTIME 3 // minutes
+#define ALARM_MOWTIME_1 60    // minutes
+#define ALARM_MOWTIME_2 60    // minutes
+#define ALARM_MOWTIME_3 60    // minutes
+
+// Alarms 24h
+#define ALARM_HOUR_1 11
+#define ALARM_MINUTE_1 0
+#define ALARM_ACTIVE_1 1
+
+#define ALARM_HOUR_2 12
+#define ALARM_MINUTE_2 0
+#define ALARM_ACTIVE_2 0
+
+#define ALARM_HOUR_3 7
+#define ALARM_MINUTE_3 0
+#define ALARM_ACTIVE_3 0
+
+
 // ARDUINO MEGA PINS
 #define PIN_REALTIME_CLOCK_RESET 29 // uint8_t
 #define PIN_REALTIME_CLOCK_DATA 30  // uint8_t

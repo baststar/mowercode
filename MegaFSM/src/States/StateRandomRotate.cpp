@@ -49,8 +49,7 @@ void randomRotate() {
     currentRotationTime = currentRotationTime + (millis() - lastRotation);
 
     if (currentRotationTime >= maxRotationTime) {
-        if (currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_1 || currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE_MOW_FROM_ZONE_2 ||
-            currentFSMSequence == FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING) {
+        if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
             Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_MOWING), currentFSMSequence);
             return;
         } else {

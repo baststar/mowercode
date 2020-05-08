@@ -2,7 +2,6 @@
 #include <Arduino.h>
 #include <SetupPins.h>
 #include <config.h>
-#include <declarations.h>
 
 void Setup_All_Pins() {
     Setup_Motor_Pins();
