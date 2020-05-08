@@ -22,7 +22,6 @@ void read_settingsMotorspeeds_keys() {
         return;
     } else if (PlusKey_pressed == 0) {
         delay(250);
-
         if (settingsMotorspeedsMenu_currentMenu == 0) {
             // Motor Left +
             eeprom_pwm_maxspeed_left++;
@@ -31,6 +30,7 @@ void read_settingsMotorspeeds_keys() {
             }
             SaveIntToEEPROM(EEPROM_INDEX_PWM_MAXSPEED_LEFT, eeprom_pwm_maxspeed_left);
         } else if (settingsMotorspeedsMenu_currentMenu == 1) {
+            delay(250);
             // Motor Right +
             eeprom_pwm_maxspeed_right++;
             if (eeprom_pwm_maxspeed_right > 255) {
@@ -38,6 +38,7 @@ void read_settingsMotorspeeds_keys() {
             }
             SaveIntToEEPROM(EEPROM_INDEX_PWM_MAXSPEED_RIGHT, eeprom_pwm_maxspeed_right);
         } else if (settingsMotorspeedsMenu_currentMenu == 2) {
+            delay(250);
             // Slow Speed +
             eeprom_pwm_slowspeed++;
             if (eeprom_pwm_slowspeed > 255) {
@@ -45,6 +46,7 @@ void read_settingsMotorspeeds_keys() {
             }
             SaveIntToEEPROM(EEPROM_INDEX_PWM_SLOWSPEED, eeprom_pwm_slowspeed);
         } else if (settingsMotorspeedsMenu_currentMenu == 3) {
+            delay(250);
             // Blades +
             eeprom_pwm_bladespeed++;
             if (eeprom_pwm_bladespeed > 255) {
@@ -55,7 +57,6 @@ void read_settingsMotorspeeds_keys() {
 
     } else if (MinusKey_pressed == 0) {
         delay(250);
-
         if (settingsMotorspeedsMenu_currentMenu == 0) {
             // Motor Left -
             eeprom_pwm_maxspeed_left--;
@@ -98,7 +99,7 @@ void read_settingsMotorspeeds_keys() {
 void settingsMotorspeeds_on_enter() {
     clearLCD();
     lcd.setCursor(0, 0);
-    lcd.print("SETTINGS-MOTORSPEED                 ");
+    lcd.print("SPEEDSETTINGS                 ");
     delay(500);
     clearLCD();
     settingsMotorspeedsMenu_currentMenu = 0;

@@ -18,7 +18,7 @@ long int lastTimeCheckedWireToGardenRotation = 0;
 void read_wireToGarden_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_PARKED), currentFSMSequence);
         return;

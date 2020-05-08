@@ -10,7 +10,7 @@
 void read_docked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
-        delay(100);
+        delay(250);
         Trigger_FSM(BuildStateTransitionId(STATE_DOCKED, STATE_DOCKED_MENU), -1);
         return;
     }

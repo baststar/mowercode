@@ -10,7 +10,7 @@
 void read_parked_keys() {
     Read_Membrane_Keys();
     if (StartKey_pressed == 0) {
-        delay(100);
+        delay(250);
         Trigger_FSM(BuildStateTransitionId(STATE_PARKED, STATE_PARKED_MENU), currentFSMSequence);
         return;
     }

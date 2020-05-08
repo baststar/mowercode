@@ -25,8 +25,6 @@
 #include <config.h>
 
 
-
-
 int currentFSMEvent = -1;
 int lastFSMEvent = -1;
 int beforeMenuFSMEvent = -1;
@@ -77,7 +75,7 @@ void Loop_FSM() {
 }
 
 void Trigger_FSM(int event, int sequence) {
-    Serial.println("change state to event: " + String(event) + " Sequence: " + String(sequence));
+    Serial.println("change state " + String(lastFSMEvent) + " to state " + String(event) + " Sequence: " + String(sequence));
     lastFSMEvent = currentFSMEvent;
     currentFSMEvent = event;
     currentFSMSequence = sequence;

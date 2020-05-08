@@ -10,8 +10,6 @@
 #include <config.h>
 
 
-
-
 long int currentRotationTime = 0;
 long int maxRotationTime = 0;
 long int lastRotation = 0;
@@ -19,7 +17,7 @@ long int lastRotation = 0;
 void read_randomRotate_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_PARKED), currentFSMSequence);
         return;

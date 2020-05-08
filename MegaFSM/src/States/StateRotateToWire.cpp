@@ -16,7 +16,7 @@ long int currentRotateToWireTime = 0;
 void read_rotateToWire_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_PARKED), currentFSMSequence);
         return;

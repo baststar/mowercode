@@ -11,6 +11,7 @@
 void read_error_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_ERROR, STATE_PARKED), currentFSMSequence);
         return;
@@ -25,12 +26,6 @@ void error() {
     lcd.setCursor(0, 0);
     lcd.print("ERROR...                ");
     lcd.setCursor(0, 1);
-
-    if (StopKey_pressed == 0) {
-        delay(100);
-        Trigger_FSM(BuildStateTransitionId(STATE_ERROR, STATE_PARKED), -1);
-        return;
-    }
 
     // const int id1 = (String(STATE_EXIT_GARAGE) + String(STATE_FIND_WIRE_FORWARDS)).toInt();
 

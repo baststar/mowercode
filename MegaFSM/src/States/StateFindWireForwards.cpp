@@ -24,7 +24,7 @@ long int insideFalseTimeToBeOutsideMax = 550;
 void read_findWireForwards_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_PARKED), currentFSMSequence);
         return;

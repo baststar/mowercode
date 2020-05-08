@@ -10,6 +10,7 @@
 void setup() {
     Serial.begin(115200);
     Serial1.begin(1200);
+    SetupRTC();
     Setup_All_Pins();
     Setup_LCD();
     Setup_Perimeter();

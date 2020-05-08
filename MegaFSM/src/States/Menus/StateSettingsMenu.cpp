@@ -41,7 +41,7 @@ void read_settingsMenu_keys() {
             Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_TIMES_MENU), -1);
             return;
         } else if (settingsMenu_currentMenu == 2) {
-            // Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_EXIT_GARAGE__RANDOM_ROTATE__MOWING);
+            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_PERIMETER_MENU), -1);
             return;
         } else if (settingsMenu_currentMenu == 3) {
             ResetEEPROM();

@@ -1,3 +1,4 @@
+#include <Clock.h>
 #include <CustomFunctions.h>
 #include <Fsm.h>
 #include <Keyboard.h>
@@ -10,7 +11,7 @@
 
 
 int testMenu_currentMenu = 0;
-String testMenuNames[] = {"Test Wire", "Test Relais"};
+String testMenuNames[] = {"Perimeter", "Relais", "Clock"};
 
 void read_testMenu_keys() {
     Read_Membrane_Keys();
@@ -36,7 +37,7 @@ void read_testMenu_keys() {
 void testMenu_on_enter() {
     clearLCD();
     lcd.setCursor(0, 0);
-    lcd.print("TEST-MENU                   ");
+    lcd.print("TESTSMENU                   ");
     delay(500);
     clearLCD();
     testMenu_currentMenu = 0;
@@ -46,13 +47,15 @@ void testMenu() {
     String menuname = testMenuNames[testMenu_currentMenu];
     lcd.setCursor(0, 0);
     lcd.print(menuname + "           ");
-
+    lcd.setCursor(0, 1);
     if (testMenu_currentMenu == 0) {
         UpdatePerimeterStatus();
-        lcd.setCursor(0, 1);
-        lcd.print("mag: " + String(GetCurrentMagnitude()) + " i: " + String(MowerIsInsideWire()) + "           ");
+        String insideOutside = MowerIsInsideWire() == 0 ? "Out" : "In";
+        lcd.print(insideOutside + " mag: " + String(GetCurrentMagnitude()) + "           ");
+    } else if (testMenu_currentMenu == 2) {
+        lcd.print(GetDateTimeAsString());
+        TestRTC();
     } else {
-        lcd.setCursor(0, 1);
         lcd.print("                     ");
     }
 

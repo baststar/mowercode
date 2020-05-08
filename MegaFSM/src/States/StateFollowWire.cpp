@@ -51,7 +51,7 @@ int sFunction(int magnitude, int maxMagnitudeInside, int maxMagnitudeOutside, in
 void read_followWire_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_PARKED), currentFSMSequence);
         return;
@@ -211,8 +211,6 @@ void followWire() {
 
 void followWire_on_exit() {
     MotorAction_StopMotors();
-    startTimeFollowWire = 0;
-    currentTimeFollowWire = 0;
 }
 
 State state_followWire(&followWire_on_enter, &followWire, &followWire_on_exit);

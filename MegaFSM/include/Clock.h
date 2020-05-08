@@ -1,8 +1,11 @@
 #pragma once
 
-#include <DS1302.h>
+#include <RtcDS3231.h>
+#include <Wire.h>
 
-extern DS1302 rtc;
+extern RtcDS3231<TwoWire> Rtc;
 
-void SetTime(Time time);
-char * GetTime();
+void SetupRTC();
+void TestRTC();
+String GetDateTimeAsString();
+String GetTemperature();

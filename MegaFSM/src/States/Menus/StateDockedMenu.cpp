@@ -12,7 +12,6 @@ int dockedMenu_currentMenu = 0;
 String dockedMenuNames[] = {"Mow from Zone 1", "Mow from Zone 2", "Quick mowing", "Tests...", "Settings..."};
 
 void read_dockedMenu_keys() {
-
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         delay(250);
@@ -55,7 +54,7 @@ void read_dockedMenu_keys() {
 void dockedMenu_on_enter() {
     clearLCD();
     lcd.setCursor(0, 0);
-    lcd.print("DOCKING-MENU                 ");
+    lcd.print("MENU                ");
     delay(500);
     clearLCD();
     dockedMenu_currentMenu = 0;

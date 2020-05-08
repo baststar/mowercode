@@ -18,7 +18,7 @@ long int insideFalseTimeToBeOutsideMowingMax = 300;
 void read_mowing_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_MOWING, STATE_PARKED), currentFSMSequence);
         return;
@@ -52,6 +52,7 @@ void mowing() {
         currentTimeMowing = millis();
 
         insideFalseTimeToBeOutsideMowing = insideFalseTimeToBeOutsideMowing + (currentTimeMowing - lastTimeMowing);
+
         if (insideFalseTimeToBeOutsideMowing >= insideFalseTimeToBeOutsideMowingMax) {
 
             MotorAction_StopMotors();

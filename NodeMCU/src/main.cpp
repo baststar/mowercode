@@ -8,7 +8,9 @@
 #include <Arduino.h>
 
 #include <BlynkSimpleEsp8266.h>
+#include <ESP8266HTTPClient.h>
 #include <ESP8266WiFi.h>
+#include <MQTT.h>
 #include <SoftwareSerial.h>
 #include <config.h>
 
@@ -22,6 +24,22 @@
 SoftwareSerial NodeMCU(D2, D3);
 BlynkTimer timer;
 WidgetLCD lcd(V6);
+
+const char* ssid = WLAN_SSID;
+const char* password = WLAN_PASSWORD;
+const char* mqtt_server = MQTT_HOST;
+const int8_t mqtt_port = MQTT_PORT;
+
+IPAddress staticIp(192, 168, 0, 230);
+IPAddress subnet(255, 255, 255, 0);
+IPAddress gateway(192, 168, 0, 1);
+IPAddress dns(192, 168, 0, 1);
+
+static const char* cert_sh1_fingerprint PROGMEM = CERT_SHA1_FINGERPRINT;
+
+BearSSL::WiFiClientSecure espClient;
+MQTTClient mqttClient;
+HTTPClient https;
 
 int buttonState = 0;
 
@@ -71,10 +89,17 @@ void setup()
     pinMode(D2, INPUT);
     pinMode(D3, OUTPUT);
     digitalWrite(LED, HIGH); // Turn off LED Light
-    WIFI_Connect();          // Connect to the WIFI
+    Setup_Wifi();
+    Blynk_Connect(); // Connect to the WIFI
     Clear_APP();
     lcd.clear();
     pinMode(LED, OUTPUT);
+
+    espClient.setFingerprint(cert_sh1_fingerprint);
+    mqttClient.begin(MQTT_HOST, MQTT_PORT, espClient);
+    if (!mqttClient.connected()) {
+        ConnectMQTT();
+    }
 }
 
 void loop()
@@ -89,7 +114,7 @@ void loop()
         Serial.println("------------------------");
         Serial.println("NODEMCU Disconnected");
         Serial.println("Reconnecting ... ");
-        WIFI_Connect();
+        Blynk_Connect();
     }
     else {
         Blynk.run();
@@ -110,14 +135,45 @@ void myTimerEvent()
     Blynk.virtualWrite(V5, Loop_Cycle_Mowing);
 }
 
+void Setup_Wifi()
+{
+    // We start by connecting to a WiFi network
+    Serial.println();
+    Serial.print("Connecting to ");
+    Serial.println(ssid);
+
+    WiFi.config(staticIp, dns, gateway, subnet);
+    WiFi.mode(WIFI_STA);
+    WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(500);
+        Serial.print(".");
+    }
+    randomSeed(micros());
+    Serial.println("");
+    Serial.println("WiFi connected");
+    Serial.println("IP address: ");
+    Serial.println(WiFi.localIP());
+}
+
+void ConnectMQTT()
+{
+    while (!mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
+        Serial.print("Attempting MQTT connection...");
+        delay(5000);
+    }
+    // mqttClient.publish("/SmartHome/door/open", "1");
+    mqttClient.publish("mower", "1");
+}
+
 // Functions
 //***********************************
 
-void WIFI_Connect()
+void Blynk_Connect()
 {
     unsigned mytimeout = millis() / 1000;
     Serial.println();
-    Serial.println("***************** WIFI_CONNECT *****************");
+    Serial.println("***************** BLYNC_CONNECT *****************");
     Blynk.begin(BLYNK_APP_TOKEN, WLAN_SSID, WLAN_PASSWORD, IPAddress(139, 59, 206, 133), 8080);
 
     while (Blynk.connected() != WL_CONNECTED) {
@@ -131,7 +187,7 @@ void WIFI_Connect()
         digitalWrite(LED, HIGH);
         Serial.println("NODEMCU Disconnected");
         Serial.println("Reconnecting . . . . . . ");
-        WIFI_Connect();
+        Blynk_Connect();
     }
     else {
         digitalWrite(LED, LOW);

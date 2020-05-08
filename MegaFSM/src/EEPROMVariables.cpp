@@ -49,7 +49,7 @@ void PrintEEPROM() {
         Serial.println("FOLLOW_WIRE_ZONE_2_TIME " + String(EEPROM.readInt(EEPROM_INDEX_FOLLOW_WIRE_ZONE_2_TIME)));
         Serial.println("WIRE_INTO_TO_GARDEN_TIME " + String(EEPROM.readInt(EEPROM_INDEX_WIRE_INTO_TO_GARDEN_TIME)));
 
-        // MAX MOTOR SPE
+        // MAX MOTOR SPEEDS
         Serial.println("PWM_MAXSPEED_RIGHT " + String(EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT)));
         Serial.println("PWM_MAXSPEED_LEFT " + String(EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_LEFT)));
         Serial.println("PWM_SLOWSPEED " + String(EEPROM.readInt(EEPROM_INDEX_PWM_SLOWSPEED)));

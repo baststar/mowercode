@@ -1,7 +1,7 @@
 #pragma once
 
 void myTimerEvent();
-void WIFI_Connect();
+void Blynk_Connect();
 void Update_Blynk_App_With_Status();
 void Clear_APP();
 void Transmit_Blynk_Data_to_Mega();
@@ -16,3 +16,5 @@ void Set_To_Manuel_Mode();
 void Set_To_Automatic_Mode_Spiral();
 void Set_To_Automatic_Mode_Random();
 void Set_To_Automatic_Mode_Parallel();
+void Setup_Wifi();
+void ConnectMQTT();

@@ -1,44 +1,107 @@
 
 #include <Arduino.h>
-#include <DS1302.h>
+#include <Clock.h>
+#include <CustomFunctions.h>
+#include <LCD.h>
+#include <RtcDS3231.h>
+#include <Wire.h>
 #include <config.h>
 #include <string.h>
 
-DS1302 rtc(PIN_REALTIME_CLOCK_RESET, PIN_REALTIME_CLOCK_DATA, PIN_REALTIME_CLOCK_SCL);
 
-String dayAsString(const Time::Day day) {
-    switch (day) {
-    case Time::kSunday:
-        return "Sunday";
-    case Time::kMonday:
-        return "Monday";
-    case Time::kTuesday:
-        return "Tuesday";
-    case Time::kWednesday:
-        return "Wednesday";
-    case Time::kThursday:
-        return "Thursday";
-    case Time::kFriday:
-        return "Friday";
-    case Time::kSaturday:
-        return "Saturday";
+RtcDS3231<TwoWire> Rtc(Wire);
+
+void SetupRTC() {
+
+    Rtc.Begin();
+
+    RtcDateTime compiled = RtcDateTime(__DATE__, __TIME__);
+
+    if (!Rtc.IsDateTimeValid()) {
+
+        if (Rtc.LastError() != 0) {
+            // we have a communications error
+            // see https://www.arduino.cc/en/Reference/WireEndTransmission for
+            // what the number means
+            Serial.print("RTC communications error = ");
+            Serial.println(Rtc.LastError());
+            ShowError("RTC error " + String(Rtc.LastError()));
+
+        } else {
+
+            // Common Causes:
+            //    1) first time you ran and the device wasn't running yet
+            //    2) the battery on the device is low or even missing
+
+            Serial.println("RTC lost confidence in the DateTime!");
+
+            // following line sets the RTC to the date & time this sketch was compiled
+            // it will also reset the valid flag internally unless the Rtc device is
+            // having an issue
+
+            Rtc.SetDateTime(compiled);
+        }
     }
-    return "nd";
+
+    if (!Rtc.GetIsRunning()) {
+        Serial.println("RTC was not actively running, starting now");
+        Rtc.SetIsRunning(true);
+    }
+
+    RtcDateTime now = Rtc.GetDateTime();
+
+    if (now < compiled) {
+        Serial.println("RTC is older than compile time!  (Updating DateTime)");
+        Rtc.SetDateTime(compiled);
+    } else if (now > compiled) {
+        Serial.println("RTC is newer than compile time. (this is expected)");
+    } else if (now == compiled) {
+        Serial.println("RTC is the same as compile time! (not expected but all is fine)");
+    }
+
+    // never assume the Rtc was last configured by you, so
+    // just clear them to your needed state
+    Rtc.Enable32kHzPin(false);
+    Rtc.SetSquareWavePin(DS3231SquareWavePin_ModeNone);
+
+    String dateString = GetDateTimeAsString();
+
+    Serial.println("RTC: " + dateString);
 }
 
-void SetTime(Time time) {
-    // Set_Time to 1 in the setting menu to set time.  Load the sketch then immediatley Set_Time = 0 and reload the sketch.
-    rtc.writeProtect(false);
-    rtc.halt(false);
-    rtc.time(time);
-    // rtc.writeProtect(true);
+String GetDateTimeAsString() {
+    RtcDateTime now = Rtc.GetDateTime();
+    char datestring[20];
+    snprintf_P(datestring, ARRAY_SIZE(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), now.Month(), now.Day(), now.Year(), now.Hour(), now.Minute(), now.Second());
+    return String(datestring);
 }
 
-char * GetTime() {
-    Time t = rtc.time();
-    const String day = dayAsString(t.day);
-    char buffer[50];
-    snprintf(buffer, sizeof(buffer), "%s %04d-%02d-%02d %02d:%02d:%02d", day.c_str(), t.yr, t.mon, t.date, t.hr, t.min, t.sec);
-    Serial.println(buffer);
-    return buffer;
+String GetTemperature() {
+    RtcTemperature temp = Rtc.GetTemperature();
+    char temperaturString[20];
+    snprintf(temperaturString, ARRAY_SIZE(temperaturString), "%s", temp.AsFloatDegC());
+    return String(temperaturString);
+}
+
+void TestRTC() {
+
+    if (!Rtc.IsDateTimeValid()) {
+
+        if (Rtc.LastError() != 0) {
+
+            // we have a communications error
+            // see https://www.arduino.cc/en/Reference/WireEndTransmission for
+            // what the number means
+            Serial.print("RTC communications error = ");
+            Serial.println(Rtc.LastError());
+            ShowError("RTC error " + String(Rtc.LastError()));
+
+        } else {
+
+            // Common Causes:
+            //    1) the battery on the device is low or even missing and the power line was disconnected
+            Serial.println("RTC lost confidence in the DateTime!");
+            ShowError("RTC lost confidence");
+        }
+    }
 }

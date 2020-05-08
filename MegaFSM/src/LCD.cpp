@@ -2,8 +2,6 @@
 #include <LiquidCrystal_I2C.h>
 #include <config.h>
 
-#define ARRAY_SIZE(x) sizeof(x) / sizeof(x[0])
-
 #define LCD_COLS 16
 #define LCD_ROWS 2
 #define LCD_ADDR 0x27 // uint8_t

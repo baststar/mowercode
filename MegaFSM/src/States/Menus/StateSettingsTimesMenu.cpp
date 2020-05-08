@@ -11,7 +11,8 @@
 
 
 int settingsTimesMenu_currentMenu = 0;
-String settingsTimesMenuNames[] = {"EXIT TO GARDEN", "RAND. ROTATE MIN", "RAND. ROTATE MAX", "ROT. AFTER GARAGE", "ROT. TO GARDEN", "FIND WIRE MAX", "ZONE 1", "ZONE 2", "WIRE TO GARDEN"};
+String settingsTimesMenuNames[] = {"LEAVE GARAGE",  "RAND. ROTATE MIN", "RAND. ROTATE MAX", "ROT. AFTER GARAGE", "ROT. TO GARDEN",
+                                   "FIND WIRE MAX", "ZONE 1 DISTANCE",  "ZONE 2 DISTANCE",  "WIRE TO GARDEN"};
 
 void read_settingsTimes_keys() {
     Read_Membrane_Keys();
@@ -93,7 +94,7 @@ void read_settingsTimes_keys() {
 void settingsTimes_on_enter() {
     clearLCD();
     lcd.setCursor(0, 0);
-    lcd.print("SETTINGS-MOTORSPEED                 ");
+    lcd.print("TIMESETTINGS                 ");
     delay(500);
     clearLCD();
     settingsTimesMenu_currentMenu = 0;
@@ -106,32 +107,24 @@ void settingsTimes() {
     lcd.print(menuname + "                  ");
 
     lcd.setCursor(0, 1);
+    lcd.write(126);
     if (settingsTimesMenu_currentMenu == 0) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_exit_garage_backwards_time) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 1) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_random_rotate_time_min) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 2) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_random_rotate_time_max) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 3) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_rotate_from_exit_garage_to_wire_time) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 4) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_rotate_from_wire_to_garden_time) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 5) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_find_wire_search_time_max) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 6) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_follow_wire_zone_1_time) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 7) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_follow_wire_zone_2_time) + " ms           ");
     } else if (settingsTimesMenu_currentMenu == 8) {
-        lcd.write(126);
         lcd.print(" " + String(eeprom_wire_into_garden_time) + " ms           ");
     }
     read_settingsTimes_keys();

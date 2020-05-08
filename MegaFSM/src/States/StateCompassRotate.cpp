@@ -8,7 +8,7 @@
 void read_compassRotate_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
-        delay(100);
+        delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
         Trigger_FSM(BuildStateTransitionId(STATE_COMPASS_ROTATE, STATE_PARKED), currentFSMSequence);
         return;
@@ -25,7 +25,7 @@ void compassRotate_on_enter() {
 void compassRotate() {
     read_compassRotate_keys();
     lcd.setCursor(0, 0);
-    lcd.print("compassRotate...                   ");
+    lcd.print("compassRotate                   ");
 }
 
 void compassRotate_on_exit() {
