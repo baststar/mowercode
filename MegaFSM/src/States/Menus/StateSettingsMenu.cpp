@@ -11,14 +11,14 @@
 
 int settingsMenu_currentMenu = 0;
 
-String settingsMenuNames[] = {"Motorspeeds...", "Mowtimes...", "Times...", "Perimeter...", "Reset EEPROM"};
+String settingsMenuNames[] = {"Motorspeeds...", "Mowtimes...", "Times...", "Perimeter...", "Alarms...", "Reset EEPROM"};
 
 void read_settingsMenu_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_DOCKED_MENU), -1);
+        TriggerFSM(STATE_SETTINGS_MENU, STATE_DOCKED_MENU, -1);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(250);
@@ -35,20 +35,23 @@ void read_settingsMenu_keys() {
     } else if (StartKey_pressed == 0) {
         delay(250);
         if (settingsMenu_currentMenu == 0) {
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_MOTORSPEED_MENU), -1);
+            TriggerFSM(STATE_SETTINGS_MENU, STATE_SETTINGS_MOTORSPEED_MENU, -1);
             return;
         } else if (settingsMenu_currentMenu == 1) {
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_MOWTIMES_MENU), -1);
+            TriggerFSM(STATE_SETTINGS_MENU, STATE_SETTINGS_MOWTIMES_MENU, -1);
             return;
         } else if (settingsMenu_currentMenu == 2) {
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_TIMES_MENU), -1);
+            TriggerFSM(STATE_SETTINGS_MENU, STATE_SETTINGS_TIMES_MENU, -1);
             return;
         } else if (settingsMenu_currentMenu == 3) {
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_SETTINGS_PERIMETER_MENU), -1);
+            TriggerFSM(STATE_SETTINGS_MENU, STATE_SETTINGS_PERIMETER_MENU, -1);
             return;
         } else if (settingsMenu_currentMenu == 4) {
+            TriggerFSM(STATE_SETTINGS_MENU, STATE_SETTINGS_ALARMS_MENU, -1);
+            return;
+        } else if (settingsMenu_currentMenu == 5) {
             ResetEEPROM();
-            Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_MENU, STATE_DOCKED), -1);
+            TriggerFSM(STATE_SETTINGS_MENU, STATE_DOCKED, -1);
             return;
         }
     }
@@ -66,7 +69,7 @@ void settingsMenu() {
     String menuname = settingsMenuNames[settingsMenu_currentMenu];
     lcd.setCursor(0, 0);
 
-    if (settingsMenu_currentMenu == 4) {
+    if (settingsMenu_currentMenu == 5) {
         lcd.write(126);
         lcd.print(" ");
     }

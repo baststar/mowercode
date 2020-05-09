@@ -53,7 +53,7 @@ void read_followWire_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_FOLLOW_WIRE, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -88,7 +88,7 @@ void followWire() {
         lcd.setCursor(0, 0);
         lcd.print("FOUND CHARGING");
         delay(5000);
-        Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_DOCKED), -1);
+        TriggerFSM(STATE_FOLLOW_WIRE, STATE_DOCKED, -1);
         return;
     }
 
@@ -194,12 +194,12 @@ void followWire() {
 
     if (currentFSMSequence == FSMSEQUENCE_ZONE_1) {
         if ((currentTimeFollowWire - startTimeFollowWire) >= eeprom_follow_wire_zone_1_time) {
-            Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN), currentFSMSequence);
+            TriggerFSM(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN, currentFSMSequence);
             return;
         }
     } else if (currentFSMSequence == FSMSEQUENCE_ZONE_2) {
         if ((currentTimeFollowWire - startTimeFollowWire) >= eeprom_follow_wire_zone_2_time) {
-            Trigger_FSM(BuildStateTransitionId(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN), currentFSMSequence);
+            TriggerFSM(STATE_FOLLOW_WIRE, STATE_WIRE_TO_GARDEN, currentFSMSequence);
             return;
         }
     }

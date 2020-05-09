@@ -1,7 +1,6 @@
 #pragma once
 
 #include <LiquidCrystal_I2C.h>
-#include <vector>
 
 using namespace std;
 

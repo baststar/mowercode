@@ -2,6 +2,9 @@
 
 #include <Arduino.h>
 
+// 2 byte unsigned int (uint16_t) max 65535
+// todo: check for max values of 65535 in settings-menues
+
 // PERIMETER
 extern uint16_t eeprom_perimeter_is_clockwise_from_garage;
 #define EEPROM_INDEX_PERIMETER_IS_CLOCKWISE_FROM_GARAGE 0

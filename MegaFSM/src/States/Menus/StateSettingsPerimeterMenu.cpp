@@ -20,7 +20,7 @@ void read_settingsPerimeter_keys() {
         delay(250);
 
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_PERIMETER_MENU, STATE_SETTINGS_MENU), -1);
+        TriggerFSM(STATE_SETTINGS_PERIMETER_MENU, STATE_SETTINGS_MENU, -1);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(250);

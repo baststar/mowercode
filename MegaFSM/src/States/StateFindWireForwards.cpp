@@ -25,7 +25,7 @@ void read_findWireForwards_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_FIND_WIRE_FORWARDS, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -63,7 +63,7 @@ void findWireForwards() {
     if (wireActivefindWireForwards == false) {
         wireNotFoundTotalTimefindWireForwards = wireNotFoundTotalTimefindWireForwards + (currentTimefindWireForwards - lastTimeFindWireForwards);
         if (wireNotFoundTotalTimefindWireForwards >= wireNotActiveMaxTimeFindWireForwards) {
-            Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_ERROR), currentFSMSequence);
+            TriggerFSM(STATE_FIND_WIRE_FORWARDS, STATE_ERROR, currentFSMSequence);
             return;
         }
     } else {
@@ -71,7 +71,7 @@ void findWireForwards() {
     }
 
     if ((currentTimefindWireForwards - startTimefindWireForwards) >= eeprom_find_wire_search_time_max) {
-        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_ERROR), currentFSMSequence);
+        TriggerFSM(STATE_FIND_WIRE_FORWARDS, STATE_ERROR, currentFSMSequence);
         return;
     }
 
@@ -80,10 +80,10 @@ void findWireForwards() {
         insideFalseTimeToBeOutside = insideFalseTimeToBeOutside + (currentTimefindWireForwards - lastTimeFindWireForwards);
         if (insideFalseTimeToBeOutside >= insideFalseTimeToBeOutsideMax) {
             if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
-                Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_FOLLOW_WIRE), currentFSMSequence);
+                TriggerFSM(STATE_FIND_WIRE_FORWARDS, STATE_FOLLOW_WIRE, currentFSMSequence);
                 return;
             } else {
-                Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_FORWARDS, STATE_ERROR), currentFSMSequence);
+                TriggerFSM(STATE_FIND_WIRE_FORWARDS, STATE_ERROR, currentFSMSequence);
             }
         }
     } else {

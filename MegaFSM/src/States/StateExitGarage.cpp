@@ -18,7 +18,7 @@ void read_exitGarage_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_EXIT_GARAGE, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -44,13 +44,13 @@ void exitGarage() {
     currentTimeExitGarage = millis();
     if ((currentTimeExitGarage - startTimeExitGarage) >= eeprom_exit_garage_backwards_time) {
         if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2) {
-            Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_ROTATE_TO_WIRE), currentFSMSequence);
+            TriggerFSM(STATE_EXIT_GARAGE, STATE_ROTATE_TO_WIRE, currentFSMSequence);
             return;
         } else if (currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
-            Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_RANDOM_ROTATE), currentFSMSequence);
+            TriggerFSM(STATE_EXIT_GARAGE, STATE_RANDOM_ROTATE, currentFSMSequence);
             return;
         } else {
-            Trigger_FSM(BuildStateTransitionId(STATE_EXIT_GARAGE, STATE_ERROR), currentFSMSequence);
+            TriggerFSM(STATE_EXIT_GARAGE, STATE_ERROR, currentFSMSequence);
             return;
         }
     }

@@ -19,7 +19,7 @@ void read_randomRotate_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_RANDOM_ROTATE, STATE_PARKED, currentFSMSequence);
         return;
     }
     lastRotation = millis();
@@ -50,10 +50,10 @@ void randomRotate() {
 
     if (currentRotationTime >= maxRotationTime) {
         if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
-            Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_MOWING), currentFSMSequence);
+            TriggerFSM(STATE_RANDOM_ROTATE, STATE_MOWING, currentFSMSequence);
             return;
         } else {
-            Trigger_FSM(BuildStateTransitionId(STATE_RANDOM_ROTATE, STATE_ERROR), currentFSMSequence);
+            TriggerFSM(STATE_RANDOM_ROTATE, STATE_ERROR, currentFSMSequence);
             return;
         }
     }

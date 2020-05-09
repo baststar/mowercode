@@ -5,6 +5,7 @@
 #include <States/FSMMower.h>
 #include <States/Menus/StateDockedMenu.h>
 #include <States/Menus/StateParkedMenu.h>
+#include <States/Menus/StateSettingsAlarmsMenu.h>
 #include <States/Menus/StateSettingsMenu.h>
 #include <States/Menus/StateSettingsMotorspeedsMenu.h>
 #include <States/Menus/StateSettingsMowtimesMenu.h>
@@ -32,7 +33,7 @@ int beforeMenuFSMEvent = -1;
 int currentFSMSequence = -1;
 Fsm fsm_mower(&state_docked);
 
-#define STATES_COUNT 20
+#define STATES_COUNT 21
 
 State *allStates[STATES_COUNT] = {
     &state_docked,                  // 1
@@ -55,31 +56,24 @@ State *allStates[STATES_COUNT] = {
     &state_settingsTimesMenu,       // 18
     &state_settingsPerimeterMenu,   // 19
     &state_settingsMowtimesMenu,    // 20
+    &state_settingsAlarmsMenu,      // 21
 };
 
 int BuildStateTransitionId(int state1, int state2) {
     char buffer[5];
-    snprintf(buffer, sizeof(buffer), "%d%d", state1, state2);
+    snprintf(buffer, sizeof(buffer), "%d%d%d", state1, 9, state2);
     return String(buffer).toInt();
-}
-
-void Setup_FSM() {
-    // create any to any transitions
-    for (unsigned int i = 1; i <= STATES_COUNT; i++) {
-        for (unsigned int j = 1; j <= STATES_COUNT; j++) {
-            fsm_mower.add_transition(&*allStates[i - 1], &*allStates[j - 1], BuildStateTransitionId(i, j), NULL);
-        }
-    }
 }
 
 void Loop_FSM() {
     fsm_mower.run_machine();
 }
 
-void Trigger_FSM(int event, int sequence) {
-    Serial.println("change state " + String(lastFSMEvent) + " to state " + String(event) + " Sequence: " + String(sequence));
+void TriggerFSM(int fromState, int toState, int sequence) {
+    int transitionId = BuildStateTransitionId(fromState, toState);
     lastFSMEvent = currentFSMEvent;
-    currentFSMEvent = event;
+    currentFSMEvent = transitionId;
     currentFSMSequence = sequence;
-    fsm_mower.trigger(event);
+    fsm_mower.add_transition(&*allStates[fromState], &*allStates[toState], transitionId, NULL);
+    fsm_mower.trigger(transitionId);
 }

@@ -20,7 +20,7 @@ void read_findWireBackwards_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_FIND_WIRE_BACKWARDS, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -41,7 +41,7 @@ void findWireBackwards() {
 
     wireActivefindWireBackwards = IsBounderyWireActive();
     if (wireActivefindWireBackwards == false) {
-        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR), currentFSMSequence);
+        TriggerFSM(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR, currentFSMSequence);
         return;
     }
 
@@ -54,14 +54,14 @@ void findWireBackwards() {
     if (MowerIsInsideWire() == false) {
         // DRIVEN OVER THE WIRE -> WIRE FOUND
         if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_FOLLOW_WIRE) {
-            Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_FOLLOW_WIRE), currentFSMSequence);
+            TriggerFSM(STATE_FIND_WIRE_BACKWARDS, STATE_FOLLOW_WIRE, currentFSMSequence);
             return;
         }
     }
 
     currentTimefindWireBackwards = millis();
     if ((currentTimefindWireBackwards - startTimefindWireBackwards) >= eeprom_find_wire_search_time_max) {
-        Trigger_FSM(BuildStateTransitionId(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR), currentFSMSequence);
+        TriggerFSM(STATE_FIND_WIRE_BACKWARDS, STATE_ERROR, currentFSMSequence);
         return;
     }
 }

@@ -20,7 +20,7 @@ void read_testMenu_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_TEST_MENU, STATE_DOCKED_MENU), -1);
+        TriggerFSM(STATE_TEST_MENU, STATE_DOCKED_MENU, -1);
     } else if (PlusKey_pressed == 0) {
         delay(250);
         testMenu_currentMenu++;

@@ -10,7 +10,7 @@ void read_compassRotate_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_COMPASS_ROTATE, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_COMPASS_ROTATE, STATE_PARKED, currentFSMSequence);
         return;
     }
 }

@@ -13,7 +13,7 @@ void read_error_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_ERROR, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_ERROR, STATE_PARKED, currentFSMSequence);
         return;
     }
 }

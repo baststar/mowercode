@@ -19,7 +19,7 @@ void read_settingsTimes_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_SETTINGS_TIMES_MENU, STATE_SETTINGS_MENU), -1);
+        TriggerFSM(STATE_SETTINGS_TIMES_MENU, STATE_SETTINGS_MENU, -1);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(250);

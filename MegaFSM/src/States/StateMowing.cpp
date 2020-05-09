@@ -20,7 +20,7 @@ void read_mowing_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_MOWING, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_MOWING, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -62,10 +62,10 @@ void mowing() {
             delay(1000);
 
             if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2 || currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
-                Trigger_FSM(BuildStateTransitionId(STATE_MOWING, STATE_RANDOM_ROTATE), currentFSMSequence);
+                TriggerFSM(STATE_MOWING, STATE_RANDOM_ROTATE, currentFSMSequence);
                 return;
             } else {
-                Trigger_FSM(BuildStateTransitionId(STATE_MOWING, STATE_ERROR), currentFSMSequence);
+                TriggerFSM(STATE_MOWING, STATE_ERROR, currentFSMSequence);
                 return;
             }
         }

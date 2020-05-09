@@ -17,7 +17,7 @@ void read_parkedMenu_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_PARKED_MENU, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_PARKED_MENU, STATE_PARKED, currentFSMSequence);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(250);
@@ -39,10 +39,11 @@ void read_parkedMenu_keys() {
             lcd.print("continue " + String(beforeMenuFSMEvent));
             delay(500);
             clearLCD();
-            Trigger_FSM(beforeMenuFSMEvent, currentFSMSequence);
+            // Trigger_FSM(beforeMenuFSMEvent, currentFSMSequence);
+            ShowError("not implemented yet");
             return;
         } else if (parkedMenu_currentMenu == 1) {
-            Trigger_FSM(BuildStateTransitionId(STATE_PARKED_MENU, STATE_FIND_WIRE_FORWARDS), FSMSEQUENCE_FOLLOW_WIRE);
+            TriggerFSM(STATE_PARKED_MENU, STATE_FIND_WIRE_FORWARDS, FSMSEQUENCE_FOLLOW_WIRE);
             return;
         }
     }

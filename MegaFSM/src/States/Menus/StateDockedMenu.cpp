@@ -16,7 +16,7 @@ void read_dockedMenu_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_DOCKED), -1);
+        TriggerFSM(STATE_DOCKED_MENU, STATE_DOCKED, -1);
         return;
     } else if (PlusKey_pressed == 0) {
         delay(250);
@@ -33,19 +33,19 @@ void read_dockedMenu_keys() {
     } else if (StartKey_pressed == 0) {
         delay(250);
         if (dockedMenu_currentMenu == 0) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_ZONE_1);
+            TriggerFSM(STATE_DOCKED_MENU, STATE_EXIT_GARAGE, FSMSEQUENCE_ZONE_1);
             return;
         } else if (dockedMenu_currentMenu == 1) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_ZONE_2);
+            TriggerFSM(STATE_DOCKED_MENU, STATE_EXIT_GARAGE, FSMSEQUENCE_ZONE_2);
             return;
         } else if (dockedMenu_currentMenu == 2) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_EXIT_GARAGE), FSMSEQUENCE_QUICK_MOW);
+            TriggerFSM(STATE_DOCKED_MENU, STATE_EXIT_GARAGE, FSMSEQUENCE_QUICK_MOW);
             return;
         } else if (dockedMenu_currentMenu == 3) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_TEST_MENU), -1);
+            TriggerFSM(STATE_DOCKED_MENU, STATE_TEST_MENU, -1);
             return;
         } else if (dockedMenu_currentMenu == 4) {
-            Trigger_FSM(BuildStateTransitionId(STATE_DOCKED_MENU, STATE_SETTINGS_MENU), -1);
+            TriggerFSM(STATE_DOCKED_MENU, STATE_SETTINGS_MENU, -1);
             return;
         }
     }

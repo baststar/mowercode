@@ -20,7 +20,7 @@ void read_wireToGarden_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_WIRE_TO_GARDEN, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -56,7 +56,7 @@ void wireToGarden() {
     }
 
     if ((currentTimeWireToGarden - startTimeWireToGarden) >= (eeprom_wire_into_garden_time + eeprom_rotate_from_wire_to_garden_time)) {
-        Trigger_FSM(BuildStateTransitionId(STATE_WIRE_TO_GARDEN, STATE_MOWING), currentFSMSequence);
+        TriggerFSM(STATE_WIRE_TO_GARDEN, STATE_MOWING, currentFSMSequence);
         return;
     }
 

@@ -3,6 +3,7 @@
 #include <Compass.h>
 #include <EEPROMVariables.h>
 #include <LCD.h>
+#include <MemoryFree.h>
 #include <Perimeter.h>
 #include <SetupPins.h>
 #include <States/FSMMower.h>
@@ -17,9 +18,9 @@ void setup() {
     Setup_Perimeter();
     SetupRTC();
     SetupCompass();
-    Setup_FSM();
     SetupVariablesFromEEPROM();
     // PrintEEPROM();
+    Serial.println("FREE: " + String(freeMemory()));
 }
 
 void loop() {

@@ -18,7 +18,7 @@ void read_rotateToWire_keys() {
     if (StopKey_pressed == 0) {
         delay(250);
         beforeMenuFSMEvent = currentFSMEvent;
-        Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_PARKED), currentFSMSequence);
+        TriggerFSM(STATE_ROTATE_TO_WIRE, STATE_PARKED, currentFSMSequence);
         return;
     }
 }
@@ -49,13 +49,13 @@ void rotateToWire() {
 
     if ((currentRotateToWireTime - startTimeRotateToWire) >= eeprom_rotate_from_exit_garage_to_wire_time) {
         if (currentFSMSequence == FSMSEQUENCE_ZONE_1 || currentFSMSequence == FSMSEQUENCE_ZONE_2) {
-            Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_FIND_WIRE_FORWARDS), currentFSMSequence);
+            TriggerFSM(STATE_ROTATE_TO_WIRE, STATE_FIND_WIRE_FORWARDS, currentFSMSequence);
             return;
         } else if (currentFSMSequence == FSMSEQUENCE_QUICK_MOW) {
-            Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_RANDOM_ROTATE), currentFSMSequence);
+            TriggerFSM(STATE_ROTATE_TO_WIRE, STATE_RANDOM_ROTATE, currentFSMSequence);
             return;
         } else {
-            Trigger_FSM(BuildStateTransitionId(STATE_ROTATE_TO_WIRE, STATE_ERROR), currentFSMSequence);
+            TriggerFSM(STATE_ROTATE_TO_WIRE, STATE_ERROR, currentFSMSequence);
             return;
         }
     }
