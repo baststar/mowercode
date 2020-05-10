@@ -5,7 +5,7 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
     "editor.defaultFormatter": "xaver.clang-format",
-    "editor.formatOnPaste": true,
+    "editor.formatOnPaste": false,
     "editor.formatOnType": false,
     "editor.formatOnSave": true
 }

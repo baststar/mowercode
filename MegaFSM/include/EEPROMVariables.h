@@ -64,20 +64,26 @@ extern uint16_t eeprom_alarm_hour_1;
 extern uint16_t eeprom_alarm_minute_1;
 #define EEPROM_INDEX_ALARM_ACTIVE_1 48
 extern uint16_t eeprom_alarm_active_1;
+#define EEPROM_INDEX_ALARM_SEQUENCE_1 50
+extern uint16_t eeprom_alarm_sequence_1;
 
-#define EEPROM_INDEX_ALARM_HOUR_2 50
+#define EEPROM_INDEX_ALARM_HOUR_2 52
 extern uint16_t eeprom_alarm_hour_2;
-#define EEPROM_INDEX_ALARM_MINUTE_2 52
+#define EEPROM_INDEX_ALARM_MINUTE_2 54
 extern uint16_t eeprom_alarm_minute_2;
-#define EEPROM_INDEX_ALARM_ACTIVE_2 54
+#define EEPROM_INDEX_ALARM_ACTIVE_2 56
 extern uint16_t eeprom_alarm_active_2;
+#define EEPROM_INDEX_ALARM_SEQUENCE_2 58
+extern uint16_t eeprom_alarm_sequence_2;
 
-#define EEPROM_INDEX_ALARM_HOUR_3 56
+#define EEPROM_INDEX_ALARM_HOUR_3 60
 extern uint16_t eeprom_alarm_hour_3;
-#define EEPROM_INDEX_ALARM_MINUTE_3 58
+#define EEPROM_INDEX_ALARM_MINUTE_3 62
 extern uint16_t eeprom_alarm_minute_3;
-#define EEPROM_INDEX_ALARM_ACTIVE_3 60
+#define EEPROM_INDEX_ALARM_ACTIVE_3 64
 extern uint16_t eeprom_alarm_active_3;
+#define EEPROM_INDEX_ALARM_SEQUENCE_3 66
+extern uint16_t eeprom_alarm_sequence_3;
 
 
 void PrintEEPROM();

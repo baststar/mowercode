@@ -25,6 +25,7 @@
 #include <States/StateRotateToWire.h>
 #include <States/StateWireToGarden.h>
 #include <config.h>
+#include <map>
 
 
 int currentFSMEvent = -1;
@@ -32,6 +33,8 @@ int lastFSMEvent = -1;
 int beforeMenuFSMEvent = -1;
 int currentFSMSequence = -1;
 Fsm fsm_mower(&state_docked);
+
+std::map<uint16_t, bool> eventList;
 
 #define STATES_COUNT 21
 
@@ -74,6 +77,11 @@ void TriggerFSM(int fromState, int toState, int sequence) {
     lastFSMEvent = currentFSMEvent;
     currentFSMEvent = transitionId;
     currentFSMSequence = sequence;
-    fsm_mower.add_transition(&*allStates[fromState], &*allStates[toState], transitionId, NULL);
+
+    if (eventList.find(transitionId) == eventList.end()) {
+        eventList.insert(std::pair<uint16_t, bool>(transitionId, true));
+        fsm_mower.add_transition(&*allStates[fromState], &*allStates[toState], transitionId, NULL);
+    }
+
     fsm_mower.trigger(transitionId);
 }

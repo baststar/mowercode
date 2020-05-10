@@ -39,14 +39,17 @@ uint16_t eeprom_pwm_bladespeed = PWM_BLADESPEED;
 uint16_t eeprom_alarm_hour_1 = ALARM_HOUR_1;
 uint16_t eeprom_alarm_minute_1 = ALARM_MINUTE_1;
 uint16_t eeprom_alarm_active_1 = ALARM_ACTIVE_1;
+uint16_t eeprom_alarm_sequence_1 = ALARM_SEQUENCE_1;
 
 uint16_t eeprom_alarm_hour_2 = ALARM_HOUR_2;
 uint16_t eeprom_alarm_minute_2 = ALARM_MINUTE_2;
 uint16_t eeprom_alarm_active_2 = ALARM_ACTIVE_2;
+uint16_t eeprom_alarm_sequence_2 = ALARM_SEQUENCE_2;
 
 uint16_t eeprom_alarm_hour_3 = ALARM_HOUR_3;
 uint16_t eeprom_alarm_minute_3 = ALARM_MINUTE_3;
 uint16_t eeprom_alarm_active_3 = ALARM_ACTIVE_3;
+uint16_t eeprom_alarm_sequence_3 = ALARM_SEQUENCE_3;
 
 
 void PrintEEPROM() {
@@ -87,14 +90,17 @@ void PrintEEPROM() {
         Serial.println("ALARM_HOUR_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_1)));
         Serial.println("ALARM_MINUTE_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_1)));
         Serial.println("ALARM_ACTIVE_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_1)));
+        Serial.println("ALARM_SEQUENCE_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_SEQUENCE_1)));
 
         Serial.println("ALARM_HOUR_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_2)));
         Serial.println("ALARM_MINUTE_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_2)));
         Serial.println("ALARM_ACTIVE_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_2)));
+        Serial.println("ALARM_SEQUENCE_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_SEQUENCE_2)));
 
         Serial.println("ALARM_HOUR_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_3)));
         Serial.println("ALARM_MINUTE_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_3)));
         Serial.println("ALARM_ACTIVE_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_3)));
+        Serial.println("ALARM_SEQUENCE_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_SEQUENCE_3)));
 
     } else {
         ShowError("EEPROM not ready");
@@ -139,14 +145,17 @@ void SetupVariablesFromEEPROM() {
         eeprom_alarm_hour_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_1);
         eeprom_alarm_minute_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_1);
         eeprom_alarm_active_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_1);
+        eeprom_alarm_sequence_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_SEQUENCE_1);
 
         eeprom_alarm_hour_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_2);
         eeprom_alarm_minute_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_2);
         eeprom_alarm_active_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_2);
+        eeprom_alarm_sequence_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_SEQUENCE_2);
 
         eeprom_alarm_hour_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_HOUR_3);
         eeprom_alarm_minute_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_MINUTE_3);
         eeprom_alarm_active_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_ACTIVE_3);
+        eeprom_alarm_sequence_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_SEQUENCE_3);
 
     } else {
         ShowError("EEPROM not ready");
@@ -191,14 +200,17 @@ void ResetEEPROM() {
         EEPROM.writeInt(EEPROM_INDEX_ALARM_HOUR_1, ALARM_HOUR_1);
         EEPROM.writeInt(EEPROM_INDEX_ALARM_MINUTE_1, ALARM_MINUTE_1);
         EEPROM.writeInt(EEPROM_INDEX_ALARM_ACTIVE_1, ALARM_ACTIVE_1);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_SEQUENCE_1, ALARM_SEQUENCE_1);
 
         EEPROM.writeInt(EEPROM_INDEX_ALARM_HOUR_2, ALARM_HOUR_2);
         EEPROM.writeInt(EEPROM_INDEX_ALARM_MINUTE_2, ALARM_MINUTE_2);
         EEPROM.writeInt(EEPROM_INDEX_ALARM_ACTIVE_2, ALARM_ACTIVE_2);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_SEQUENCE_2, ALARM_SEQUENCE_2);
 
         EEPROM.writeInt(EEPROM_INDEX_ALARM_HOUR_3, ALARM_HOUR_3);
         EEPROM.writeInt(EEPROM_INDEX_ALARM_MINUTE_3, ALARM_MINUTE_3);
         EEPROM.writeInt(EEPROM_INDEX_ALARM_ACTIVE_3, ALARM_ACTIVE_3);
+        EEPROM.writeInt(EEPROM_INDEX_ALARM_SEQUENCE_3, ALARM_SEQUENCE_3);
 
         ShowError("EEPROM RESETTET");
     } else {

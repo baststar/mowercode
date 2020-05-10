@@ -72,16 +72,14 @@ void SetupRTC() {
 
 String GetDateTimeAsString() {
     RtcDateTime now = Rtc.GetDateTime();
-    char datestring[20];
-    snprintf_P(datestring, ARRAY_SIZE(datestring), PSTR("%02u/%02u/%04u %02u:%02u:%02u"), now.Month(), now.Day(), now.Year(), now.Hour(), now.Minute(), now.Second());
+    char datestring[25];
+    snprintf_P(datestring, ARRAY_SIZE(datestring), PSTR("%02u/%02u/%04u %02u:%02u"), now.Month(), now.Day(), now.Year(), now.Hour(), now.Minute());
     return String(datestring);
 }
 
 String GetTemperature() {
     RtcTemperature temp = Rtc.GetTemperature();
-    char temperaturString[20];
-    snprintf(temperaturString, ARRAY_SIZE(temperaturString), "%s", temp.AsFloatDegC());
-    return String(temperaturString);
+    return String(temp.AsFloatDegC());
 }
 
 void TestRTC() {
@@ -105,4 +103,8 @@ void TestRTC() {
             ShowError("RTC lost confidence");
         }
     }
+}
+
+
+void CheckAlerts() {
 }

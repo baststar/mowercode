@@ -37,14 +37,17 @@
 #define ALARM_HOUR_1 11
 #define ALARM_MINUTE_1 0
 #define ALARM_ACTIVE_1 1
+#define ALARM_SEQUENCE_1 11 // Zone 1
 
 #define ALARM_HOUR_2 12
 #define ALARM_MINUTE_2 0
 #define ALARM_ACTIVE_2 0
+#define ALARM_SEQUENCE_2 12 // Zone 2
 
 #define ALARM_HOUR_3 7
 #define ALARM_MINUTE_3 0
 #define ALARM_ACTIVE_3 0
+#define ALARM_SEQUENCE_3 17 // Quick Mow
 
 
 // ARDUINO MEGA PINS
