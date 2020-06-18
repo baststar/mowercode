@@ -1,24 +1,36 @@
-#include "../.pio/libdeps/megaatmega2560/Ardumower/code/tests/perimeterV2/perimeter.h"
-#include "../.pio/libdeps/megaatmega2560/Ardumower/code/tests/perimeterV2/adcman.h"
+#include "../.pio/libdeps/megaatmega2560/Ardumower/code/ardumower/perimeter.h"
+#include "../.pio/libdeps/megaatmega2560/Ardumower/code/ardumower/adcman.h"
+#include <EEPROMex.h>
 #include <Perimeter.h>
+#include <States/FSMMower.h>
 #include <config.h>
 
+
 Perimeter perimeter;
-long int nextTimeUpdatePerimeterStatus = 0;
+unsigned long nextTimeUpdatePerimeterStatus = 0;
 bool mowerIsInsideWire = false;
-int currentMagnitude = 0;
-long int currMillis = 0;
+int currentMagnitudeRight = 0;
+int currentMagnitudeLeft = 0;
 
 void Setup_Perimeter() {
+    // EEPROM.write(500, 0);
+    // ADCMan.sampleRate = SRATE_9615;
     ADCMan.init();
+
+    pinMode(VOLT_PIN, INPUT);
+    pinMode(AMP_PIN, INPUT);
+    pinMode(RAIN_PIN, INPUT);
+    ADCMan.setCapture(VOLT_PIN, 1, 0);
+    ADCMan.setCapture(AMP_PIN, 1, 0);
+    ADCMan.setCapture(RAIN_PIN, 1, 0);
     perimeter.setPins(PIN_PERIMETER_LEFT, PIN_PERIMETER_RIGHT);
-    perimeter.useDifferentialPerimeterSignal = true;
     perimeter.speedTest();
+    // ADCMan.calibrate();
     ADCMan.run();
 }
 
 bool IsBounderyWireActive() {
-    if (currentMagnitude < -50 || currentMagnitude > 50) {
+    if (currentMagnitudeLeft < -50 || currentMagnitudeLeft > 50) {
         return true;
     }
     return false;
@@ -28,16 +40,20 @@ bool MowerIsInsideWire() {
     return mowerIsInsideWire;
 }
 
-int GetCurrentMagnitude() {
-    return currentMagnitude;
+int GetCurrentMagnitudeRight() {
+    return currentMagnitudeRight;
+}
+
+int GetCurrentMagnitudeLeft() {
+    return currentMagnitudeLeft;
 }
 
 void UpdatePerimeterStatus() {
-    currMillis = millis();
-    if (currMillis >= nextTimeUpdatePerimeterStatus) {
+    if (currentMillisGlobal >= nextTimeUpdatePerimeterStatus) {
         ADCMan.run();
-        nextTimeUpdatePerimeterStatus = currMillis + 25;
-        currentMagnitude = perimeter.getMagnitude(0);
-        mowerIsInsideWire = perimeter.isInside(0);
+        nextTimeUpdatePerimeterStatus = currentMillisGlobal + 50;
+        currentMagnitudeLeft = perimeter.getMagnitude(0);
+        currentMagnitudeRight = perimeter.getMagnitude(1);
+        mowerIsInsideWire = perimeter.isInside(1);
     }
 }

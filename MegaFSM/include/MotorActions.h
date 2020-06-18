@@ -8,6 +8,8 @@ void MotorAction_SetPinsToGoForward();
 void MotorAction_SetPinsToGoBackwards();
 void MotorAction_SetPinsToRotateLeft();
 void MotorAction_SetPinsToRotateRight();
+void MotorAction_SetPinsToOnlyLeft();
+void MotorAction_SetPinsToOnlyRight();
 
 
 void MotorAction_StartBlades();

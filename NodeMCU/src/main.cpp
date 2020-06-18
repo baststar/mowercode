@@ -16,6 +16,8 @@
 
 #include <main.h>
 
+#define ARRAY_SIZE(x) (int)(sizeof(x) / sizeof(x[0]))
+
 #define BLYNK_PRINT Serial
 
 //#define LED LED_BUILTIN
@@ -79,6 +81,37 @@ int Automatic_Mode;
 int All;
 int RX_Data_Recieved;
 
+// VoltSensor
+float Volts;
+float Volts_Last;
+int Zero_Volts;
+float vout = 0.0;
+float R1 = 30000; // Mower 330 = 3000    Mower LAM = 30000
+float R2 = 7500;  // Mower 330 = 7000
+
+// AmpSensor
+int Sensor = D7; // Der Stromstärkesensor wird am Pin A0 (Analog "0") angeschlossen.
+int VpA = 185;   // Millivolt pro Ampere (100 für 20A Modul und 66 für 30A Modul)
+int sensorwert = 0;
+int Nullpunkt = 1600; // Spannung in mV bei dem keine Stromstärke vorhanden ist
+double SensorSpannung = 0;
+double Ampere = 0;
+
+// RainSensor
+int Rain_Detected;
+bool raining = false;
+
+// RawSensorData
+unsigned long lastCheckedVoltAmpRain = 0;
+int RawAmpere = 0;
+int RawVolt = 0;
+int RawRaining = 0;
+
+// VOLT/AMP/RAIN PINS
+#define VOLT_PIN A0
+#define AMP_PIN D7
+#define RAIN_PIN D6
+
 void setup()
 {
     Serial.begin(9600);
@@ -88,17 +121,27 @@ void setup()
     Serial.println("");
     pinMode(D2, INPUT);
     pinMode(D3, OUTPUT);
+    pinMode(VOLT_PIN, INPUT);
+    pinMode(AMP_PIN, INPUT);
+    pinMode(RAIN_PIN, INPUT);
+
     digitalWrite(LED, HIGH); // Turn off LED Light
     Setup_Wifi();
-    Blynk_Connect(); // Connect to the WIFI
-    Clear_APP();
+
+    if (USE_BLYNK == 1) {
+        Blynk_Connect(); // Connect to the WIFI
+        Clear_APP();
+    }
+
     lcd.clear();
     pinMode(LED, OUTPUT);
 
-    espClient.setFingerprint(cert_sh1_fingerprint);
-    mqttClient.begin(MQTT_HOST, MQTT_PORT, espClient);
-    if (!mqttClient.connected()) {
-        ConnectMQTT();
+    if (USE_MQTT == 1) {
+        espClient.setFingerprint(cert_sh1_fingerprint);
+        mqttClient.begin(MQTT_HOST, MQTT_PORT, espClient);
+        if (!mqttClient.connected()) {
+            ConnectMQTT();
+        }
     }
 }
 
@@ -107,22 +150,160 @@ void loop()
     loopstatus = loopstatus + 1;
     RX_Data_Recieved = 0; // resets the data received bool
 
-    if (!Blynk.connected()) {
-        Blynk.run();
-        timer.run();
-        digitalWrite(LED, HIGH);
-        Serial.println("------------------------");
-        Serial.println("NODEMCU Disconnected");
-        Serial.println("Reconnecting ... ");
-        Blynk_Connect();
+    if (USE_BLYNK == 1) {
+        if (!Blynk.connected()) {
+            Blynk.run();
+            timer.run();
+            digitalWrite(LED, HIGH);
+            Serial.println("------------------------");
+            Serial.println("NODEMCU Disconnected");
+            Serial.println("Reconnecting ... ");
+            Blynk_Connect();
+        }
+        else {
+            Blynk.run();
+            timer.run();
+            digitalWrite(LED, LOW); // LED is inverted on a MODEMCU...
+            Update_Blynk_App_With_Status();
+            Serial.println(""); // new line serial monitor
+        }
+    }
+
+    // Receive_All_From_MEGA();
+    Receive_Mega_Topic();
+
+    UpdateVoltAmpRain();
+}
+
+void UpdateVoltAmpRain()
+{
+    if (millis() - lastCheckedVoltAmpRain > 500) {
+        lastCheckedVoltAmpRain = millis();
+
+        RawAmpere = analogRead(AMP_PIN);
+        RawVolt = analogRead(VOLT_PIN);
+        RawRaining = analogRead(RAIN_PIN);
+
+        // ADCMan.run();
+        // if (ADCMan.isCaptureComplete(AMP_PIN)) {
+        //     RawAmpere = ADCMan.read(AMP_PIN);
+        // }
+
+        // if (ADCMan.isCaptureComplete(VOLT_PIN)) {
+        //     RawVolt = ADCMan.read(VOLT_PIN);
+        // }
+
+        // if (ADCMan.isCaptureComplete(RAIN_PIN)) {
+        //     RawRaining = ADCMan.read(RAIN_PIN);
+        // }
+
+        UpdateVoltAmpCharge();
+    }
+}
+
+void UpdateVoltAmpCharge()
+{
+    SensorSpannung = (RawAmpere / 1024.0) * 5000;  // Hier wird der Messwert in den Spannungswert am Sensor umgewandelt.
+    Ampere = ((SensorSpannung - Nullpunkt) / VpA); // Im zweiten Schritt wird hier die Stromstärke berechnet.
+
+    if (RawVolt > 100) {
+        vout = (RawVolt * 5.0) / 1024.0; // see text
+        Volts = vout / (R2 / (R1 + R2));
+        Volts_Last = Volts;
+        Zero_Volts = 0;
     }
     else {
-        Blynk.run();
-        timer.run();
-        digitalWrite(LED, LOW); // LED is inverted on a MODEMCU...
-        Receive_All_From_MEGA();
-        Update_Blynk_App_With_Status();
-        Serial.println(""); // new line serial monitor
+        Volts = Volts_Last;
+        Zero_Volts = Zero_Volts + 1;
+        if (Zero_Volts > 5) {
+            Volts = 0;
+        }
+    }
+
+    if (RawRaining < 100) {
+        raining = true;
+    }
+    else {
+        raining = false;
+    }
+
+    Serial.println("new data: " + String(Ampere) + "  |  " + String(Volts) + "  |  " + String(raining));
+}
+
+#define INPUT_SIZE 30
+char input[INPUT_SIZE + 1];
+
+void Receive_Mega_Topic()
+{
+    while (NodeMCU.available()) {
+        Serial.println("data available");
+
+        byte size = NodeMCU.readBytes(input, INPUT_SIZE);
+        input[size] = 0;
+
+        Serial.println(input);
+        char* command = strtok(input, ";");
+
+        while (command != 0) {
+            // Split the command in two values
+            char* separator = strchr(command, '=');
+            if (separator != 0) {
+                // Actually split the string in 2: replace ':' with 0
+                *separator = 0;
+                int topic = atoi(command);
+                ++separator;
+                int value = atoi(separator);
+
+                // Do something with servoId and position
+
+                ProcessData(topic, value);
+            }
+            // Find the next command in input string
+            command = strtok(0, ";");
+        }
+    }
+}
+
+String mowerStates[] = {"STATE_DOCKED",
+                        "STATE_DOCKED_MENU",
+                        "STATE_EXIT_GARAGE",
+                        "STATE_MOWING",
+                        "STATE_FOLLOW_WIRE",
+                        "STATE_PARKED",
+                        "STATE_PARKED_MENU",
+                        "STATE_RANDOM_ROTATE",
+                        "STATE_WIRE_TO_GARDEN",
+                        "STATE_TEST_MENU",
+                        "STATE_ERROR",
+                        "STATE_COMPASS_ROTATE",
+                        "STATE_ROTATE_TO_WIRE",
+                        "STATE_FIND_WIRE_FORWARDS",
+                        "STATE_FIND_WIRE_BACKWARDS",
+                        "STATE_SETTINGS_MENU",
+                        "STATE_SETTINGS_MOTORSPEED_MENU",
+                        "STATE_SETTINGS_TIMES_MENU",
+                        "STATE_SETTINGS_PERIMETER_MENU",
+                        "STATE_SETTINGS_MOWTIMES_MENU",
+                        "STATE_SETTINGS_ALARMS_MENU"};
+
+void ProcessData(int topic, int value)
+{
+    Serial.println("topic:" + String(topic) + " value " + String(value));
+
+    switch (topic) {
+    case NodeMCUMessageTopics::NewState:
+
+        if (ARRAY_SIZE(mowerStates) >= value) {
+            mqttClient.publish("mower", mowerStates[value - 1], true, 3);
+        }
+        else {
+            mqttClient.publish("mower", "unkown State", true, 3);
+        }
+        break;
+
+    default:
+        Serial.println("default");
+        break;
     }
 }
 
@@ -158,6 +339,7 @@ void Setup_Wifi()
 
 void ConnectMQTT()
 {
+    Serial.println("Attempting MQTT connection...");
     while (!mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
         Serial.print("Attempting MQTT connection...");
         delay(5000);
@@ -464,7 +646,7 @@ void Receive_All_From_MEGA()
         else
             Serial.print("No Data Received|");
     }
-    Print_RX_Values();
+    // Print_RX_Values();
     Calculate_Filtered_Mower_Status();
 }
 

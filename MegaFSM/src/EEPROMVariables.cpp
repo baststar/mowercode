@@ -10,6 +10,7 @@ uint16_t eeprom_perimeter_is_clockwise_from_garage = PERIMETER_IS_CLOCKWISE_FROM
 uint16_t eeprom_max_tracking_wire_magnitude_inside = MAX_TRACKING_WIRE_MAGNITUDE_INSIDE;
 uint16_t eeprom_max_tracking_wire_magnitude_outside = MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE;
 uint16_t eeprom_max_same_side_tracking_wire_time = MAX_SAME_SIDE_TRACKING_WIRE_TIME;
+uint16_t eeprom_p_value = P_VALUE;
 
 // TIMES
 uint16_t eeprom_exit_garage_backwards_time = EXIT_GARAGE_BACKWARDS_TIME;
@@ -24,10 +25,8 @@ uint16_t eeprom_wire_into_garden_time = WIRE_INTO_TO_GARDEN_TIME;
 
 // MOWTIMES
 uint16_t eeprom_quick_mow_mowtime = QUICK_MOW_MOWTIME;
-uint16_t eeprom_exit_garage_mowtime = EXIT_GARAGE_MOWTIME;
-uint16_t eeprom_alarm_mowtime_1 = ALARM_MOWTIME_1;
-uint16_t eeprom_alarm_mowtime_2 = ALARM_MOWTIME_2;
-uint16_t eeprom_alarm_mowtime_3 = ALARM_MOWTIME_3;
+uint16_t eeprom_zone_1_mowtime = ZONE_1_MOWTIME;
+uint16_t eeprom_zone_2_mowtime = ZONE_2_MOWTIME;
 
 // MOTOR SPEEDS
 uint16_t eeprom_pwm_maxspeed_right = PWM_MAXSPEED_RIGHT;
@@ -51,7 +50,6 @@ uint16_t eeprom_alarm_minute_3 = ALARM_MINUTE_3;
 uint16_t eeprom_alarm_active_3 = ALARM_ACTIVE_3;
 uint16_t eeprom_alarm_sequence_3 = ALARM_SEQUENCE_3;
 
-
 void PrintEEPROM() {
 
     if (EEPROM.isReady()) {
@@ -61,6 +59,7 @@ void PrintEEPROM() {
         Serial.println("MAX_TRACKING_WIRE_MAGNITUDE_INSIDE " + String(EEPROM.readInt(EEPROM_INDEX_MAX_TRACKING_WIRE_MAGNITUDE_INSIDE)));
         Serial.println("MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE " + String(EEPROM.readInt(EEPROM_INDEX_MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE)));
         Serial.println("MAX_SAME_SIDE_TRACKING_WIRE_TIME " + String(EEPROM.readInt(EEPROM_INDEX_MAX_SAME_SIDE_TRACKING_WIRE_TIME)));
+        Serial.println("P_VALUE " + String(EEPROM.readInt(EEPROM_INDEX_P_VALUE)));
 
         // TIMES
         Serial.println("EXIT_GARAGE_BACKWARDS_TIME " + String(EEPROM.readInt(EEPROM_INDEX_EXIT_GARAGE_BACKWARDS_TIME)));
@@ -75,10 +74,8 @@ void PrintEEPROM() {
 
         // MOWTIMES
         Serial.println("QUICK_MOW_MOWTIME " + String(EEPROM.readInt(EEPROM_INDEX_QUICK_MOW_MOWTIME)));
-        Serial.println("EXIT_GARAGE_MOWTIME " + String(EEPROM.readInt(EEPROM_INDEX_EXIT_GARAGE_MOWTIME)));
-        Serial.println("ALARM_MOWTIME_1 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_1)));
-        Serial.println("ALARM_MOWTIME_2 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_2)));
-        Serial.println("ALARM_MOWTIME_3 " + String(EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_3)));
+        Serial.println("ZONE_1_MOWTIME " + String(EEPROM.readInt(EEPROM_INDEX_ZONE_1_MOWTIME)));
+        Serial.println("ZONE_2_MOWTIME " + String(EEPROM.readInt(EEPROM_INDEX_ZONE_2_MOWTIME)));
 
         // MAX MOTOR SPEEDS
         Serial.println("PWM_MAXSPEED_RIGHT " + String(EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT)));
@@ -116,6 +113,7 @@ void SetupVariablesFromEEPROM() {
         eeprom_max_tracking_wire_magnitude_inside = EEPROM.readInt(EEPROM_INDEX_MAX_TRACKING_WIRE_MAGNITUDE_INSIDE);
         eeprom_max_tracking_wire_magnitude_outside = EEPROM.readInt(EEPROM_INDEX_MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE);
         eeprom_max_same_side_tracking_wire_time = EEPROM.readInt(EEPROM_INDEX_MAX_SAME_SIDE_TRACKING_WIRE_TIME);
+        eeprom_p_value = EEPROM.readInt(EEPROM_INDEX_P_VALUE);
 
         // TIMES
         eeprom_exit_garage_backwards_time = EEPROM.readInt(EEPROM_INDEX_EXIT_GARAGE_BACKWARDS_TIME);
@@ -130,10 +128,8 @@ void SetupVariablesFromEEPROM() {
 
         // MOWTIMES
         eeprom_quick_mow_mowtime = EEPROM.readInt(EEPROM_INDEX_QUICK_MOW_MOWTIME);
-        eeprom_exit_garage_mowtime = EEPROM.readInt(EEPROM_INDEX_EXIT_GARAGE_MOWTIME);
-        eeprom_alarm_mowtime_1 = EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_1);
-        eeprom_alarm_mowtime_2 = EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_2);
-        eeprom_alarm_mowtime_3 = EEPROM.readInt(EEPROM_INDEX_ALARM_MOWTIME_3);
+        eeprom_zone_1_mowtime = EEPROM.readInt(EEPROM_INDEX_ZONE_1_MOWTIME);
+        eeprom_zone_2_mowtime = EEPROM.readInt(EEPROM_INDEX_ZONE_2_MOWTIME);
 
         // MAX MOTOR SPEEDS
         eeprom_pwm_maxspeed_right = EEPROM.readInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT);
@@ -171,6 +167,7 @@ void ResetEEPROM() {
         EEPROM.writeInt(EEPROM_INDEX_MAX_TRACKING_WIRE_MAGNITUDE_INSIDE, MAX_TRACKING_WIRE_MAGNITUDE_INSIDE);
         EEPROM.writeInt(EEPROM_INDEX_MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE, MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE);
         EEPROM.writeInt(EEPROM_INDEX_MAX_SAME_SIDE_TRACKING_WIRE_TIME, MAX_SAME_SIDE_TRACKING_WIRE_TIME);
+        EEPROM.writeInt(EEPROM_INDEX_P_VALUE, P_VALUE);
 
         // TIMES
         EEPROM.writeInt(EEPROM_INDEX_EXIT_GARAGE_BACKWARDS_TIME, EXIT_GARAGE_BACKWARDS_TIME);
@@ -185,10 +182,8 @@ void ResetEEPROM() {
 
         // MOWTIMES
         EEPROM.writeInt(EEPROM_INDEX_QUICK_MOW_MOWTIME, QUICK_MOW_MOWTIME);
-        EEPROM.writeInt(EEPROM_INDEX_EXIT_GARAGE_MOWTIME, EXIT_GARAGE_MOWTIME);
-        EEPROM.writeInt(EEPROM_INDEX_ALARM_MOWTIME_1, ALARM_MOWTIME_1);
-        EEPROM.writeInt(EEPROM_INDEX_ALARM_MOWTIME_2, ALARM_MOWTIME_2);
-        EEPROM.writeInt(EEPROM_INDEX_ALARM_MOWTIME_3, ALARM_MOWTIME_3);
+        EEPROM.writeInt(EEPROM_INDEX_ZONE_1_MOWTIME, ZONE_1_MOWTIME);
+        EEPROM.writeInt(EEPROM_INDEX_ZONE_2_MOWTIME, ZONE_2_MOWTIME);
 
         // MAX MOTOR SPEEDS
         EEPROM.writeInt(EEPROM_INDEX_PWM_MAXSPEED_RIGHT, PWM_MAXSPEED_RIGHT);

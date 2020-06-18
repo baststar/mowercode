@@ -2,9 +2,10 @@
 #include <Keyboard.h>
 #include <LCD.h>
 #include <MotorActions.h>
-#include <States/FSMEvents.h>
 #include <States/FSMMower.h>
+#include <States/FSMStates.h>
 #include <States/StateParked.h>
+
 
 
 void read_parked_keys() {
@@ -19,17 +20,12 @@ void read_parked_keys() {
 void parked_on_enter() {
     MotorAction_StopMotors();
     MotorAction_StopBlades();
-    clearLCD();
-    lcd.setCursor(0, 0);
-    lcd.print("PARKED                     ");
-    delay(500);
-    clearLCD();
 }
 
 void parked() {
-    read_parked_keys();
     lcd.setCursor(0, 0);
     lcd.print("parked                  ");
+    read_parked_keys();
 }
 
 void parked_on_exit() {

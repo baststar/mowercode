@@ -1,20 +1,24 @@
 #pragma once
 
+#define USE_NODEMCU 1
+#define USE_COMPASS 0
+
 // PERIMETER IS CLOCKWISE (1) OR COUNTERCLOCKWISE (0) FROM GARAGE
 #define PERIMETER_IS_CLOCKWISE_FROM_GARAGE 1
 // MAX MAGNITUDE TO MEASURE LEFT OR RIGHT FROM CABLE TO FOLLOW THE PERIMETER
 // The magnitude 10cm left and 10cm right from wire - view magnitude in testmenu->wire
 // Adjust on the potentiometer on the sensor and here
-#define MAX_TRACKING_WIRE_MAGNITUDE_INSIDE 1100
-#define MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE 700
-#define MAX_SAME_SIDE_TRACKING_WIRE_TIME 2000 // time until mower makes strong turns while following wire and dont passes the wire from left or right
+#define MAX_TRACKING_WIRE_MAGNITUDE_INSIDE 1800
+#define MAX_TRACKING_WIRE_MAGNITUDE_OUTSIDE 2000
+#define MAX_SAME_SIDE_TRACKING_WIRE_TIME 8000 // time until mower makes strong turns while following wire and dont passes the wire from left or right
+#define P_VALUE 25                            // will be devided by 100 in code -> 14 = 0.14
 
 // TIMES in milliseconds
 #define EXIT_GARAGE_BACKWARDS_TIME 9000
 #define RANDOM_ROTATE_TIME_MIN 800
 #define RANDOM_ROTATE_TIME_MAX 1300
-#define ROTATE_FROM_EXIT_GARAGE_TO_WIRE_TIME 1000
-#define ROTATE_FROM_WIRE_TO_GARDEN_TIME 1000
+#define ROTATE_FROM_EXIT_GARAGE_TO_WIRE_TIME 1200
+#define ROTATE_FROM_WIRE_TO_GARDEN_TIME 1500
 #define FIND_WIRE_SEARCH_TIME_MAX 20000
 #define FOLLOW_WIRE_ZONE_1_TIME 4000
 #define FOLLOW_WIRE_ZONE_2_TIME 15000
@@ -27,11 +31,9 @@
 #define PWM_BLADESPEED 255
 
 // MOWTIMES
-#define QUICK_MOW_MOWTIME 3   // minutes
-#define EXIT_GARAGE_MOWTIME 3 // minutes
-#define ALARM_MOWTIME_1 60    // minutes
-#define ALARM_MOWTIME_2 60    // minutes
-#define ALARM_MOWTIME_3 60    // minutes
+#define QUICK_MOW_MOWTIME 2 // minutes
+#define ZONE_1_MOWTIME 2    // minutes
+#define ZONE_2_MOWTIME 2    // minutes
 
 // Alarms 24h
 #define ALARM_HOUR_1 11
@@ -87,3 +89,11 @@
 
 // LED PINS
 #define PIN_LED LED_BUILTIN
+
+// VOLT/AMP/RAIN PINS
+#define VOLT_PIN A0
+#define AMP_PIN A1
+#define RAIN_PIN A2
+
+// PERIMETER-SETTINGS
+#define SIGCODE_1

@@ -1,6 +1,8 @@
 #include <LCD.h>
 #include <LiquidCrystal_I2C.h>
+#include <States/FSMMower.h>
 #include <config.h>
+
 
 #define LCD_COLS 16
 #define LCD_ROWS 2
@@ -39,10 +41,9 @@ void ScrollRow0Text(String row0text, String row1Text) {
     lcd.setCursor(0, 0);
     lcd.print(row0text);
 
-    int currentMillies = millis();
-    if ((currentMillies - lastTextScroll) > scrollTextSpeed) {
+    if ((currentMillisGlobal - lastTextScroll) > scrollTextSpeed) {
 
-        lastTextScroll = currentMillies;
+        lastTextScroll = currentMillisGlobal;
         currentPauseTime -= scrollTextSpeed;
 
         if (currentPauseTime <= 0) {
@@ -92,5 +93,5 @@ void ShowError(String errormessage) {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print(errormessage + "                ");
-    delay(2000);
+    delay(5000);
 }

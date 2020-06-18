@@ -1,5 +1,7 @@
 #pragma once
 
+enum NodeMCUMessageTopics { NewState = 1 };
+
 void myTimerEvent();
 void Blynk_Connect();
 void Update_Blynk_App_With_Status();
@@ -18,3 +20,7 @@ void Set_To_Automatic_Mode_Random();
 void Set_To_Automatic_Mode_Parallel();
 void Setup_Wifi();
 void ConnectMQTT();
+void Receive_Mega_Topic();
+void ProcessData(int topic, int value);
+void UpdateVoltAmpCharge();
+void UpdateVoltAmpRain();

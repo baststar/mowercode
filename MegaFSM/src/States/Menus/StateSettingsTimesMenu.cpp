@@ -3,7 +3,7 @@
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
-#include <States/FSMEvents.h>
+#include <States/FSMStates.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
 #include <States/Menus/StateSettingsTimesMenu.h>
@@ -18,7 +18,7 @@ void read_settingsTimes_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         delay(250);
-        beforeMenuFSMEvent = currentFSMEvent;
+        beforeMenuFSMTransition = currentFSMTransition;
         TriggerFSM(STATE_SETTINGS_TIMES_MENU, STATE_SETTINGS_MENU, -1);
         return;
     } else if (PlusKey_pressed == 0) {
@@ -92,11 +92,6 @@ void read_settingsTimes_keys() {
 }
 
 void settingsTimes_on_enter() {
-    clearLCD();
-    lcd.setCursor(0, 0);
-    lcd.print("TIMESETTINGS                 ");
-    delay(500);
-    clearLCD();
     settingsTimesMenu_currentMenu = 0;
     ResetScrollRow0Text();
 }

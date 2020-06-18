@@ -15,6 +15,14 @@
         },
         {
             "path": "MegaFSM"
+        },
+        {
+            "name": "NanoIO",
+            "path": "NanoIO"
+        },
+        {
+            "name": "ESP32_NodeMCU",
+            "path": "ESP32_NodeMCU"
         }
     ],
     "settings": {

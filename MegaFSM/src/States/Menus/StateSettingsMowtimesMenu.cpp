@@ -3,7 +3,7 @@
 #include <Fsm.h>
 #include <Keyboard.h>
 #include <LCD.h>
-#include <States/FSMEvents.h>
+#include <States/FSMStates.h>
 #include <States/FSMMower.h>
 #include <States/FSMSequences.h>
 #include <States/Menus/StateSettingsMowtimesMenu.h>
@@ -11,13 +11,13 @@
 
 
 int settingsMowtimesMenu_currentMenu = 0;
-String settingsMowtimesMenuNames[] = {"QUICK MOW", "ZONE 1/2", "ALARM 1", "ALARM 2", "ALARM 3"};
+String settingsMowtimesMenuNames[] = {"Quick mow", "Zone 1", "Zone 2"};
 
 void read_settingsMowtimes_keys() {
     Read_Membrane_Keys();
     if (StopKey_pressed == 0) {
         delay(250);
-        beforeMenuFSMEvent = currentFSMEvent;
+        beforeMenuFSMTransition = currentFSMTransition;
         TriggerFSM(STATE_SETTINGS_MOWTIMES_MENU, STATE_SETTINGS_MENU, -1);
         return;
     } else if (PlusKey_pressed == 0) {
@@ -26,17 +26,11 @@ void read_settingsMowtimes_keys() {
             eeprom_quick_mow_mowtime += 1;
             SaveIntToEEPROM(EEPROM_INDEX_QUICK_MOW_MOWTIME, eeprom_quick_mow_mowtime);
         } else if (settingsMowtimesMenu_currentMenu == 1) {
-            eeprom_exit_garage_mowtime += 1;
-            SaveIntToEEPROM(EEPROM_INDEX_EXIT_GARAGE_MOWTIME, eeprom_exit_garage_mowtime);
+            eeprom_zone_1_mowtime += 1;
+            SaveIntToEEPROM(EEPROM_INDEX_ZONE_1_MOWTIME, eeprom_zone_1_mowtime);
         } else if (settingsMowtimesMenu_currentMenu == 2) {
-            eeprom_alarm_mowtime_1 += 1;
-            SaveIntToEEPROM(EEPROM_INDEX_ALARM_MOWTIME_1, eeprom_alarm_mowtime_1);
-        } else if (settingsMowtimesMenu_currentMenu == 3) {
-            eeprom_alarm_mowtime_2 += 1;
-            SaveIntToEEPROM(EEPROM_INDEX_ALARM_MOWTIME_2, eeprom_alarm_mowtime_2);
-        } else if (settingsMowtimesMenu_currentMenu == 4) {
-            eeprom_alarm_mowtime_3 += 1;
-            SaveIntToEEPROM(EEPROM_INDEX_ALARM_MOWTIME_3, eeprom_alarm_mowtime_3);
+            eeprom_zone_2_mowtime += 1;
+            SaveIntToEEPROM(EEPROM_INDEX_ZONE_2_MOWTIME, eeprom_zone_2_mowtime);
         }
 
     } else if (MinusKey_pressed == 0) {
@@ -45,17 +39,11 @@ void read_settingsMowtimes_keys() {
             eeprom_quick_mow_mowtime -= 1;
             SaveIntToEEPROM(EEPROM_INDEX_QUICK_MOW_MOWTIME, eeprom_quick_mow_mowtime);
         } else if (settingsMowtimesMenu_currentMenu == 1) {
-            eeprom_exit_garage_mowtime -= 1;
-            SaveIntToEEPROM(EEPROM_INDEX_EXIT_GARAGE_MOWTIME, eeprom_exit_garage_mowtime);
+            eeprom_zone_1_mowtime -= 1;
+            SaveIntToEEPROM(EEPROM_INDEX_ZONE_1_MOWTIME, eeprom_zone_1_mowtime);
         } else if (settingsMowtimesMenu_currentMenu == 2) {
-            eeprom_alarm_mowtime_1 -= 1;
-            SaveIntToEEPROM(EEPROM_INDEX_ALARM_MOWTIME_1, eeprom_alarm_mowtime_1);
-        } else if (settingsMowtimesMenu_currentMenu == 3) {
-            eeprom_alarm_mowtime_2 -= 1;
-            SaveIntToEEPROM(EEPROM_INDEX_ALARM_MOWTIME_2, eeprom_alarm_mowtime_2);
-        } else if (settingsMowtimesMenu_currentMenu == 4) {
-            eeprom_alarm_mowtime_3 -= 1;
-            SaveIntToEEPROM(EEPROM_INDEX_ALARM_MOWTIME_3, eeprom_alarm_mowtime_3);
+            eeprom_zone_2_mowtime -= 1;
+            SaveIntToEEPROM(EEPROM_INDEX_ZONE_2_MOWTIME, eeprom_zone_2_mowtime);
         }
 
     } else if (StartKey_pressed == 0) {
@@ -68,11 +56,6 @@ void read_settingsMowtimes_keys() {
 }
 
 void settingsMowtimes_on_enter() {
-    clearLCD();
-    lcd.setCursor(0, 0);
-    lcd.print("MOWTIMES                 ");
-    delay(500);
-    clearLCD();
     settingsMowtimesMenu_currentMenu = 0;
     ResetScrollRow0Text();
 }
@@ -87,13 +70,9 @@ void settingsMowtimes() {
     if (settingsMowtimesMenu_currentMenu == 0) {
         lcd.print(" " + String(eeprom_quick_mow_mowtime) + " minutes           ");
     } else if (settingsMowtimesMenu_currentMenu == 1) {
-        lcd.print(" " + String(eeprom_exit_garage_mowtime) + " minutes           ");
+        lcd.print(" " + String(eeprom_zone_1_mowtime) + " minutes           ");
     } else if (settingsMowtimesMenu_currentMenu == 2) {
-        lcd.print(" " + String(eeprom_alarm_mowtime_1) + " minutes           ");
-    } else if (settingsMowtimesMenu_currentMenu == 3) {
-        lcd.print(" " + String(eeprom_alarm_mowtime_2) + " minutes           ");
-    } else if (settingsMowtimesMenu_currentMenu == 4) {
-        lcd.print(" " + String(eeprom_alarm_mowtime_3) + " minutes           ");
+        lcd.print(" " + String(eeprom_zone_2_mowtime) + " minutes           ");
     }
     read_settingsMowtimes_keys();
 }

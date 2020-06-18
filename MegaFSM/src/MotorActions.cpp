@@ -83,8 +83,21 @@ void MotorAction_SetPinsToRotateLeft() {
     digitalWrite(PIN_IN_4, LOW);
 }
 
+void MotorAction_SetPinsToOnlyLeft() {
+    digitalWrite(PIN_IN_1, LOW); // Motor 1
+    digitalWrite(PIN_IN_2, HIGH);
+    digitalWrite(PIN_IN_3, LOW); // Motor 2
+    digitalWrite(PIN_IN_4, LOW);
+}
+
 void MotorAction_SetPinsToRotateRight() {
     digitalWrite(PIN_IN_1, HIGH); // Motor 1
+    digitalWrite(PIN_IN_2, LOW);
+    digitalWrite(PIN_IN_3, LOW); // Motor 2
+    digitalWrite(PIN_IN_4, HIGH);
+}
+void MotorAction_SetPinsToOnlyRight() {
+    digitalWrite(PIN_IN_1, LOW); // Motor 1
     digitalWrite(PIN_IN_2, LOW);
     digitalWrite(PIN_IN_3, LOW); // Motor 2
     digitalWrite(PIN_IN_4, HIGH);
