@@ -103,7 +103,8 @@
             "scoped_allocator": "cpp",
             "system_error": "cpp",
             "thread": "cpp",
-            "typeindex": "cpp"
+            "typeindex": "cpp",
+            "string_view": "cpp"
         }
     }
 }

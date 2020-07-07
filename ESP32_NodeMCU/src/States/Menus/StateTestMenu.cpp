@@ -9,12 +9,13 @@
 #include <States/FSMMower.h>
 #include <States/FSMStates.h>
 #include <States/Menus/StateTestMenu.h>
+#include <TxRxFunctions.h>
 #include <VoltAmpRain.h>
 #include <config.h>
 
 
 int testMenu_currentMenu = 0;
-String testMenuNames[] = {"Perimeter", "Compass", "Clock", "Temperature", "Amp/Volt/Rain", "Relais", "Motors"};
+String testMenuNames[] = {"Perimeter", "Compass", "Clock", "Temperature", "Amp/Volt/Rain", "Relais", "Motors", "Blade"};
 
 unsigned long lastMillisRelaistest = 0;
 unsigned long relaisTestInterval = 1000;
@@ -50,6 +51,7 @@ void testMenu() {
     String menuname = testMenuNames[testMenu_currentMenu];
 
     if (testMenu_currentMenu == 0) {
+        ReceiveSerialData();
         lcd.setCursor(0, 0);
         String insideOutside = MowerIsInsideWire() == 0 ? "Outside" : "Inside";
         lcd.print(menuname + " " + insideOutside + "            ");
@@ -57,6 +59,7 @@ void testMenu() {
         lcd.print("L " + String(GetCurrentMagnitudeLeft()) + " R " + String(GetCurrentMagnitudeRight()) + "        ");
         MotorAction_StopMotors();
         RelaisOff();
+        MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 1) {
         String heading = String(GetHeadingLoop());
         lcd.setCursor(0, 1);
@@ -65,6 +68,7 @@ void testMenu() {
         lcd.print(menuname + "                  ");
         MotorAction_StopMotors();
         RelaisOff();
+        MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 2) {
         lcd.setCursor(0, 1);
         lcd.print(GetDateTimeAsString() + "                  ");
@@ -73,6 +77,7 @@ void testMenu() {
         TestRTC();
         MotorAction_StopMotors();
         RelaisOff();
+        MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 3) {
         lcd.setCursor(0, 1);
         lcd.print(GetTemperature() + " C                  ");
@@ -81,6 +86,7 @@ void testMenu() {
         TestRTC();
         MotorAction_StopMotors();
         RelaisOff();
+        MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 4) {
         String itRains = IsRaining() == true ? "1" : "0";
         // lcd.print(String(GetAmps()) + " " + String(GetBatteryVolt()) + " " + itRains + "      ");
@@ -90,6 +96,7 @@ void testMenu() {
         lcd.print(menuname + "                  ");
         MotorAction_StopMotors();
         RelaisOff();
+        MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 5) {
         if (millis() - lastMillisRelaistest > relaisTestInterval) {
             relaisStatus = relaisStatus == 0 ? 1 : 0;
@@ -106,20 +113,31 @@ void testMenu() {
         lcd.setCursor(0, 0);
         lcd.print(menuname + "                  ");
         MotorAction_StopMotors();
+        MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 6) {
         MotorAction_SetPinsToGoForward();
         MotorAction_GoFullSpeed();
+        MotorAction_StopBlades();
         RelaisOn();
         lcd.setCursor(0, 1);
         lcd.print("MOTORS ON                 ");
         lcd.setCursor(0, 0);
         lcd.print(menuname + "                  ");
+    } else if (testMenu_currentMenu == 7) {
+        MotorAction_StartBlades();
+        RelaisOn();
+        lcd.setCursor(0, 1);
+        lcd.print("BLADE ON                 ");
+        lcd.setCursor(0, 0);
+        lcd.print(menuname + "                  ");
+        MotorAction_StopMotors();
     } else {
         lcd.setCursor(0, 1);
         lcd.print("                     ");
         lcd.setCursor(0, 0);
         lcd.print(menuname + "                  ");
         MotorAction_StopMotors();
+        MotorAction_StopBlades();
         RelaisOff();
     }
 
@@ -128,6 +146,7 @@ void testMenu() {
 void testMenu_on_exit() {
     RelaisOff();
     MotorAction_StopMotors();
+    MotorAction_StopBlades();
     RelaisOff();
     clearLCD();
 }

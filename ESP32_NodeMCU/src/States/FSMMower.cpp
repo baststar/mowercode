@@ -27,8 +27,10 @@
 #include <States/StateRotateToWire.h>
 #include <States/StateWireToGarden.h>
 #include <VoltAmpRain.h>
+#include <WLan.h>
 #include <config.h>
 #include <map>
+
 
 
 
@@ -71,6 +73,28 @@ State *allStates[STATES_COUNT] = {
     &state_settingsAlarmsMenu,      // 21
 };
 
+char *mowerStateNames[] = {"STATE_DOCKED",
+                           "STATE_DOCKED_MENU",
+                           "STATE_EXIT_GARAGE",
+                           "STATE_MOWING",
+                           "STATE_FOLLOW_WIRE",
+                           "STATE_PARKED",
+                           "STATE_PARKED_MENU",
+                           "STATE_RANDOM_ROTATE",
+                           "STATE_WIRE_TO_GARDEN",
+                           "STATE_TEST_MENU",
+                           "STATE_ERROR",
+                           "STATE_COMPASS_ROTATE",
+                           "STATE_ROTATE_TO_WIRE",
+                           "STATE_FIND_WIRE_FORWARDS",
+                           "STATE_FIND_WIRE_BACKWARDS",
+                           "STATE_SETTINGS_MENU",
+                           "STATE_SETTINGS_MOTORSPEED_MENU",
+                           "STATE_SETTINGS_TIMES_MENU",
+                           "STATE_SETTINGS_PERIMETER_MENU",
+                           "STATE_SETTINGS_MOWTIMES_MENU",
+                           "STATE_SETTINGS_ALARMS_MENU"};
+
 int BuildStateTransitionId(int state1, int state2) {
     char buffer[20];
     snprintf(buffer, sizeof(buffer), "%d9%d", state1, state2);
@@ -93,7 +117,8 @@ void TriggerFSM(int fromState, int toState, int sequence) {
     lastState = fromState;
     currentState = toState;
 
-    SendData(NodeMCUMessageTopics::NewState, String(toState));
+    // SendData("mower", );
+    SendMQTTMessage("mower", mowerStateNames[toState - 1]);
 
     if (eventList.find(transitionId) == eventList.end()) {
         eventList.insert(std::pair<int, bool>(transitionId, true));

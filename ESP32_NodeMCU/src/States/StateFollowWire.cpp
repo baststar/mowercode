@@ -90,7 +90,7 @@ speedCalculationResult calculateMotorspeed() {
     int magnitudeLeft = GetCurrentMagnitudeLeft();
 
     int absMagnitudeRight = abs(magnitudeRight);
-    int absMagnitudeLeft = abs(absMagnitudeLeft);
+    int absMagnitudeLeft = abs(magnitudeLeft);
     // int maxRightMagnitude = eeprom_max_tracking_wire_magnitude_outside;
     // int maxLeftMagnitude = eeprom_max_tracking_wire_magnitude_inside;
 

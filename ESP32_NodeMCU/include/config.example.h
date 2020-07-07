@@ -1,9 +1,11 @@
 #pragma once
 
-#define USE_NODEMCU 1
-#define USE_COMPASS 0
+#include <driver/adc.h>
 
-#define USE_WLAN 1
+#define USE_NODEMCU 1
+#define USE_COMPASS 1
+
+#define USE_WLAN 0
 #define WIFI_SSID ""
 #define WIFI_PASS ""
 #define WLAN_STATIC_IP "192.168.0.230"
@@ -12,7 +14,7 @@
 
 #define USE_MQTT 1
 #define MQTT_HOST "192.168.0.20"
-#define MQTT_HOSTNAME ""
+#define MQTT_HOSTNAME "pi"
 #define MQTT_DOMAIN ""
 #define MQTT_CLIENT_ID "NodeMCUMower"
 #define MQTT_PORT 8883
@@ -29,6 +31,14 @@
 #define NODE_RED_API_HOST ""
 #define NODE_RED_API_USERNAME ""
 #define NODE_RED_API_PASSWORD ""
+
+
+#define MQTT_CA_CERT ""
+
+#define MQTT_CLIENT_CERT ""
+
+#define MQTT_CLIENT_KEY ""
+
 
 // PERIMETER IS CLOCKWISE (1) OR COUNTERCLOCKWISE (0) FROM GARAGE
 #define PERIMETER_IS_CLOCKWISE_FROM_GARAGE 1
@@ -79,43 +89,47 @@
 #define ALARM_SEQUENCE_3 17 // Quick Mow
 
 // UART
-#define PIN_RX 16
-#define PIN_TX 17
+#define PIN_RX GPIO_NUM_39 // 39
+#define PIN_TX GPIO_NUM_38 // 38
 
 // DISPLAY
-#define PIN_SDA_DISPLAY 21
-#define PIN_SCL_DISPLAY 22
-
-// RTC PINS
-#define PIN_REALTIME_CLOCK_RESET 29 // uint8_t digital
-#define PIN_REALTIME_CLOCK_DATA 30  // uint8_t digital
-#define PIN_REALTIME_CLOCK_SCL 31   // uint8_t digital
+#define PIN_SDA_DISPLAY GPIO_NUM_21 // 21
+#define PIN_SCL_DISPLAY GPIO_NUM_26 // 26
 
 // KEYBOARD PINS
-#define PIN_START_KEY GPIO_NUM_15 // uint8_t digital
-#define PIN_PLUS_KEY GPIO_NUM_34  // uint8_t digital
-#define PIN_MINUS_KEY GPIO_NUM_2 // uint8_t digital
-#define PIN_STOP_KEY GPIO_NUM_35  // uint8_t digital
+#define PIN_PLUS_KEY GPIO_NUM_10  // 10 // digital
+#define PIN_START_KEY GPIO_NUM_11 // 11 // digital
+#define PIN_STOP_KEY GPIO_NUM_12  // 12 // digital
+#define PIN_MINUS_KEY GPIO_NUM_13 // 13 // digital
 
 // MOTOR A PINS
-#define PIN_ENA GPIO_NUM_25  // EN Pins need a digital pin with PWM // analog
-#define PIN_IN_1 GPIO_NUM_32 // digital
-#define PIN_IN_2 GPIO_NUM_33 // IN Pins dont need digital PWM // digital
+#define PIN_MOTOR_1_ENA ADC1_CHANNEL_0 // 1  // EN Pins need a digital pin with PWM // PWM
+#define PIN_MOTOR_1_IN_1 GPIO_NUM_33   // 33 // digital
+#define PIN_MOTOR_1_IN_2 GPIO_NUM_34   // 34  // IN Pins dont need digital PWM // digital
 // MOTOR B PINS
-#define PIN_ENB GPIO_NUM_26  // EN Pins need a digital pin with PWM // analog
-#define PIN_IN_3 GPIO_NUM_27 // digital
-#define PIN_IN_4 GPIO_NUM_19 // IN Pins dont need digital PWM // digital
+#define PIN_MOTOR_2_ENB ADC1_CHANNEL_1 // 2 // GPIO_NUM_26  // EN Pins need a digital pin with PWM // PWM
+#define PIN_MOTOR_2_IN_1 GPIO_NUM_35   // 35 // digital
+#define PIN_MOTOR_2_IN_2 GPIO_NUM_36   // 36 // IN Pins dont need digital PWM // digital
 // MOTOR BLADES PINS
-#define PIN_RPWM 8  // analog
-#define PIN_L_EN 9  // digital
-#define PIN_R_EN 10 // digital
+#define PIN_BLADES_RPWM ADC1_CHANNEL_2 // 3 // PWM
+#define PIN_BLADES_L_EN ADC1_CHANNEL_3 // 4 // digital
+#define PIN_BLADES_R_EN ADC1_CHANNEL_4 // 5 // digital
 
 // BUMPER PINS
-#define BUMPER_SWITCH_FRONT_RH 46 // Define Pin 47 on the MEGA to detect the microswitch // digital
-#define BUMPER_SWITCH_FRONT_LH 47 // Define Pin 46 on the MEGA to detect the microswitch // digital
+// #define BUMPER_SWITCH_FRONT_RH 46 // Define Pin 47 on the MEGA to detect the microswitch // digital
+// #define BUMPER_SWITCH_FRONT_LH 47 // Define Pin 46 on the MEGA to detect the microswitch // digital
 
 // RELAY PINS
-#define PIN_RELAY_MOTORS GPIO_NUM_23 // digital
+#define PIN_RELAY_MOTORS ADC1_CHANNEL_6 // 5
+
+// VOLT PIN
+#define PIN_VOLT_SENSOR ADC1_CHANNEL_5 // 6
+
+// AMP PIN
+#define PIN_AMP_SENSOR ADC1_CHANNEL_7 // 8
+
+// RAIN PIN
+#define PIN_RAIN_SENSOR ADC1_CHANNEL_8 // 9
 
 // LED PINS
-#define PIN_LED LED_BUILTIN // digital
+#define PIN_LED ADC2_CHANNEL_7 // 18

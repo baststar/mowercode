@@ -1,14 +1,15 @@
 #include <Arduino.h>
 #include <CustomFunctions.h>
-#include <MqttFunctions.h>
 #include <Perimeter.h>
 #include <SoftwareSerial.h>
 #include <TxRxFunctions.h>
 #include <VoltAmpRain.h>
+#include <WLan.h>
 #include <Wire.h>
 #include <config.h>
 
-HardwareSerial serialNano(2);
+
+HardwareSerial serialNano(1);
 
 enum NodeMCUMessageTopics { NewState = 1, PerimeterValue = 2, PerimeterInsideValue = 3, AmpValue = 4, VoltValue = 5, RainValue = 6 };
 
@@ -17,10 +18,11 @@ char receivedChars[numChars];
 bool newData = false;
 
 void Setup_HardwareSerial() {
-    serialNano.begin(115200, SERIAL_8N1, GPIO_NUM_16, GPIO_NUM_17, false);
+    serialNano.begin(9600, SERIAL_8N1, PIN_RX, PIN_TX, false);
 }
 
 void HandleNewData() {
+
     if (newData == true) {
 
         // ignore incomplete serialbuffer-content by checking the startcharacter '|'
@@ -57,7 +59,7 @@ void HandleNewData() {
 }
 
 unsigned long lastMillisReceiveData = 0;
-unsigned long receiveDataInterval = 0;
+unsigned long receiveDataInterval = 250;
 
 void ReceiveSerialData() {
 
@@ -66,6 +68,8 @@ void ReceiveSerialData() {
         static byte ndx = 0;
         char endMarker = '\n';
         char rc;
+
+        // Serial.println(Serial.available());
 
         while (serialNano.available() > 0 && newData == false) {
 
@@ -119,9 +123,9 @@ void ProcessData(int topic, int value) {
     case NodeMCUMessageTopics::NewState:
 
         if (ARRAY_SIZE(mowerStates) >= value) {
-            mqttClient.publish("mower", mowerStates[value - 1], true, 3);
+            // mqttClient.publish("mower", mowerStates[value - 1], true, 3);
         } else {
-            mqttClient.publish("mower", "unkown State", true, 3);
+            // mqttClient.publish("mower", "unkown State", true, 3);
         }
         break;
 

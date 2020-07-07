@@ -17,4 +17,4 @@ void ResetScrollRow0Text();
 void ScrollRow0Text(String row0text, String row0Text);
 void clearLCD();
 void ShowError(String errormessage);
-void scan1();
+void ScanI2C();
