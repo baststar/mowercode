@@ -1,28 +1,16 @@
 {
 	"folders": [
         {
-            "path": "Mega"
-        },
-        {
-            "path": "Nano"
-        },
-        {
-            "path": "NodeMCU"
-        },
-        {
             "name": "Uno",
             "path": "Uno"
-        },
-        {
-            "path": "MegaFSM"
         },
         {
             "name": "NanoIO",
             "path": "NanoIO"
         },
         {
-            "name": "ESP32_NodeMCU",
-            "path": "ESP32_NodeMCU"
+            "name": "ESP32_S2_Soala_1M",
+            "path": "ESP32_S2_Soala_1M"
         }
     ],
     "settings": {
