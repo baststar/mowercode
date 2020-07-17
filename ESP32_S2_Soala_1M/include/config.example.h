@@ -5,7 +5,7 @@
 #define USE_NODEMCU 1
 #define USE_COMPASS 1
 
-#define USE_WLAN 0
+#define USE_WLAN 1
 #define WIFI_SSID ""
 #define WIFI_PASS ""
 #define WLAN_STATIC_IP "192.168.0.230"
@@ -16,7 +16,7 @@
 #define MQTT_HOST "192.168.0.20"
 #define MQTT_HOSTNAME "pi"
 #define MQTT_DOMAIN ""
-#define MQTT_CLIENT_ID "NodeMCUMower"
+#define MQTT_CLIENT_ID "Mower"
 #define MQTT_PORT 8883
 #define MQTT_USERNAME ""
 #define MQTT_PASSWORD ""
@@ -103,27 +103,28 @@
 #define PIN_MINUS_KEY GPIO_NUM_13 // 13 // digital
 
 // MOTOR A PINS
-#define PIN_MOTOR_1_ENA ADC1_CHANNEL_0 // 1  // EN Pins need a digital pin with PWM // PWM
-#define PIN_MOTOR_1_IN_1 GPIO_NUM_33   // 33 // digital
-#define PIN_MOTOR_1_IN_2 GPIO_NUM_34   // 34  // IN Pins dont need digital PWM // digital
+#define PIN_MOTOR_1_ENA GPIO_NUM_1   // 1  // EN Pins need a digital pin with PWM // PWM
+#define PIN_MOTOR_1_IN_1 GPIO_NUM_33 // 33 // digital
+#define PIN_MOTOR_1_IN_2 GPIO_NUM_34 // 34  // IN Pins dont need digital PWM // digital
 // MOTOR B PINS
-#define PIN_MOTOR_2_ENB ADC1_CHANNEL_1 // 2 // GPIO_NUM_26  // EN Pins need a digital pin with PWM // PWM
-#define PIN_MOTOR_2_IN_1 GPIO_NUM_35   // 35 // digital
-#define PIN_MOTOR_2_IN_2 GPIO_NUM_36   // 36 // IN Pins dont need digital PWM // digital
+#define PIN_MOTOR_2_ENB GPIO_NUM_2   // 2 // // EN Pins need a digital pin with PWM // PWM
+#define PIN_MOTOR_2_IN_1 GPIO_NUM_35 // 35 // digital
+#define PIN_MOTOR_2_IN_2 GPIO_NUM_36 // 36 // IN Pins dont need digital PWM // digital
+
 // MOTOR BLADES PINS
-#define PIN_BLADES_RPWM ADC1_CHANNEL_2 // 3 // PWM
-#define PIN_BLADES_L_EN ADC1_CHANNEL_3 // 4 // digital
-#define PIN_BLADES_R_EN ADC1_CHANNEL_4 // 5 // digital
+#define PIN_BLADES_RPWM GPIO_NUM_3 // 3 // PWM
+#define PIN_BLADES_L_EN GPIO_NUM_4 // 4 // digital
+#define PIN_BLADES_R_EN GPIO_NUM_5 // 5 // digital
 
 // BUMPER PINS
 // #define BUMPER_SWITCH_FRONT_RH 46 // Define Pin 47 on the MEGA to detect the microswitch // digital
 // #define BUMPER_SWITCH_FRONT_LH 47 // Define Pin 46 on the MEGA to detect the microswitch // digital
 
-// RELAY PINS
-#define PIN_RELAY_MOTORS ADC1_CHANNEL_6 // 5
-
 // VOLT PIN
 #define PIN_VOLT_SENSOR ADC1_CHANNEL_5 // 6
+
+// RELAY PINS
+#define PIN_RELAY_MOTORS GPIO_NUM_7 // 7
 
 // AMP PIN
 #define PIN_AMP_SENSOR ADC1_CHANNEL_7 // 8

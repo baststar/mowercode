@@ -33,10 +33,12 @@ void docked() {
     if (IsCharging()) {
         lcd.setCursor(0, 1);
         lcd.print(GetTimeAsString() + " charging  ");
-    } else if (!IsBounderyWireActive()) {
-        lcd.setCursor(0, 1);
-        lcd.print(GetTimeAsString() + " no wire   ");
-    } else {
+    }
+    // else if (!IsBounderyWireActive()) {
+    //     lcd.setCursor(0, 1);
+    //     lcd.print(GetTimeAsString() + " no wire   ");
+    // }
+    else {
         lcd.setCursor(0, 1);
         lcd.print(GetTimeAsString() + "           ");
     }

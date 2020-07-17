@@ -115,7 +115,8 @@ void testMenu() {
         MotorAction_StopMotors();
         MotorAction_StopBlades();
     } else if (testMenu_currentMenu == 6) {
-        MotorAction_SetPinsToGoForward();
+        // MotorAction_SetPinsToGoForward();
+        MotorAction_SetPinsToOnlyLeft();
         MotorAction_GoFullSpeed();
         MotorAction_StopBlades();
         RelaisOn();

@@ -25,13 +25,11 @@
 #include <States/StateRandomRotate.h>
 #include <States/StateRotateToWire.h>
 #include <States/StateWireToGarden.h>
+#include <TxRxFunctions.h>
 #include <VoltAmpRain.h>
 #include <WLan.h>
 #include <config.h>
 #include <map>
-
-
-
 
 unsigned long currentMillisGlobal = 0;
 
@@ -102,8 +100,25 @@ int BuildStateTransitionId(int state1, int state2) {
 }
 
 void Loop_FSM() {
+
     currentMillisGlobal = millis();
     UpdateVoltAmpRain();
+
+    switch (currentState) {
+    case STATE_EXIT_GARAGE:
+    case STATE_FIND_WIRE_BACKWARDS:
+    case STATE_FIND_WIRE_FORWARDS:
+    case STATE_FOLLOW_WIRE:
+    case STATE_MOWING:
+    case STATE_RANDOM_ROTATE:
+    case STATE_ROTATE_TO_WIRE:
+    case STATE_WIRE_TO_GARDEN:
+        ReceiveSerialData();
+        break;
+    default:
+        break;
+    }
+
     fsm_mower.run_machine();
 }
 
